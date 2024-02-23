@@ -4,6 +4,14 @@
   "newProjectRoot": "projects",
   "projects": {
     "coins-code-ui": {
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "pl": {
+            "translation": "src/locale/messages.pl.xlf"
+          }
+        }
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,6 +25,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "localize": true,
+            "i18nMissingTranslation": "error",
+            "i18nDuplicateTranslation": "error",
             "outputPath": "dist/coins-code-ui",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -54,7 +65,13 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
-            }
+            },
+            "en-US": { 
+              "localize": ["en-US"] 
+            }, 
+            "pl": { 
+              "localize": ["pl"] 
+            } 
           },
           "defaultConfiguration": "production"
         },
@@ -66,6 +83,12 @@
             },
             "development": {
               "buildTarget": "coins-code-ui:build:development"
+            },
+            "en-US": {
+              "buildTarget": "coins-code-ui:build:development,en-US"
+            },
+            "pl": {
+              "buildTarget": "coins-code-ui:build:development,pl"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +96,8 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "coins-code-ui:build"
+            "buildTarget": "coins-code-ui:build",
+            "outputPath": "src/locale"
           }
         },
         "test": {
