@@ -32,3 +32,5 @@ List of recommended VSCode extensions for development are listed below:
 - Angular Language Service (extension ID - Angular.ng-template)
 - ESLint (extension ID - dbaeumer.vscode-eslint)
     - just installing it should be sufficient, no additional configuration is needed
+- Prettier ESLint (extension ID - rvest.vs-code-prettier-eslint)
+    - install npm packages, then install extension and follow configuration guide (editing VSCode settings is important)
