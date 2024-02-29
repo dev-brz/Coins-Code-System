@@ -4,9 +4,8 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'cc-app',
   standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  imports: [RouterOutlet]
 })
 export class AppComponent {
   constructor(@Inject(LOCALE_ID) locale: string) {

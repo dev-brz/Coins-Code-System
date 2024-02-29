@@ -14,3 +14,7 @@ spring:
 
 frontEnd:
   url: http://localhost:4200
+
+security.permittedMatchers: >
+  /h2-console/**,
+  /users/login

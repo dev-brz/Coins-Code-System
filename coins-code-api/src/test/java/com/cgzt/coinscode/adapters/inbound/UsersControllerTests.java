@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Sql(value = "/user-controller-tests.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class UsersControllerTests {
+    static String USERS_LOGIN_URL = "/users"+LOGIN_URL;
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -27,7 +28,7 @@ class UsersControllerTests {
 
     @Test
     void login_shouldReturn400_whenNoRequestBodyIsPresent() throws Exception {
-        mockMvc.perform(post(LOGIN_URL)).andExpect(status().isBadRequest());
+        mockMvc.perform(post(USERS_LOGIN_URL)).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -35,7 +36,7 @@ class UsersControllerTests {
         String requestBody = objectMapper.writeValueAsString(
                 new UserLoginCommandHandler.Command("invalidUsername", new char[]{}));
 
-        mockMvc.perform(post(LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -44,7 +45,7 @@ class UsersControllerTests {
         String requestBody = objectMapper.writeValueAsString(
                 new UserLoginCommandHandler.Command("validUsername", new char[]{'b', 'a', 'd'}));
 
-        mockMvc.perform(post(LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -53,7 +54,7 @@ class UsersControllerTests {
         String requestBody = objectMapper.writeValueAsString(
                 new UserLoginCommandHandler.Command("validUsername", new char[]{'g', 'o', 'o', 'd'}));
 
-        mockMvc.perform(post(LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isOk());
     }
 }
