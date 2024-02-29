@@ -150,8 +150,8 @@
           "builder": "@cypress/schematic:cypress",
           "options": {
             "devServerTarget": "coins-code-ui:serve",
-            "watch": true,
-            "headless": false
+            "watch": false,
+            "headless": true
           },
           "configurations": {
             "production": {

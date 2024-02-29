@@ -1,0 +1,52 @@
+name: Angular CI
+
+on:
+  push:
+    branches: [master]
+    paths: ['coins-code-ui/**']
+  pull_request:
+    branches: [master]
+    paths: ['coins-code-ui/**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./coins-code-ui
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: npm ci
+          
+      - name: Build Application
+        run: npm run build -- --configuration=production
+
+      - name: Check Lint
+        run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+      - name: Run E2E Tests
+        run: npm run e2e
