@@ -1,0 +1,33 @@
+name: Spring CI
+
+on:
+  push:
+    branches: [master]
+    paths: ['coins-code-api/**']
+  pull_request:
+    branches: [master]
+    paths: ['coins-code-api/**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./coins-code-api
+
+    strategy:
+      matrix:
+        java: [21]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Build, test and package project
+        run: mvn -f pom.xml clean package
