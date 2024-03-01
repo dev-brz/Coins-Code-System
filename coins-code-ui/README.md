@@ -20,17 +20,24 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Approaches to running Cypress E2E tests
+
+- Run `ng e2e` to serve an application and then execute tests via Cypress UI.
+- Run `ng run coins-code-ui:cypress-run` to serve an application and then execute tests automatically (without Cypress UI).
+- Run `npm run cypress:open` or `npm run cypress:run` to run tests without serving an application.
 
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ## Development
+
 ### Recommended extensions (VSCode)
+
 List of recommended VSCode extensions for development are listed below:
+
 - Angular Language Service (extension ID - Angular.ng-template)
 - ESLint (extension ID - dbaeumer.vscode-eslint)
-    - just installing it should be sufficient, no additional configuration is needed
+  - just installing it should be sufficient, no additional configuration is needed
 - Prettier ESLint (extension ID - rvest.vs-code-prettier-eslint)
-    - install npm packages, then install extension and follow configuration guide (editing VSCode settings is important)
+  - install npm packages, then install extension and follow configuration guide (editing VSCode settings is important)

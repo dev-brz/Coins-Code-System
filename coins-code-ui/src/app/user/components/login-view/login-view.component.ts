@@ -1,12 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, WritableSignal, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import {
-  FormGroup,
-  ReactiveFormsModule,
-  UntypedFormControl,
-  Validators
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, UntypedFormControl, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
-  selector: 'cc-login',
+  selector: 'cc-login-view',
   standalone: true,
   imports: [
     CommonModule,
@@ -25,9 +20,9 @@ import { AuthService } from '../../../shared/services/auth.service';
     MatButtonModule,
     RouterModule
   ],
-  templateUrl: './login.component.html'
+  templateUrl: './login-view.component.html'
 })
-export class LoginComponent {
+export class LoginViewComponent {
   loginFailed: WritableSignal<boolean> = signal(false);
 
   loginForm: FormGroup = new FormGroup({

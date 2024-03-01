@@ -2,75 +2,238 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="7873623519470670250" datatype="html">
+        <source>Field is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4520598270944004056" datatype="html">
+        <source>Field must contain at least <x id="PH" equiv-text="requiredLength"/> characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8667367613545902732" datatype="html">
+        <source>Username <x id="PH" equiv-text="errors[&apos;usernameTaken&apos;][&apos;username&apos;]"/> is taken</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3798990823053086967" datatype="html">
+        <source>Field must be a valid e-mail address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4681718590652318762" datatype="html">
+        <source>Field must match the valid pattern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5432127923813972498" datatype="html">
+        <source>File is too large</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2566566535736116946" datatype="html">
+        <source>Passwords must be equal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="8520023152129279437" datatype="html">
         <source>Log In</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
           <context context-type="linenumber">4,5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1556571459628484402" datatype="html">
-        <source>Don&apos;t have an account ?</source>
+      <trans-unit id="8164791295086777340" datatype="html">
+        <source>Don&apos;t have an account?</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
           <context context-type="linenumber">5,6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3301086086650990787" datatype="html">
         <source>Register</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
           <context context-type="linenumber">7,8</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">74,75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5248717555542428023" datatype="html">
         <source>Username</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
           <context context-type="linenumber">12</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
-          <context context-type="linenumber">16,17</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1090552674846882629" datatype="html">
         <source>Username required</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1431416938026210429" datatype="html">
         <source>Password</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
+          <context context-type="linenumber">17</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
-          <context context-type="linenumber">26,27</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3771803775262910212" datatype="html">
         <source>Password required</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7527980706824212298" datatype="html">
         <source>Wrong username or password</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1908285951500318953" datatype="html">
-        <source> Login </source>
+      <trans-unit id="2454050363478003966" datatype="html">
+        <source>Login</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/cc-login/login.component.html</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="sourcefile">src/app/user/components/login-view/login-view.component.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5277739594710154939" datatype="html">
+        <source>Already have an account?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5342432350421167093" datatype="html">
+        <source>First name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3586674587150281199" datatype="html">
+        <source>Last name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1890300073702152532" datatype="html">
+        <source>E-mail</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4277791203116188558" datatype="html">
+        <source>example@email.com</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8121141462865337916" datatype="html">
+        <source>Phone number</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1534490849455888072" datatype="html">
+        <source>Profile image</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7411346013057152491" datatype="html">
+        <source>Current image size</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7724881647984296475" datatype="html">
+        <source>Max image size</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5373727393387841282" datatype="html">
+        <source>Repeat password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">67,68</context>
         </context-group>
       </trans-unit>
     </body>

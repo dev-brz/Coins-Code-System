@@ -1,13 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from './auth.service';
-import { LoginForm } from '../models';
 import { HttpRequest } from '@angular/common/http';
-import { LOGIN_URL, NO_AUTH_URLS } from '../configs/app.api.config';
+import { LOGIN_URL, NO_AUTH_URLS } from '../configs/api.config';
+import { LoginForm } from '../models/user.model';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -56,10 +53,7 @@ describe('AuthService', () => {
   });
 
   it('should allow access if user is logged in', () => {
-    localStorage.setItem(
-      'currentUser',
-      JSON.stringify({ username: 'testuser', password: 'testpass' })
-    );
+    localStorage.setItem('currentUser', JSON.stringify({ username: 'testuser', password: 'testpass' }));
     const canActivateResult = service.canActivate();
     expect(canActivateResult).toBeTrue();
   });

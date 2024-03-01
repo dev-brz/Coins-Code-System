@@ -1,0 +1,23 @@
+.auth-container {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .auth-form {
+    width: 320px;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+
+    mat-form-field {
+      margin-bottom: 0.5rem;
+    }
+
+    mat-error,
+    mat-hint {
+      font-size: small;
+      padding-bottom: 1rem;
+    }
+  }
+}

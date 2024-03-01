@@ -8,7 +8,7 @@
   "bracketSpacing": true,
   "arrowParens": "avoid",
   "bracketSameLine": true,
-  "printWidth": 80,
+  "printWidth": 120,
   "overrides": [
     {
       "files": "*.html",
