@@ -1,4 +1,4 @@
-package com.cgzt.coinscode.adapters.outbound;
+package com.cgzt.coinscode.adapters.outbound.services;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

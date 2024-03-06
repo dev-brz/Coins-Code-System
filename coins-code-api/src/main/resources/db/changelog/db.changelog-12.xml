@@ -43,17 +43,15 @@
             <column type="varchar(255)" name="phoneNumber">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column type="int" name="numberOfSends"/>
-            <column type="int" name="numberOfReceives"/>
+            <column type="int" name="numberOfSends" defaultValue="0"/>
+            <column type="int" name="numberOfReceives" defaultValue="0"/>
             <column type="timestamp" name="createdAt" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column type="boolean" name="active" defaultValue="true"/>
-            <column type="int" name="sendLimits"/>
+            <column type="int" name="sendLimits" defaultValue="0"/>
         </createTable>
 
         <createIndex tableName="user_account" indexName="user_account_username">
-            <column name="username">
-                <constraints unique="true" nullable="false"/>
-            </column>
+            <column name="username"/>
         </createIndex>
     </changeSet>
 </databaseChangeLog>

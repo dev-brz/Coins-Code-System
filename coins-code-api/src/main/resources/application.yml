@@ -1,3 +1,4 @@
+server.port: 8080
 spring:
   datasource:
     url: jdbc:h2:mem:coins_db
@@ -18,3 +19,12 @@ frontEnd:
 security.permittedMatchers: >
   /h2-console/**,
   /users/login
+
+
+user:
+  client:
+    roles: USER,SENDER,RECEIVER
+
+  profile:
+    image-url: "http://localhost:${server.port}/users/image?name="
+    dir: "${user.home}/coin-code/images/user-profiles"

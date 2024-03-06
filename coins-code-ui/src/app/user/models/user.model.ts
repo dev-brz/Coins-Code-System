@@ -4,5 +4,5 @@ export interface UserBase {
   lastName: string;
   email: string;
   phoneNumber: string;
-  profileImage: File | null;
+  profileImage: File | string | null;
 }

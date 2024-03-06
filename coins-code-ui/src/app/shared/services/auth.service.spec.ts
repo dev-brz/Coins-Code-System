@@ -76,7 +76,7 @@ describe('AuthService', () => {
 
     const expectedReq = new HttpRequest('GET', '/api/data').clone({
       setHeaders: {
-        Authorization: `Basic ${mockUser.username}:${mockUser.password}`
+        Authorization: `Basic ${btoa(`${mockUser.username}:${mockUser.password}`)}`
       }
     });
 

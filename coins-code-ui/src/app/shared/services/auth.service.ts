@@ -50,9 +50,10 @@ export class AuthService {
 
     if (currentUser) {
       const user = JSON.parse(currentUser);
+      const token = btoa(`${user.username}:${user.password}`);
       req = req.clone({
         setHeaders: {
-          Authorization: `Basic ${user.username}:${user.password}`
+          Authorization: `Basic ${token}`
         }
       });
 
