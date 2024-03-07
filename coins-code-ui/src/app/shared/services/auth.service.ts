@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { LOGIN_URL, NO_AUTH_URLS } from '../configs/api.config';
 import { LoginForm } from '../models/user.model';
+import { UserBase } from '../../user/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,22 @@ export class AuthService {
     private http: HttpClient,
     private router: Router
   ) {}
+
+  getCurrentUser(): UserBase | null {
+    const user = localStorage.getItem('currentUser');
+
+    // TODO - load user and store it [#43]
+    if (user) {
+      const userObject = JSON.parse(user) as UserBase;
+      return {
+        ...userObject,
+        firstName: 'Mock',
+        lastName: 'Mocking'
+      };
+    } else {
+      return null;
+    }
+  }
 
   login(form: LoginForm): Observable<void> {
     return this.http

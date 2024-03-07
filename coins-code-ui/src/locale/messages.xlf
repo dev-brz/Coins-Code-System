@@ -2,6 +2,48 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="3492007542396725315" datatype="html">
+        <source>Welcome</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4086606389696938932" datatype="html">
+        <source>Account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4930506384627295710" datatype="html">
+        <source>Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="37170866337724812" datatype="html">
+        <source>Coins</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5446130952787522978" datatype="html">
+        <source>Codes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6475965989591609567" datatype="html">
+        <source>Transactions history</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="7873623519470670250" datatype="html">
         <source>Field is required</source>
         <context-group purpose="location">

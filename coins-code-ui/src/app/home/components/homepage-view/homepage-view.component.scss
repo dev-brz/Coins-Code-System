@@ -1,0 +1,42 @@
+@import '../../../../styles/variables';
+
+.homepage {
+  margin: 2rem;
+
+  .profile {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+
+    .profile-avatar {
+      border-radius: 50%;
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      text-wrap: nowrap;
+
+      .profile-actions {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        flex: 1;
+      }
+    }
+  }
+
+  header,
+  footer {
+    margin: 0.8rem 0;
+  }
+
+  mat-card {
+    margin-bottom: 0.8rem;
+  }
+}
