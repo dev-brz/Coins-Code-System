@@ -12,12 +12,13 @@ create table authorities (
 create unique index ix_auth_username on authorities (username, authority);
 
 CREATE TABLE user_account (
-    id int AUTO_INCREMENT PRIMARY KEY,
+    id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(255) NOT NULL UNIQUE,
     first_name varchar(255),
     last_name varchar(255),
     email varchar(255) NOT NULL UNIQUE,
     phone_number varchar(255) NOT NULL UNIQUE,
+    image_name varchar(255),
     number_of_sends int,
     number_of_receives int,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
