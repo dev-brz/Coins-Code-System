@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UsersWriteListener implements ItemWriteListener<UserAccount>{
+class UsersWriteListener implements ItemWriteListener<UserAccount>{
     public static final String UPDATE_IMAGE_NAME_SQL = "UPDATE user_account SET image_name = ? WHERE username = ?";
     private final ImageService imageService;
     private final SpringSecurityUserRepository springSecurityUserRepository;
     private final JdbcTemplate jdbcTemplate;
 
     @Value("${user.default.password}")
-    protected char[] defaultPassword;
+    private char[] defaultPassword;
 
     @Override
     public void beforeWrite(Chunk<? extends UserAccount> items){
