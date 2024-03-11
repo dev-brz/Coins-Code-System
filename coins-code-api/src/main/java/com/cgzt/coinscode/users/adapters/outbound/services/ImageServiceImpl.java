@@ -8,8 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +53,11 @@ class ImageServiceImpl implements ImageService {
     public Resource load(String imageName) {
         var image = new File(getImagePath(imageName));
         try {
-            return new UrlResource(image.toURI());
+            Resource resource = new UrlResource(image.toURI());
+            if (!resource.isReadable()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Image does not exist");
+            }
+            return resource;
         } catch (MalformedURLException e) {
             throw new ProfileImageException("Could not load profile image", e);
         }
@@ -63,7 +69,7 @@ class ImageServiceImpl implements ImageService {
             var hashBytes = digest.digest(value.getBytes(StandardCharsets.UTF_8));
             return Base64.getUrlEncoder().encodeToString(hashBytes);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new ProfileImageException("Could not create hash for profile image", e);
         }
     }
 

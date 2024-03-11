@@ -6,12 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,14 +52,12 @@ class ImageServiceImplTest {
     }
 
     @Test
-    void testGetImage() throws IOException {
-        String name = "myImage";
+    void testGetImage() {
+        when(mockImage.getOriginalFilename()).thenReturn("myImage.png");
+        imageService.upload("myImage", mockImage);
+        String hashedName = imageService.hashOf("myImage") + ".png";
 
-        ClassPathResource mockResource = mock(ClassPathResource.class);
-        when(mockResource.getInputStream()).thenReturn(mock(InputStream.class));
-        imageService.upload(name, mockImage);
-
-        var resource = imageService.load(name);
+        Resource resource = imageService.load(hashedName);
 
         assertNotNull(resource);
     }

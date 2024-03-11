@@ -56,7 +56,7 @@ class UsersControllerTests {
     @Test
     void login_shouldReturn401_whenUserDoesNotExist() throws Exception {
         String requestBody = objectMapper.writeValueAsString(
-                new UserLoginCommandHandler.Command("invalidUsername", new char[]{}));
+                new UserLoginCommandHandler.Command("testnotexist", new char[]{}));
 
         mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isUnauthorized());
@@ -65,7 +65,7 @@ class UsersControllerTests {
     @Test
     void login_shouldReturn401_whenProvidedCredentialsAreInvalid() throws Exception {
         String requestBody = objectMapper.writeValueAsString(
-                new UserLoginCommandHandler.Command("validUsername", new char[]{'b', 'a', 'd'}));
+                new UserLoginCommandHandler.Command("testexist", "bad".toCharArray()));
 
         mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isUnauthorized());
@@ -74,10 +74,25 @@ class UsersControllerTests {
     @Test
     void login_shouldReturn2xx_whenProvidedCredentialsAreValid() throws Exception {
         String requestBody = objectMapper.writeValueAsString(
-                new UserLoginCommandHandler.Command("validUsername", new char[]{'g', 'o', 'o', 'd'}));
+                new UserLoginCommandHandler.Command("testexist", "resu".toCharArray()));
 
         mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void register_shouldReturn400_whenUsernameIsTaken() throws Exception {
+        String user = objectMapper.writeValueAsString(
+                new CreateUserCommandHandler.Command(
+                        "testexist",
+                        "test",
+                        "test",
+                        "test",
+                        "test",
+                        "password".toCharArray()));
+
+        mockMvc.perform(post(USERS).content(user).contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

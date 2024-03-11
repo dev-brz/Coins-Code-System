@@ -1,4 +1,4 @@
-package com.cgzt.coinscode.core.config;
+package com.cgzt.coinscode.core.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

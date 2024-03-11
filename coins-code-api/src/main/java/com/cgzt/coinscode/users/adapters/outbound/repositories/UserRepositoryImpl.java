@@ -43,7 +43,7 @@ class UserRepositoryImpl implements UserRepository {
     @Transactional
     public void save(User user, char[] password) {
         if (jpaUserRepository.existsByUsernameOrEmailOrPhoneNumber(user.getUsername(), user.getEmail(), user.getPhoneNumber())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username, email or phone number is already taken");
         }
         UserAccount userAccount = userMapper.toUserAccount(user);
 
@@ -65,7 +65,7 @@ class UserRepositoryImpl implements UserRepository {
     @Override
     public void updateImageName(String username, String imageName) {
         if (!jpaUserRepository.existsByUsername(username)) {
-            throw new ResponseStatusException(NOT_FOUND);
+            throw new ResponseStatusException(NOT_FOUND, "User does not exist");
         }
         jpaUserRepository.updateImageNameWhereUsername(imageName, username);
     }
@@ -79,10 +79,10 @@ class UserRepositoryImpl implements UserRepository {
 
     private void validateBeforeUpdate(UserUpdate user) {
         if (StringUtils.isNotBlank(user.email()) && jpaUserRepository.existsByEmail(user.email())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided email is already taken");
         }
         if (StringUtils.isNotBlank(user.phoneNumber()) && jpaUserRepository.existsByPhoneNumber(user.phoneNumber())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided phone number is already taken");
         }
     }
 }

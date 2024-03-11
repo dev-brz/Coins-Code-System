@@ -1,4 +1,4 @@
-package com.cgzt.coinscode.core.config;
+package com.cgzt.coinscode.core.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
