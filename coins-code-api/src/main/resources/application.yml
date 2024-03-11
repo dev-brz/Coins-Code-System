@@ -28,8 +28,9 @@ security.permittedMatchers: >
   /error
 
 user:
-  client:
+  default:
     roles: USER,SENDER,RECEIVER
+    password: ${CD_USER_DEFAULT_PASSWORD}
 
   profile:
     image-url: "http://localhost:${server.port}/users/image?name="

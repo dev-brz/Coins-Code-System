@@ -20,7 +20,7 @@ import static com.cgzt.coinscode.users.adapters.inbound.UsersController.USERS;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(USERS)
-class UsersController {
+class UsersController{
     public static final String USERS = "/users";
     public static final String LOGIN = "/login";
     public static final String USERNAME = "/{username}";
@@ -39,60 +39,60 @@ class UsersController {
     private final ImageService imageService;
 
     @PostMapping(LOGIN)
-    void login(@RequestBody UserLoginCommandHandler.Command command) {
+    void login(@RequestBody UserLoginCommandHandler.Command command){
         userLoginCommandHandler.handle(command);
     }
 
     @PostMapping
-    void register(@Valid @RequestBody CreateUserCommandHandler.Command command) {
+    void register(@Valid @RequestBody CreateUserCommandHandler.Command command){
         createUserCommandHandler.handle(command);
     }
 
     @PatchMapping(PASSWORD)
-    void updatePassword(@Valid @RequestBody UpdateUserPasswordCommandHandler.Command command) {
+    void updatePassword(@Valid @RequestBody UpdateUserPasswordCommandHandler.Command command){
         updateUserPasswordCommandHandler.handle(command);
     }
 
     @PatchMapping
-    void update(@Valid @RequestBody UpdateUserCommandHandler.Command command) {
+    void update(@Valid @RequestBody UpdateUserCommandHandler.Command command){
         updateUserCommandHandler.handle(command);
     }
 
     @DeleteMapping(USERNAME)
-    void delete(@PathVariable String username) {
+    void delete(@PathVariable String username){
         deleteUserCommandHandler.handle(new DeleteUserCommandHandler.Command(username));
     }
 
     @GetMapping
-    GetUsersResult getUsers() {
+    GetUsersResult getUsers(){
         return getUsersQueryHandler.handle();
     }
 
     @GetMapping(USERNAME)
-    GetUserResult getUser(@PathVariable String username) {
+    GetUserResult getUser(@PathVariable String username){
         return getUserQueryHandler.handle(new GetUserQueryHandler.Query(username))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     }
 
     @RequestMapping(value = USERNAME, method = RequestMethod.HEAD)
-    void isUserExisting(@PathVariable String username) {
+    void isUserExisting(@PathVariable String username){
         ExistsUserQueryHandler.Result result = existsUserQueryHandler
                 .handle(new ExistsUserQueryHandler.Query(username));
 
-        if (!result.userExists()) {
+        if(! result.userExists()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping(IMAGE)
-    void uploadUserImage(@RequestParam MultipartFile image) {
+    void uploadUserImage(@RequestParam MultipartFile image){
         updateUserImageCommandHandler.handle(new UpdateUserImageCommandHandler.Command(image));
     }
 
     @GetMapping(IMAGE)
     @ResponseBody
-    Resource getUserImage(@RequestParam String imageName) {
+    Resource getUserImage(@RequestParam String imageName){
         return imageService.load(imageName);
     }
 }

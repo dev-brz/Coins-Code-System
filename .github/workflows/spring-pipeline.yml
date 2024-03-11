@@ -2,15 +2,17 @@ name: Spring CI
 
 on:
   push:
-    branches: [master]
-    paths: ['coins-code-api/**']
+    branches: [ master ]
+    paths: [ 'coins-code-api/**' ]
   pull_request:
-    branches: [master]
-    paths: ['coins-code-api/**']
+    branches: [ master ]
+    paths: [ 'coins-code-api/**' ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CD_USER_DEFAULT_PASSWORD: resu
 
     defaults:
       run:
@@ -18,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [21]
+        java: [ 21 ]
 
     steps:
       - uses: actions/checkout@v4

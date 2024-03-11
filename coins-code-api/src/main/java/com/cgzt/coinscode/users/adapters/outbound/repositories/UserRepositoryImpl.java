@@ -19,23 +19,23 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
-class UserRepositoryImpl implements UserRepository {
+class UserRepositoryImpl implements UserRepository{
     private final SpringJpaUserAccountRepository jpaUserRepository;
     private final SpringSecurityUserRepository securityUserRepository;
     private final UserMapper userMapper;
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll(){
         return userMapper.toUsers(jpaUserRepository.findAll());
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
+    public Optional<User> findByUsername(String username){
         return jpaUserRepository.findByUsername(username).map(userMapper::toUser);
     }
 
     @Override
-    public boolean existsByUsername(String username) {
+    public boolean existsByUsername(String username){
         return jpaUserRepository.existsByUsername(username);
     }
 
@@ -47,12 +47,12 @@ class UserRepositoryImpl implements UserRepository {
         }
         UserAccount userAccount = userMapper.toUserAccount(user);
 
-        securityUserRepository.createUserAccount(user, password);
+        securityUserRepository.createUserAccount(user.getUsername(), password);
         jpaUserRepository.save(userAccount);
     }
 
     @Override
-    public void update(UserUpdate userUpdate) {
+    public void update(UserUpdate userUpdate){
         UserAccount currentUser = jpaUserRepository.findByUsername(userUpdate.username())
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
 
@@ -72,10 +72,11 @@ class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void deleteByUsername(String username) {
+    public void deleteByUsername(String username){
         jpaUserRepository.deleteByUsername(username);
         securityUserRepository.deleteUserAccount(username);
     }
+
 
     private void validateBeforeUpdate(UserUpdate user) {
         if (StringUtils.isNotBlank(user.email()) && jpaUserRepository.existsByEmail(user.email())) {

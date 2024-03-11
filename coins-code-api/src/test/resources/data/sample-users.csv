@@ -1,0 +1,11 @@
+username,firstName,lastName,email,phoneNumber,numberOfSends,numberOfReceives,createdAt,active,sendLimits,profileImage
+user1,John,Doe,john.doe1@example.com,1234567890,10,5,2024-03-07 12:57:52,true,50,data/images/profilem.jfif
+user2,Jane,Doe,jane.doe2@example.com,0987654321,15,7,2024-03-07 12:57:52,true,60,data/images/profilew.jfif
+user3,Jim,Smith,jim.smith3@example.com,1122334455,20,10,2024-03-07 12:57:52,false,70,data/images/profile.jfif
+user4,Jill,Johnson,jill.johnson4@example.com,5566778899,25,12,2024-03-07 12:57:52,true,80,data/images/profilem.jfif
+user5,Joe,Williams,joe.williams5@example.com,3344556677,30,15,2024-03-07 12:57:52,false,90,data/images/profile.jfif
+user6,Jessica,Brown,jessica.brown6@example.com,7788990011,35,17,2024-03-07 12:57:52,true,100,data/images/profilew.jfif
+user7,Jeremy,Taylor,jeremy.taylor7@example.com,2233445566,40,20,2024-03-07 12:57:52,false,110,data/images/profilem.jfif
+user8,Jasmine,Miller,jasmine.miller8@example.com,4455667788,45,22,2024-03-07 12:57:52,true,120,data/images/profilew.jfif
+user9,Jack,Davis,jack.davis9@example.com,6677889900,50,25,2024-03-07 12:57:52,false,130,data/images/profile.jfif
+user10,Jacob,Garcia,jacob.garcia10@example.com,9900112233,55,27,2024-03-07 12:57:52,true,140,data/images/profilem.jfif
