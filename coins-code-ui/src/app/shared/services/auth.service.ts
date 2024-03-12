@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { User } from '../../user/models/user.model';
+import { UsersStateService } from '../../user/services/users-state.service';
 import { LOGIN_URL, NO_AUTH_URLS } from '../configs/api.config';
 import { LoginForm } from '../models/user.model';
-import { UserBase } from '../../user/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,33 +14,22 @@ import { UserBase } from '../../user/models/user.model';
 export class AuthService {
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private userStateService: UsersStateService
   ) {}
 
-  getCurrentUser(): UserBase | null {
-    const user = localStorage.getItem('currentUser');
-
-    // TODO - load user and store it [#43]
-    if (user) {
-      const userObject = JSON.parse(user) as UserBase;
-      return {
-        ...userObject,
-        firstName: 'Mock',
-        lastName: 'Mocking'
-      };
-    } else {
-      return null;
-    }
-  }
-
   login(form: LoginForm): Observable<void> {
-    return this.http
-      .post<void>(LOGIN_URL, form)
-      .pipe(map(() => localStorage.setItem('currentUser', JSON.stringify(form))));
+    return this.http.post<User>(LOGIN_URL, form).pipe(
+      map(() => {
+        this.userStateService.loadUser(form.username);
+        localStorage.setItem('currentUser', JSON.stringify(form));
+      })
+    );
   }
 
   logout(): boolean {
     localStorage.removeItem('currentUser');
+    this.userStateService.clearUser();
     this.router.navigate(['/login']);
     return true;
   }

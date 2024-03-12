@@ -9,11 +9,10 @@
     <mat-card-content class="profile">
       <img
         class="profile-avatar"
-        [ngSrc]="user.profileImage ?? 'assets/no-avatar.png'"
+        [src]="user.imageUrl ?? 'assets/no-avatar.png'"
         width="120"
         height="120"
-        alt="profile image"
-        priority />
+        alt="profile image" />
       <div class="profile-details">
         <div>{{ user.firstName }} {{ user.lastName }}</div>
         <div class="profile-actions">

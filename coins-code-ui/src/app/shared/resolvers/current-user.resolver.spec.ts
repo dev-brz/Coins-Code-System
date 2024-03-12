@@ -1,22 +1,30 @@
 import { TestBed } from '@angular/core/testing';
+import { throwError } from 'rxjs';
+import { UsersStateService } from '../../user/services/users-state.service';
 import { AuthService } from '../services/auth.service';
+import { reSpyOnProperty } from '../utils/test-utils';
 import { currentUserResolver } from './current-user.resolver';
 
 describe('CurrentUserResolver', () => {
   let authServiceMock: jasmine.SpyObj<AuthService>;
+  let userStateServiceMock: jasmine.SpyObj<UsersStateService>;
 
   beforeEach(() => {
-    authServiceMock = jasmine.createSpyObj<AuthService>(['logout', 'getCurrentUser']);
+    authServiceMock = jasmine.createSpyObj<AuthService>(['logout']);
+    userStateServiceMock = jasmine.createSpyObj<UsersStateService>([], ['user$']);
 
     TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useValue: authServiceMock }]
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: UsersStateService, useValue: userStateServiceMock }
+      ]
     });
   });
 
-  fit('should logout if user is not present', done =>
+  it('should logout on error', done =>
     TestBed.runInInjectionContext(() => {
       // GIVEN
-      authServiceMock.getCurrentUser.and.returnValue(null);
+      reSpyOnProperty(userStateServiceMock, 'user$').and.returnValue(throwError(() => new Error()));
 
       // WHEN
       currentUserResolver().subscribe({

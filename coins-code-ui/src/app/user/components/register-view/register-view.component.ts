@@ -89,7 +89,7 @@ export class RegisterViewComponent implements OnInit {
   onSubmit(): void {
     const formValue = this.registerForm.getRawValue();
     const requestBody = { ...formValue, profileImage: this.extractFileFromFileInput(formValue.profileImage) };
-    this.usersService.save(requestBody).subscribe(() => this.router.navigateByUrl('/login'));
+    this.usersService.save(requestBody).subscribe(() => this.router.navigateByUrl('/home'));
   }
 
   private extractFileFromFileInput(fileInput: FileInput | null): File | null {

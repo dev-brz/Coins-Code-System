@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { UserBase } from '../../../user/models/user.model';
+import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
+import { User } from '../../../user/models/user.model';
 
 @Component({
   selector: 'cc-homepage-view',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, RouterLink, NgOptimizedImage],
+  imports: [MatCardModule, MatButtonModule, RouterLink],
   styleUrl: './homepage-view.component.scss',
   templateUrl: './homepage-view.component.html'
 })
 export class HomepageViewComponent implements OnInit {
-  user!: UserBase;
+  user!: User;
 
   constructor(private route: ActivatedRoute) {}
 
