@@ -5,7 +5,7 @@
     </header>
     <aside class="auth-aside">
       <span i18n>Already have an account?</span>
-      <span><a routerLink="/login" i18n>Login</a></span>
+      <span><a [routerLink]="loginRoute" i18n>Login</a></span>
     </aside>
     <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <mat-form-field>

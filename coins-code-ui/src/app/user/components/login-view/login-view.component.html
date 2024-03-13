@@ -4,7 +4,7 @@
       <h1 i18n>Log In</h1>
       <span i18n>Don't have an account?</span>
       <span>
-        <a mat-button color="primary" routerLink="/register" i18n>Register</a>
+        <a mat-button color="primary" [routerLink]="registerRoute" i18n>Register</a>
       </span>
     </div>
     <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">

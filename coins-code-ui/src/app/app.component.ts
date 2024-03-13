@@ -1,5 +1,6 @@
-import { Component, Inject, LOCALE_ID, isDevMode } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { UserStore } from './user/store/user.store';
 
 @Component({
   selector: 'cc-app',
@@ -7,10 +8,10 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   imports: [RouterOutlet]
 })
-export class AppComponent {
-  constructor(@Inject(LOCALE_ID) locale: string) {
-    if (isDevMode()) {
-      console.info(`Using locale: ${locale}`);
-    }
+export class AppComponent implements OnInit {
+  readonly userStore = inject(UserStore);
+
+  ngOnInit(): void {
+    this.userStore.bootstrapCurrent();
   }
 }

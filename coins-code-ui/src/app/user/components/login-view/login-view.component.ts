@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../shared/services/auth.service';
+import { HOME_ROUTE, REGISTER_ROUTE } from '../../../shared/configs/routes.config';
 
 @Component({
   selector: 'cc-login-view',
@@ -23,6 +24,8 @@ import { AuthService } from '../../../shared/services/auth.service';
   templateUrl: './login-view.component.html'
 })
 export class LoginViewComponent {
+  readonly registerRoute = `/${REGISTER_ROUTE}`;
+
   loginFailed: WritableSignal<boolean> = signal(false);
 
   loginForm: FormGroup = new FormGroup({
@@ -42,7 +45,7 @@ export class LoginViewComponent {
   login(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.getRawValue()).subscribe({
-        next: () => this.router.navigate(['/home']),
+        next: () => this.router.navigateByUrl(`/${HOME_ROUTE}`),
         error: () => this.loginFailed.set(true)
       });
     }

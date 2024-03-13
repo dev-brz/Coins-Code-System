@@ -1,36 +1,26 @@
 import { HttpClient, HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { User } from '../../user/models/user.model';
-import { UsersStateService } from '../../user/services/users-state.service';
+import { tap } from 'rxjs/operators';
+import { UserStore } from '../../user/store/user.store';
 import { LOGIN_URL, NO_AUTH_URLS } from '../configs/api.config';
 import { LoginForm } from '../models/user.model';
+import { CURRENT_USER_KEY } from '../configs/storage.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private userStateService: UsersStateService
-  ) {}
+  readonly userStore = inject(UserStore);
+
+  constructor(private http: HttpClient) {}
 
   login(form: LoginForm): Observable<void> {
-    return this.http.post<User>(LOGIN_URL, form).pipe(
-      map(() => {
-        this.userStateService.loadUser(form.username);
-        localStorage.setItem('currentUser', JSON.stringify(form));
-      })
-    );
+    return this.http.post<void>(LOGIN_URL, form).pipe(tap(() => this.userStore.loadCurrent(form)));
   }
 
   logout(): boolean {
-    localStorage.removeItem('currentUser');
-    this.userStateService.clearUser();
-    this.router.navigate(['/login']);
+    this.userStore.disposeCurrent();
     return true;
   }
 
@@ -45,11 +35,11 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('currentUser');
+    return !!localStorage.getItem(CURRENT_USER_KEY);
   }
 
   interceptRequsest(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-    const currentUser = localStorage.getItem('currentUser');
+    const currentUser = localStorage.getItem(CURRENT_USER_KEY);
 
     if (NO_AUTH_URLS.includes(req.url)) {
       return next(req);

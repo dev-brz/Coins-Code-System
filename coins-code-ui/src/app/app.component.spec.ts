@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { UserStore } from './user/store/user.store';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent]
+      imports: [AppComponent],
+      providers: [{ provide: UserStore, useValue: jasmine.createSpyObj(['']) }]
     }).compileComponents();
   });
 

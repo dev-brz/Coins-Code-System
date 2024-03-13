@@ -1,6 +1,3 @@
-import { ApplicationConfig, inject } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   HttpHandlerFn,
   HttpInterceptorFn,
@@ -8,7 +5,10 @@ import {
   provideHttpClient,
   withInterceptors
 } from '@angular/common/http';
+import { ApplicationConfig, inject } from '@angular/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { AuthService } from './shared/services/auth.service';

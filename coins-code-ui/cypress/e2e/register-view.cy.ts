@@ -1,11 +1,11 @@
-import { LOGIN_URL, USERS_PROFILE_IMAGE, USERS_USER_URL } from '../../src/app/shared/configs/api.config';
+import { LOGIN_URL, USERS_PROFILE_IMAGE_URL, USERS_USER_URL } from '../../src/app/shared/configs/api.config';
 
 describe('Register View', () => {
   beforeEach(() => {
     cy.visit('/register');
     cy.intercept(USERS_USER_URL.replace('?1', '*'), { statusCode: 404 });
     cy.intercept(LOGIN_URL.replace('?1', '*'), { statusCode: 200 });
-    cy.intercept(USERS_PROFILE_IMAGE.replace('?1', '*'), { statusCode: 200 });
+    cy.intercept(USERS_PROFILE_IMAGE_URL.replace('?1', '*'), { statusCode: 200 });
   });
 
   it('Should contain form and login button disabled', () => {

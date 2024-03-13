@@ -16,7 +16,7 @@
       <div class="profile-details">
         <div>{{ user.firstName }} {{ user.lastName }}</div>
         <div class="profile-actions">
-          <button routerLink="../user/account" color="primary" mat-raised-button i18n>Settings</button>
+          <button [routerLink]="userAccountRoute" color="primary" mat-raised-button i18n>Settings</button>
         </div>
       </div>
     </mat-card-content>

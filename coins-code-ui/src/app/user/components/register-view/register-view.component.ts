@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 import { FileInput, FileValidator, MaterialFileInputModule } from 'ngx-custom-material-file-input';
 import { EMPTY, Observable, map } from 'rxjs';
 
-import { CustomValidators, ValidatorPatterns } from '../../validators';
+import { RouterLink } from '@angular/router';
 import { getErrorMessage } from '../../../shared/utils/get-error-messages';
 import { UsersService } from '../../services/users.service';
-import { Router, RouterModule } from '@angular/router';
+import { UserStore } from '../../store/user.store';
+import { CustomValidators, ValidatorPatterns } from '../../validators';
+import { LOGIN_ROUTE } from '../../../shared/configs/routes.config';
 
 class RepeatPasswordErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: AbstractControl<unknown, unknown> | null): boolean {
@@ -26,18 +28,22 @@ class RepeatPasswordErrorStateMatcher implements ErrorStateMatcher {
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    RouterModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
     MaterialFileInputModule,
-    AsyncPipe
+    AsyncPipe,
+    RouterLink
   ],
   templateUrl: './register-view.component.html',
   styleUrl: './register-view.component.scss'
 })
 export class RegisterViewComponent implements OnInit {
+  readonly loginRoute = `/${LOGIN_ROUTE}`;
+
+  readonly userStore = inject(UserStore);
+
   readonly MAX_IMAGE_SIZE_BYTES = 1_048_576;
 
   readonly repeatPasswordErrorStateMatcher: ErrorStateMatcher = new RepeatPasswordErrorStateMatcher();
@@ -67,8 +73,7 @@ export class RegisterViewComponent implements OnInit {
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private usersService: UsersService,
-    private router: Router
+    private usersService: UsersService
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +94,7 @@ export class RegisterViewComponent implements OnInit {
   onSubmit(): void {
     const formValue = this.registerForm.getRawValue();
     const requestBody = { ...formValue, profileImage: this.extractFileFromFileInput(formValue.profileImage) };
-    this.usersService.save(requestBody).subscribe(() => this.router.navigateByUrl('/home'));
+    this.userStore.saveNew(requestBody);
   }
 
   private extractFileFromFileInput(fileInput: FileInput | null): File | null {
