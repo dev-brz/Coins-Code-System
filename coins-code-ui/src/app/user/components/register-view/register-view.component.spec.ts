@@ -1,27 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterViewComponent } from './register-view.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { UsersService } from '../../services/users.service';
-import { By } from '@angular/platform-browser';
 import { FormControlName } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { signalStore, withMethods } from '@ngrx/signals';
 import { FileInput } from 'ngx-custom-material-file-input';
-import { EMPTY } from 'rxjs';
+import { UsersService } from '../../services/users.service';
+import { UserStore } from '../../store/user.store';
+import { RegisterViewComponent } from './register-view.component';
+
+const MockedStore = signalStore(withMethods(() => ({ saveNew: jasmine.createSpy() })));
 
 describe('RegisterViewComponent', () => {
   let component: RegisterViewComponent;
   let fixture: ComponentFixture<RegisterViewComponent>;
-  let userServiceMock: jasmine.SpyObj<UsersService>;
+  let userStoreMock: InstanceType<typeof MockedStore>;
 
   beforeEach(async () => {
-    userServiceMock = jasmine.createSpyObj<UsersService>(['existsByUsername', 'save']);
-
     await TestBed.configureTestingModule({
       imports: [RegisterViewComponent, NoopAnimationsModule, RouterTestingModule],
-      providers: [{ provide: UsersService, useValue: userServiceMock }]
+      providers: [
+        { provide: UsersService, useValue: jasmine.createSpy() },
+        { provide: UserStore, useClass: MockedStore }
+      ]
     }).compileComponents();
 
+    userStoreMock = TestBed.inject(UserStore) as unknown as InstanceType<typeof MockedStore>;
     fixture = TestBed.createComponent(RegisterViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -32,14 +37,11 @@ describe('RegisterViewComponent', () => {
   });
 
   it('should call proper method on submit', () => {
-    // GIVEN
-    userServiceMock.save.and.returnValue(EMPTY);
-
     // WHEN
     component.onSubmit();
 
     // THEN
-    expect(userServiceMock.save).toHaveBeenCalledTimes(1);
+    expect(userStoreMock.saveNew).toHaveBeenCalledTimes(1);
   });
 
   it('should render all form fields', () => {
