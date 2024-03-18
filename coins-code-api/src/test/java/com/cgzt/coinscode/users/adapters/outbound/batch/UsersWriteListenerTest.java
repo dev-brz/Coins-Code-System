@@ -1,8 +1,8 @@
 package com.cgzt.coinscode.users.adapters.outbound.batch;
 
+import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
 import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
 import com.cgzt.coinscode.users.domain.models.UserImage;
-import com.cgzt.coinscode.users.domain.ports.outbound.service.ImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,9 +11,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static com.cgzt.coinscode.users.adapters.outbound.batch.UsersWriteListener.UPDATE_IMAGE_NAME_SQL;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
-class UsersWriteListenerTest{
+class UsersWriteListenerTest {
     @Mock
     JdbcTemplate template;
     @Mock
@@ -24,7 +26,7 @@ class UsersWriteListenerTest{
     UserAccount user;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         usersWriteListener = new UsersWriteListener(imageService, null, template);
 
@@ -38,10 +40,10 @@ class UsersWriteListenerTest{
     }
 
     @Test
-    void testUploadImage(){
+    void testUploadImage() {
         var username = user.getUsername();
         var image = new UserImage("test.png");
-        when(imageService.upload(username, new ClassPathResource(user.getImageName()))).thenReturn(image);
+        when(imageService.upload(username, new ClassPathResource(user.getImageName()), null)).thenReturn(image);
         when(template.update(UPDATE_IMAGE_NAME_SQL, image.name(), username)).thenReturn(1);
 
         usersWriteListener.uploadImage(user);
@@ -50,7 +52,7 @@ class UsersWriteListenerTest{
     }
 
     @Test
-    void testUploadNullImage(){
+    void testUploadNullImage() {
         user.setImageName(null);
         usersWriteListener.uploadImage(user);
 

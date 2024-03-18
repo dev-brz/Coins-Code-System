@@ -27,3 +27,14 @@ CREATE TABLE IF NOT EXISTS user_account (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS user_account_username ON user_account (username);
+
+CREATE TABLE IF NOT EXISTS coins (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    uid VARCHAR(255) DEFAULT CAST(UUID() as CHAR),
+    user_account_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    image_name VARCHAR(255),
+    description VARCHAR(255) NOT NULL,
+    amount DECIMAL(19,2) DEFAULT 0,
+    FOREIGN KEY (user_account_id) REFERENCES user_account(id)
+);

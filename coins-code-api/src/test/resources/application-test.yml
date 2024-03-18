@@ -7,3 +7,7 @@ user:
   profile:
     dir: "${user.home}/coin-code/test/user/profile-images"
     image-url: "http://localhost:${server.port}/users/image?name="
+
+coin:
+  image:
+    dir: "${user.home}/coin-code/test/coin/images"

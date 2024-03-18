@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public class SpringSecurityUserRepository {
     private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
-    @Value("${user.default.roles}")
+    @Value("${user.client.roles}")
     private String[] roles;
 
     public void createUserAccount(String username, char[] password) {

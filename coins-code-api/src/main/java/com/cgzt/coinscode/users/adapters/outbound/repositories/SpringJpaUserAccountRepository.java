@@ -29,4 +29,7 @@ interface SpringJpaUserAccountRepository extends JpaRepository<UserAccount, Long
     @Modifying
     @Transactional
     void deleteByUsername(String username);
+
+    @Query("select u.id from UserAccount u where u.username = :username")
+    Optional<Long> findIdByUsername(String username);
 }

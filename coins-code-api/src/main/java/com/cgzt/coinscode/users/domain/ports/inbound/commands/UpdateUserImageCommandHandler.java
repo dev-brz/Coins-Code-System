@@ -1,11 +1,12 @@
 package com.cgzt.coinscode.users.domain.ports.inbound.commands;
 
+import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
 import com.cgzt.coinscode.users.domain.models.User;
 import com.cgzt.coinscode.users.domain.models.UserImage;
 import com.cgzt.coinscode.users.domain.ports.outbound.repository.CurrentUserRepository;
-import com.cgzt.coinscode.users.domain.ports.outbound.service.ImageService;
 import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,10 +16,12 @@ public class UpdateUserImageCommandHandler {
     private final CurrentUserRepository currentUserRepository;
     private final UserRepository userRepository;
     private final ImageService imageService;
+    @Value("${user.profile.dir}")
+    String imageDir;
 
     public void handle(final Command command) {
         User currentUser = currentUserRepository.get();
-        UserImage image = imageService.upload(currentUser.getUsername(), command.image);
+        UserImage image = imageService.upload(currentUser.getUsername(), command.image, imageDir);
         userRepository.updateImageName(currentUser.getUsername(), image.name());
     }
 

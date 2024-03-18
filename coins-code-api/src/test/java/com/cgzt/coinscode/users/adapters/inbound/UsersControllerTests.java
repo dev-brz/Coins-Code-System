@@ -24,10 +24,19 @@ import org.springframework.util.FileSystemUtils;
 import java.io.File;
 import java.util.Objects;
 
-import static com.cgzt.coinscode.users.adapters.inbound.UsersController.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.cgzt.coinscode.users.adapters.inbound.UsersController.IMAGE;
+import static com.cgzt.coinscode.users.adapters.inbound.UsersController.LOGIN;
+import static com.cgzt.coinscode.users.adapters.inbound.UsersController.USERS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -206,7 +215,7 @@ class UsersControllerTests {
     }
 
     @Test
-    void uploadImage_shouldSaveImageProperly_whenUserDoesNotExist() throws Exception {
+    void uploadImage_shouldSaveImageProperly() throws Exception {
         var image = new MockMultipartFile("image", "profile.png", "image/png", new ClassPathResource("profile.png").getInputStream());
 
         mockMvc.perform(multipart(USERS + "/image")

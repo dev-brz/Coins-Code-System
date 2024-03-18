@@ -22,16 +22,35 @@ spring:
 frontEnd:
   url: http://localhost:4200
 
-security.permittedMatchers: >
-  /h2-console/**,
-  /users/login,
-  /error
+swagger:
+  permittedMatchers: >
+    /v3/api-docs/**,
+    /swagger-ui/**,
+    /swagger-resources,
+    /swagger-resources/**,
+    /swagger-ui.html/**,
+    /webjars/**
+
+security:
+  permittedMatchers: >
+    /h2-console/**,
+    /users/login,
+    /error,
+    /users/login
+
 
 user:
-  default:
+  employees:
+    roles: ADMIN,EMPLOYEE
+  client:
     roles: USER,SENDER,RECEIVER
+  default:
     password: ${CD_USER_DEFAULT_PASSWORD}
 
   profile:
     image-url: "http://localhost:${server.port}/users/image?name="
     dir: "${user.home}/coin-code/images/user-profiles"
+
+coin:
+  image:
+    dir: "${user.home}/coin-code/images/coins"

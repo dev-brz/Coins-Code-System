@@ -1,4 +1,4 @@
-package com.cgzt.coinscode.users.adapters.outbound.services;
+package com.cgzt.coinscode.shared.adapter.outbound.services;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,9 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -29,7 +31,6 @@ class ImageServiceImplTest {
     void setUp() {
         openedMocks = MockitoAnnotations.openMocks(this);
         imageService = new ImageServiceImpl();
-        imageService.imageDir = imageDir;
     }
 
     @AfterEach
@@ -44,7 +45,7 @@ class ImageServiceImplTest {
 
         String expectedName = imageService.hashOf(name) + ".png";
 
-        String actualName = imageService.upload(name, mockImage).name();
+        String actualName = imageService.upload(name, mockImage, imageDir).name();
 
 
         assertEquals(expectedName, actualName);
@@ -54,10 +55,10 @@ class ImageServiceImplTest {
     @Test
     void testGetImage() {
         when(mockImage.getOriginalFilename()).thenReturn("myImage.png");
-        imageService.upload("myImage", mockImage);
+        imageService.upload("myImage", mockImage, imageDir);
         String hashedName = imageService.hashOf("myImage") + ".png";
 
-        Resource resource = imageService.load(hashedName);
+        Resource resource = imageService.load(hashedName, imageDir);
 
         assertNotNull(resource);
     }
