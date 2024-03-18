@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../user/models/user.model';
-import { HomepageViewComponent } from './homepage-view.component';
+import { HomeViewComponent } from './home-view.component';
 
-describe('HomepageComponent', () => {
-  let component: HomepageViewComponent;
-  let fixture: ComponentFixture<HomepageViewComponent>;
+describe('HomeComponent', () => {
+  let component: HomeViewComponent;
+  let fixture: ComponentFixture<HomeViewComponent>;
 
   beforeEach(async () => {
     const userMock = { username: 'Username' } as User;
-    const activatedRouteMock = { snapshot: { data: { user: { userMock } } } };
+    const activatedRouteMock = { parent: { snapshot: { data: { user: { userMock } } } } };
 
     await TestBed.configureTestingModule({
-      imports: [HomepageViewComponent],
+      imports: [HomeViewComponent],
       providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomepageViewComponent);
+    fixture = TestBed.createComponent(HomeViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

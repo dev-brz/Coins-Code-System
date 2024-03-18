@@ -55,10 +55,9 @@ describe('AuthService', () => {
 
   it('should log out succcesfully', () => {
     // WHEN
-    const result = service.logout();
+    service.logout();
 
     // THEN
-    expect(result).toBeTrue();
     expect(userStoreMock.disposeCurrent).toHaveBeenCalledTimes(1);
   });
 

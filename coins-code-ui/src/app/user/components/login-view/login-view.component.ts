@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, WritableSignal, signal } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
 import { FormGroup, ReactiveFormsModule, UntypedFormControl, Validators } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Router, RouterModule } from '@angular/router';
+import { MAIN_ROUTE, REGISTER_ROUTE } from '../../../shared/configs/routes.config';
 import { AuthService } from '../../../shared/services/auth.service';
-import { HOME_ROUTE, REGISTER_ROUTE } from '../../../shared/configs/routes.config';
 
 @Component({
   selector: 'cc-login-view',
@@ -45,7 +45,7 @@ export class LoginViewComponent {
   login(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.getRawValue()).subscribe({
-        next: () => this.router.navigateByUrl(`/${HOME_ROUTE}`),
+        next: () => this.router.navigateByUrl(`/${MAIN_ROUTE}`),
         error: () => this.loginFailed.set(true)
       });
     }

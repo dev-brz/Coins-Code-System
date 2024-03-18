@@ -1,4 +1,4 @@
-<main class="homepage">
+<main class="home">
   <header>
     <h1><span i18n>Welcome</span>, {{ user.username }}</h1>
   </header>
@@ -7,12 +7,7 @@
       <mat-card-title><h2 i18n>Account</h2></mat-card-title>
     </mat-card-header>
     <mat-card-content class="profile">
-      <img
-        class="profile-avatar"
-        [src]="user.imageUrl ?? 'assets/no-avatar.png'"
-        width="120"
-        height="120"
-        alt="profile image" />
+      <img class="profile-avatar" [src]="user.imageUrl" width="120" height="120" alt="Profile image" i18n-alt />
       <div class="profile-details">
         <div>{{ user.firstName }} {{ user.lastName }}</div>
         <div class="profile-actions">

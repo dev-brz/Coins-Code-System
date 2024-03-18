@@ -1,0 +1,43 @@
+.navigation {
+  overflow-x: auto;
+  gap: 0.8rem;
+
+  .menu-opener {
+    all: unset;
+    display: inherit;
+    cursor: pointer;
+  }
+
+  .title {
+    cursor: default;
+    user-select: none;
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  .separator {
+    @extend .title;
+    transform: translateY(-1px);
+  }
+
+  & > a {
+    all: unset;
+    cursor: pointer;
+  }
+
+  .divider {
+    margin: auto;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    object-fit: cover;
+    height: 80%;
+    width: unset;
+    cursor: pointer;
+  }
+
+  .active-route {
+    font-size: larger;
+  }
+}

@@ -1,8 +1,9 @@
 import { LOGIN_URL } from '../../src/app/shared/configs/api.config';
+import { LOGIN_ROUTE } from '../../src/app/shared/configs/routes.config';
 
 describe('Login View', () => {
   beforeEach(() => {
-    cy.visit('/login');
+    cy.visit(`/${LOGIN_ROUTE}`);
     cy.intercept(LOGIN_URL, { statusCode: 401 });
   });
 

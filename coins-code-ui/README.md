@@ -22,8 +22,8 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Approaches to running Cypress E2E tests
 
-- Run `ng e2e` to serve an application and then execute tests via Cypress UI.
-- Run `ng run coins-code-ui:cypress-run` to serve an application and then execute tests automatically (without Cypress UI).
+- Run `ng run coins-code-ui:cypress-open` to serve an application and then execute tests via Cypress UI.
+- Run `ng run coins-code-ui:cypress-run` or `ng e2e` to serve an application and then execute tests automatically (without Cypress UI).
 - Run `npm run cypress:open` or `npm run cypress:run` to run tests without serving an application.
 
 ## Further help

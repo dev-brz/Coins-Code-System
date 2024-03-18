@@ -1,8 +1,9 @@
 import { LOGIN_URL, USERS_PROFILE_IMAGE_URL, USERS_USER_URL } from '../../src/app/shared/configs/api.config';
+import { REGISTER_ROUTE } from '../../src/app/shared/configs/routes.config';
 
 describe('Register View', () => {
   beforeEach(() => {
-    cy.visit('/register');
+    cy.visit(`/${REGISTER_ROUTE}`);
     cy.intercept(USERS_USER_URL.replace('?1', '*'), { statusCode: 404 });
     cy.intercept(LOGIN_URL.replace('?1', '*'), { statusCode: 200 });
     cy.intercept(USERS_PROFILE_IMAGE_URL.replace('?1', '*'), { statusCode: 200 });

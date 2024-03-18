@@ -15,5 +15,5 @@ export interface UserBase extends UserSettings {
 }
 
 export interface User extends UserBase {
-  imageUrl: string | null;
+  imageUrl: string;
 }

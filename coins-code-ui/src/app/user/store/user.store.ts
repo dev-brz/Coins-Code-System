@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import { StateSignal, patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { EMPTY, Observable, UnaryFunction, finalize, iif, map, of, pipe, switchMap, take, tap } from 'rxjs';
+import { EMPTY, Observable, UnaryFunction, finalize, iif, map, of, pipe, switchMap, tap } from 'rxjs';
 import { LOGIN_ROUTE } from '../../shared/configs/routes.config';
 import { CURRENT_USER_KEY } from '../../shared/configs/storage.config';
 import { LoginForm } from '../../shared/models/user.model';
 import { SaveUserRequestBody } from '../models/http/user.model';
 import { User } from '../models/user.model';
 import { UsersService } from '../services/users.service';
+import { DEFAULT_PROFILE_IMAGE_PATH } from '../../shared/configs/assets.config';
 
 export interface UserState {
   currentUser: User;
@@ -30,7 +31,7 @@ const initialUserState: UserState = {
     numberOfSends: 0,
     sendLimits: 0,
     active: false,
-    imageUrl: null
+    imageUrl: DEFAULT_PROFILE_IMAGE_PATH
   },
   isLoading: false,
   isLoaded: false
@@ -62,7 +63,6 @@ export const UserStore = signalStore(
         switchMap(body => usersService.save(body).pipe(map(() => body))),
         tap(({ username, password }) => localStorage.setItem(CURRENT_USER_KEY, JSON.stringify({ username, password }))),
         switchMap(body => usersService.updateUserProfileImage(body.profileImage)),
-        take(1),
         finalize(() => {
           localStorage.removeItem(CURRENT_USER_KEY);
           patchState(store, { isLoading: false });
@@ -82,7 +82,6 @@ function loadCurrent$(
     tap(() => patchState(store, { isLoading: true })),
     tap(form => localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(form))),
     switchMap(form => mapToUser$(form.username, usersService)),
-    take(1),
     tapResponse({
       next: user => patchState(store, { currentUser: user }),
       error: () => {
@@ -101,9 +100,11 @@ function mapToUser$(username: string, usersService: UsersService): Observable<Us
     .findByUsername(username)
     .pipe(
       switchMap(user =>
-        iif(() => !!user.imageName, usersService.getProfileImageUrl(user.imageName), of(null)).pipe(
-          map(imageUrl => ({ ...user, imageUrl, imageName: undefined }))
-        )
+        iif(
+          () => !!user.imageName,
+          usersService.getProfileImageUrl(user.imageName),
+          of(DEFAULT_PROFILE_IMAGE_PATH)
+        ).pipe(map(imageUrl => ({ ...user, imageUrl, imageName: undefined })))
       )
     );
 }

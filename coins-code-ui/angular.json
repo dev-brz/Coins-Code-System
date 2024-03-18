@@ -15,7 +15,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "skipImport": true
         }
       },
       "root": "",
@@ -31,18 +32,11 @@
             "outputPath": "dist/coins-code-ui",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -66,12 +60,12 @@
               "extractLicenses": false,
               "sourceMap": true
             },
-            "en-US": { 
-              "localize": ["en-US"] 
-            }, 
-            "pl": { 
-              "localize": ["pl"] 
-            } 
+            "en-US": {
+              "localize": ["en-US"]
+            },
+            "pl": {
+              "localize": ["pl"]
+            }
           },
           "defaultConfiguration": "production"
         },
@@ -103,29 +97,18 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         },
         "cypress-run": {
@@ -143,7 +126,13 @@
           "builder": "@cypress/schematic:cypress",
           "options": {
             "watch": true,
-            "headless": false
+            "headless": false,
+            "devServerTarget": "coins-code-ui:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "coins-code-ui:serve:production"
+            }
           }
         },
         "e2e": {
@@ -163,11 +152,7 @@
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@cypress/schematic",
-      "@angular-eslint/schematics",
-      "@schematics/angular"
-    ],
+    "schematicCollections": ["@schematics/angular", "@angular-eslint/schematics", "@cypress/schematic"],
     "analytics": false
   }
 }

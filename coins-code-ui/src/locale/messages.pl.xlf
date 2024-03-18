@@ -6,7 +6,7 @@
         <source>Welcome</source>
         <target>Witaj</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="sourcefile">src/app/main/components/home-view/home-view.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
@@ -14,15 +14,34 @@
         <source>Account</source>
         <target>Konto</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="sourcefile">src/app/main/components/home-view/home-view.component.html</context>
           <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1534490849455888072" datatype="html">
+        <source>Profile image</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/home-view/home-view.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
+          <context context-type="linenumber">42,43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4930506384627295710" datatype="html">
         <source>Settings</source>
         <target>Ustawienia</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="sourcefile">src/app/main/components/home-view/home-view.component.html</context>
           <context context-type="linenumber">14,15</context>
         </context-group>
       </trans-unit>
@@ -30,15 +49,19 @@
         <source>Coins</source>
         <target>Monety</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="sourcefile">src/app/main/components/home-view/home-view.component.html</context>
           <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">3,4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5446130952787522978" datatype="html">
         <source>Codes</source>
         <target>Kody</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="sourcefile">src/app/main/components/home-view/home-view.component.html</context>
           <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
@@ -46,8 +69,40 @@
         <source>Transactions history</source>
         <target>Historia transakcji</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/homepage/homepage.component.html</context>
+          <context context-type="sourcefile">src/app/main/components/home-view/home-view.component.html</context>
           <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2821179408673282599" datatype="html">
+        <source>Home</source>
+        <target>Strona główna</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="186236568870281953" datatype="html">
+        <source>History</source>
+        <target>Historia</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3797778920049399855" datatype="html">
+        <source>Logout</source>
+        <target>Wyloguj się</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4247400351982331798" datatype="html">
+        <source>Account settings</source>
+        <target>Ustawienia konta</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">24,25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7873623519470670250" datatype="html">
@@ -268,18 +323,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
           <context context-type="linenumber">33</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="1534490849455888072" datatype="html">
-        <source>Profile image</source>
-        <target>Zdjęcie profilowe</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
-          <context context-type="linenumber">39</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/user/components/register-view/register-view.component.html</context>
-          <context context-type="linenumber">42,43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7411346013057152491" datatype="html">

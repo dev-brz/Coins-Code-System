@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { UserStore } from '../../user/store/user.store';
 import { LOGIN_URL, NO_AUTH_URLS } from '../configs/api.config';
-import { LoginForm } from '../models/user.model';
 import { CURRENT_USER_KEY } from '../configs/storage.config';
+import { LoginForm } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,8 @@ export class AuthService {
     return this.http.post<void>(LOGIN_URL, form).pipe(tap(() => this.userStore.loadCurrent(form)));
   }
 
-  logout(): boolean {
+  logout(): void {
     this.userStore.disposeCurrent();
-    return true;
   }
 
   canActivate(): boolean {

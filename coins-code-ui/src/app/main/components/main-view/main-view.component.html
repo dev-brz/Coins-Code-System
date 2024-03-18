@@ -1,0 +1,41 @@
+<mat-toolbar class="navigation" color="primary">
+  @if (isXSmall | async) {
+    <button class="menu-opener" [matMenuTriggerFor]="routesMenu"><mat-icon>menu</mat-icon></button>
+    <span class="title">Coins Code</span>
+  } @else {
+    <span class="title">Coins Code</span>
+    <span class="separator">|</span>
+    <a [routerLink]="homeViewRoute" routerLinkActive="active-route" i18n>Home</a>
+    <a [routerLink]="coinsViewRoute" routerLinkActive="active-route" i18n>Coins</a>
+    <a [routerLink]="historyViewRoute" routerLinkActive="active-route" i18n>History</a>
+  }
+  <div class="divider"></div>
+  <span>{{ user.firstName }}</span>
+  <img
+    class="avatar"
+    role="button"
+    [matMenuTriggerFor]="accountSettingsMenu"
+    [src]="user.imageUrl"
+    width="120"
+    height="120"
+    alt="Profile image"
+    i18n-alt />
+</mat-toolbar>
+<router-outlet></router-outlet>
+
+<mat-menu #routesMenu="matMenu">
+  <a mat-menu-item [routerLink]="homeViewRoute" routerLinkActive="active-route" i18n>Home</a>
+  <a mat-menu-item [routerLink]="coinsViewRoute" routerLinkActive="active-route" i18n>Coins</a>
+  <a mat-menu-item [routerLink]="historyViewRoute" routerLinkActive="active-route" i18n>History</a>
+</mat-menu>
+
+<mat-menu #accountSettingsMenu="matMenu">
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span i18n>Logout</span>
+  </button>
+  <a mat-menu-item [routerLink]="accountViewRoute">
+    <mat-icon>person</mat-icon>
+    <span i18n>Account settings</span>
+  </a>
+</mat-menu>
