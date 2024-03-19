@@ -38,3 +38,21 @@ CREATE TABLE IF NOT EXISTS coins (
     amount DECIMAL(19,2) DEFAULT 0,
     FOREIGN KEY (user_account_id) REFERENCES user_account(id)
 );
+
+ CREATE TABLE IF NOT EXISTS transactions (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    number VARCHAR(30) NOT NULL UNIQUE,
+    source_id BIGINT NOT NULL,
+    dest_id BIGINT NOT NULL,
+    source_coin_id BIGINT NOT NULL,
+    dest_coin_id BIGINT NOT NULL,
+    amount DECIMAL(19,2) DEFAULT 0,
+    status VARCHAR(30) NOT NULL,
+    t_type VARCHAR(30) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description VARCHAR(255) NOT NULL,
+    FOREIGN KEY (source_id) REFERENCES user_account(id),
+    FOREIGN KEY (dest_id) REFERENCES user_account(id),
+    FOREIGN KEY (source_coin_id) REFERENCES coins(id),
+    FOREIGN KEY (dest_coin_id) REFERENCES coins(id)
+ );

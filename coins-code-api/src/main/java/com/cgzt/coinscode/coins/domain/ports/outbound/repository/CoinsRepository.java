@@ -2,6 +2,7 @@ package com.cgzt.coinscode.coins.domain.ports.outbound.repository;
 
 import com.cgzt.coinscode.coins.domain.models.Coin;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CoinsRepository {
@@ -25,5 +26,11 @@ public interface CoinsRepository {
 
     boolean exists(String uid);
 
-    void validateUid(String uid);
+    void validate(String uid);
+
+    void validate(String uid, String username);
+
+    void add(String uid, BigDecimal amount);
+
+    Long findIdByUid(String uid);
 }

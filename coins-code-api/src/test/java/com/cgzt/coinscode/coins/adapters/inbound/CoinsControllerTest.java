@@ -1,6 +1,6 @@
 package com.cgzt.coinscode.coins.adapters.inbound;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+import com.cgzt.coinscode.annotations.TestWithUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,12 +32,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@Sql(value = "/coins-controller-tests.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(value =
+        {
+                "/clear-all-tables-tests.sql",
+                "/coins-controller-tests.sql",
+        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class CoinsControllerTest {
     static final String COINS_NAME_IMAGE = "/coins/{name}/image";
     static final String COINS_UID_IMAGE = "/coins/{uid}/image";
-    static String token = "Basic " + Base64.encodeBase64String("testexist_coin:resu".getBytes());
-    static String employeeToken = "Basic " + Base64.encodeBase64String("employee:resu".getBytes());
 
     @Autowired
     MockMvc mockMvc;
@@ -48,92 +51,89 @@ class CoinsControllerTest {
         FileSystemUtils.deleteRecursively(coinImagesDir);
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinsByUid() throws Exception {
         mockMvc.perform(get("/coins")
-                        .header("Authorization", token)
+
                         .param("uid", "testexist-coin-1")
                         .param("username", "testexist_coin"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.coins.size()").value(1));
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinsByUid_NotFound() throws Exception {
         mockMvc.perform(get("/coins")
-                        .header("Authorization", token)
+
                         .param("uid", "not found")
                         .param("username", "testexist_coin"))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoin() throws Exception {
-        mockMvc.perform(get("/coins/{uid}", "testexist-coin-1")
-                        .header("Authorization", token))
+        mockMvc.perform(get("/coins/{uid}", "testexist-coin-1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.uid").value("testexist-coin-1"));
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoin_NotFound() throws Exception {
-        mockMvc.perform(get("/coins/{uid}", "not found")
-                        .header("Authorization", token))
+        mockMvc.perform(get("/coins/{uid}", "not found"))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinByUsernameAndName() throws Exception {
         mockMvc.perform(get("/coins")
-                        .header("Authorization", token)
+
                         .param("username", "testexist_coin")
                         .param("name", "Test Coin 1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.coins.size()").value(1));
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinByUsernameAndName_NotFound() throws Exception {
         mockMvc.perform(get("/coins")
-                        .header("Authorization", token)
+
                         .param("username", "testexist_coin")
                         .param("name", "not found"))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinsByUsername() throws Exception {
         mockMvc.perform(get("/coins")
-                        .header("Authorization", token)
+
                         .param("username", "testexist_coin"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.coins.size()").value(6));
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinsByUsernameNotExist() throws Exception {
         mockMvc.perform(get("/coins")
-                        .header("Authorization", token)
+
                         .param("username", "usernotexist"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
+    @WithMockUser(username = "employee", roles = "EMPLOYEE")
     void testGetAllCoins() throws Exception {
-        mockMvc.perform(get("/coins")
-                        .header("Authorization", employeeToken))
+        mockMvc.perform(get("/coins"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.coins.size()").value(5));
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetAllCoinsFailUser() throws Exception {
-        mockMvc.perform(get("/coins")
-                        .header("Authorization", token))
+        mockMvc.perform(get("/coins"))
                 .andExpect(status().isForbidden());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testCreateCoin() throws Exception {
         String requestBody = """
                 {
@@ -144,13 +144,13 @@ class CoinsControllerTest {
                 """;
 
         mockMvc.perform(post("/coins")
-                        .header("Authorization", token)
+
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testCreateCoin_ExistingCoin() throws Exception {
         String requestBody = """
                 {
@@ -161,13 +161,13 @@ class CoinsControllerTest {
                 """;
 
         mockMvc.perform(post("/coins")
-                        .header("Authorization", token)
+
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isConflict());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testUpdateCoinNonExisting() throws Exception {
         String requestBody = """
                 {
@@ -179,13 +179,13 @@ class CoinsControllerTest {
                 """;
 
         mockMvc.perform(patch("/coins")
-                        .header("Authorization", token)
+
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testUpdateCoin_ExistingCoin() throws Exception {
         String requestBody = """
                 {
@@ -197,13 +197,13 @@ class CoinsControllerTest {
                 """;
 
         mockMvc.perform(patch("/coins")
-                        .header("Authorization", token)
+
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testUpdateCoin_ExistingCoin_Conflict() throws Exception {
         String requestBody = """
                 {
@@ -215,45 +215,43 @@ class CoinsControllerTest {
                 """;
 
         mockMvc.perform(patch("/coins")
-                        .header("Authorization", token)
+
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isConflict());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testDeleteCoin() throws Exception {
-        mockMvc.perform(delete("/coins/{uid}", "testdelete-coin-1")
-                        .header("Authorization", token))
+        mockMvc.perform(delete("/coins/{uid}", "testdelete-coin-1"))
                 .andExpect(status().isOk());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testExistsCoin() throws Exception {
         mockMvc.perform(head("/coins")
-                        .header("Authorization", token)
+
                         .param("username", "testexist_coin")
                         .param("name", "Test Coin 1"))
                 .andExpect(status().isOk());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testExistsCoin_NotFound() throws Exception {
         mockMvc.perform(head("/coins")
-                        .header("Authorization", token)
+
                         .param("username", "not found")
                         .param("name", "testUser"))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testUpdateCoinImage() throws Exception {
         var uid = "testexist-coin-1";
         var image = new MockMultipartFile("image", "coin.png", "image/png", new ClassPathResource("coin.png").getInputStream());
 
         mockMvc.perform(multipart(COINS_UID_IMAGE, uid)
-                        .file(image)
-                        .header("Authorization", token))
+                        .file(image))
                 .andExpect(status().isOk());
 
         var coinImagesDir = new File(imageDir);
@@ -265,18 +263,17 @@ class CoinsControllerTest {
         cleanFile(coinImagesDir);
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testUpdateCoinImage_NotFound() throws Exception {
         var uid = "not found";
         var image = new MockMultipartFile("image", uid + ".png", "image/png", uid.getBytes());
 
         mockMvc.perform(multipart(COINS_UID_IMAGE, uid)
-                        .file(image)
-                        .header("Authorization", token))
+                        .file(image))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinImage() throws Exception {
         var imageName = "testexist-coin-1.png";
         var image = new ClassPathResource("coin.png");
@@ -286,19 +283,17 @@ class CoinsControllerTest {
         imagesDir.mkdirs();
         FileSystemUtils.copyRecursively(image.getFile(), coinImage);
 
-        mockMvc.perform(get(COINS_NAME_IMAGE, imageName)
-                        .header("Authorization", token))
+        mockMvc.perform(get(COINS_NAME_IMAGE, imageName))
                 .andExpect(status().isOk());
 
         cleanFile(imagesDir);
     }
 
-    @Test
+    @TestWithUser(username = "testexist_coin")
     void testGetCoinImage_NotFound() throws Exception {
         var imageName = "not found";
 
-        mockMvc.perform(get(COINS_NAME_IMAGE, imageName)
-                        .header("Authorization", token))
+        mockMvc.perform(get(COINS_NAME_IMAGE, imageName))
                 .andExpect(status().isBadRequest());
     }
 

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @SpringBatchTest
 @ActiveProfiles( {"test"})
-@Sql(value = "/user-batch-tests.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(value = "/clear-all-tables-tests.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 public class UsersBatchConfigTest {
 
     static final int EXPECTED_COUNT = 10;

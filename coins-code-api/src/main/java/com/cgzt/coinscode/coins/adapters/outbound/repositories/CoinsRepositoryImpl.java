@@ -97,10 +97,34 @@ class CoinsRepositoryImpl implements CoinsRepository {
     }
 
     @Override
-    public void validateUid(String uid) {
+    public void validate(String uid) {
         if (!exists(uid)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Coin not found by uid %s".formatted(uid));
         }
+    }
+
+    @Override
+    public void validate(String uid, String username) {
+        if (!coinsJpaRepository.existsByUidAndUserAccountUsername(uid, username)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User %s does not have a coin with uid %s".formatted(username, uid));
+        }
+    }
+
+    @Override
+    public void add(String uid, BigDecimal amount) {
+        coinsJpaRepository.findByUid(uid)
+                .map(coinEntity -> {
+                    coinEntity.setAmount(coinEntity.getAmount().add(amount));
+                    return coinEntity;
+                })
+                .map(coinsJpaRepository::save)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Coin not found by uid %s".formatted(uid)));
+    }
+
+    @Override
+    public Long findIdByUid(String uid) {
+        return coinsJpaRepository.findIdByUid(uid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Coin not found by uid %s".formatted(uid)));
     }
 
     private void validateNameForUserCoins(Coin coin) {

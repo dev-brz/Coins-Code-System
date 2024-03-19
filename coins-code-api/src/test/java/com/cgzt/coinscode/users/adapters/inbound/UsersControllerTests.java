@@ -1,5 +1,6 @@
 package com.cgzt.coinscode.users.adapters.inbound;
 
+import com.cgzt.coinscode.annotations.TestWithUser;
 import com.cgzt.coinscode.users.domain.models.User;
 import com.cgzt.coinscode.users.domain.ports.inbound.commands.CreateUserCommandHandler;
 import com.cgzt.coinscode.users.domain.ports.inbound.commands.UpdateUserCommandHandler;
@@ -8,7 +9,6 @@ import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUserResult
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUsersResult;
 import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,12 +42,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Sql(value = "/user-controller-tests.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(value =
+        {
+                "/clear-all-tables-tests.sql",
+                "/user-controller-tests.sql",
+        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class UsersControllerTests {
     static final String PROFILE_IMAGE_NAME = "9x5uWsChomR9y1TeA0ZxqNME5up4-PnD7k7uMF7J8S4=.png";
     static String USERS_LOGIN_URL = USERS + LOGIN;
-    static String token = "Basic " + Base64.encodeBase64String("testexist:resu".getBytes());
-    static String deleteToken = "Basic " + Base64.encodeBase64String("testdelete:resu".getBytes());
+
     @Value("${user.profile.dir}")
     String imageDir;
     @Autowired
@@ -64,8 +67,7 @@ class UsersControllerTests {
 
     @Test
     void login_shouldReturn401_whenUserDoesNotExist() throws Exception {
-        String requestBody = objectMapper.writeValueAsString(
-                new UserLoginCommandHandler.Command("testnotexist", new char[]{}));
+        String requestBody = objectMapper.writeValueAsString(new UserLoginCommandHandler.Command("testnotexist", new char[]{}));
 
         mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isUnauthorized());
@@ -119,7 +121,7 @@ class UsersControllerTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
+    @TestWithUser(username = "testexist")
     void update_shouldBeSuccessful_whenProvidedBodyIsValid() throws Exception {
         var updates = new UpdateUserCommandHandler.Command(
                 "testexist",
@@ -131,7 +133,6 @@ class UsersControllerTests {
         var user = objectMapper.writeValueAsString(updates);
 
         mockMvc.perform(patch(USERS)
-                        .header("Authorization", token)
                         .contentType(APPLICATION_JSON)
                         .content(user))
                 .andExpect(status().isOk());
@@ -146,7 +147,7 @@ class UsersControllerTests {
         assertEquals("1234567890", updated.getPhoneNumber());
     }
 
-    @Test
+    @TestWithUser(username = "testexist")
     void update_shouldReturn404_whenProvidedUserDoesNotExist() throws Exception {
         String user = objectMapper.writeValueAsString(
                 new UpdateUserCommandHandler.Command(
@@ -157,27 +158,24 @@ class UsersControllerTests {
                         "test"));
 
         mockMvc.perform(patch(USERS)
-                        .header("Authorization", token)
                         .content(user)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testdelete")
     void delete_shouldBeSuccessful_whenUserExisted() throws Exception {
         var username = "testdelete";
 
-        mockMvc.perform(delete("%s/%s".formatted(USERS, username)).header("Authorization", deleteToken))
+        mockMvc.perform(delete("%s/%s".formatted(USERS, username)))
                 .andExpect(status().isOk());
 
         assertFalse(userRepository.existsByUsername(username));
     }
 
-    @Test
+    @TestWithUser(username = "testexist")
     void getUsers_shouldBeSuccessful() throws Exception {
-        var results = mockMvc.perform(get(USERS).header("Authorization", token))
-                .andExpect(status().isOk())
-                .andReturn();
+        var results = mockMvc.perform(get(USERS)).andExpect(status().isOk()).andReturn();
 
         var body = results.getResponse().getContentAsString();
         GetUsersResult users = objectMapper.readValue(body, GetUsersResult.class);
@@ -185,13 +183,11 @@ class UsersControllerTests {
         assertFalse(users.users().isEmpty());
     }
 
-    @Test
+    @TestWithUser(username = "testexist")
     void getUser_shouldBeSuccessful() throws Exception {
         var username = "testexist";
 
-        var results = mockMvc.perform(get("%s/%s".formatted(USERS, username)).header("Authorization", token))
-                .andExpect(status().isOk())
-                .andReturn();
+        var results = mockMvc.perform(get("%s/%s".formatted(USERS, username))).andExpect(status().isOk()).andReturn();
 
         var body = results.getResponse().getContentAsString();
         GetUserResult user = objectMapper.readValue(body, GetUserResult.class);
@@ -214,13 +210,12 @@ class UsersControllerTests {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
+    @TestWithUser(username = "testexist")
     void uploadImage_shouldSaveImageProperly() throws Exception {
         var image = new MockMultipartFile("image", "profile.png", "image/png", new ClassPathResource("profile.png").getInputStream());
 
         mockMvc.perform(multipart(USERS + "/image")
-                        .file(image)
-                        .header("Authorization", token))
+                        .file(image))
                 .andExpect(status().isOk());
 
         var userProfilesDir = new File(imageDir);
@@ -233,7 +228,7 @@ class UsersControllerTests {
         FileSystemUtils.deleteRecursively(userProfilesDir);
     }
 
-    @Test
+    @TestWithUser(username = "testexist")
     void getImage_shouldReturnProperImage_whenUserAndImageExist() throws Exception {
         var imageName = userRepository.findByUsername("testexist")
                 .orElseThrow().getImageName();
@@ -245,8 +240,7 @@ class UsersControllerTests {
         FileSystemUtils.copyRecursively(image.getFile(), profile);
 
         mockMvc.perform(get(USERS + IMAGE)
-                        .queryParam("imageName", imageName)
-                        .header("Authorization", token))
+                        .queryParam("imageName", imageName))
                 .andExpect(status().isOk());
 
 

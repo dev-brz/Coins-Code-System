@@ -54,3 +54,8 @@ user:
 coin:
   image:
     dir: "${user.home}/coin-code/images/coins"
+
+transaction:
+  number:
+    prefix:
+      top-up: "TU-"

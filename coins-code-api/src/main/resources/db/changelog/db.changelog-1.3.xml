@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="arthur" id="61">
+        <createTable tableName="transactions">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="source_id" type="bigint">
+                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_user_account_source"
+                             references="user_account(id)"/>
+            </column>
+            <column name="dest_id" type="bigint">
+                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_user_account_dest"
+                             references="user_account(id)"/>
+            </column>
+
+            <column name="source_coin_id" type="bigint">
+                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_coins_source"
+                             references="coins(id)"/>
+            </column>
+            <column name="dest_coin_id" type="bigint">
+                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_coins_dest"
+                             references="coins(id)"/>
+            </column>
+
+            <column name="amount" type="decimal(19,2)" defaultValue="0.00"/>
+            <column name="status" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="t_type" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

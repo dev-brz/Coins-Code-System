@@ -1,31 +1,7 @@
-DELETE
-FROM coins;
-DELETE
-FROM authorities;
-DELETE
-FROM user_account;
-DELETE
-FROM users;
-
 INSERT INTO user_account(id, username, first_name, last_name, email, phone_number, number_of_sends, number_of_receives,
                          active, send_limits, image_name)
 VALUES (2000, 'testexist_coin', 'John', 'Doe', 'john.doe@example.com2', '12345678902', 0, 0, 1, 100,
         '9x5uWsChomR9y1TeA0ZxqNME5up4-PnD7k7uMF7J8S4=.png');
-INSERT INTO user_account(id, username, first_name, last_name, email, phone_number, number_of_sends, number_of_receives,
-                         active, send_limits, image_name)
-VALUES (2001, 'employee', 'Jan', 'Kowalski', 'jan.kowalski@example.com2', '09812374652', 0, 0, 1, 100,
-        '9x5uWsChomR9y1TeA0ZxqNME5up4-PnD7k7uMF7J8S4=.png');
-
-INSERT INTO users(username, password, enabled)
-VALUES ('testexist_coin', '$2a$10$sJwXPrpXwhksRfZyn.1G1ujS7USRqelh3kSkh8GWMeLXdbllVWBDG', true);
-INSERT INTO users(username, password, enabled)
-VALUES ('employee', '$2a$10$sJwXPrpXwhksRfZyn.1G1ujS7USRqelh3kSkh8GWMeLXdbllVWBDG', true);
-
-INSERT INTO authorities(username, authority)
-VALUES ('testexist_coin', 'ROLE_USER');
-INSERT INTO authorities(username, authority)
-VALUES ('employee', 'ROLE_EMPLOYEE');
-
 
 INSERT INTO coins(id, uid, user_account_id, name, image_name, description, amount)
 VALUES (2000, 'testexist-coin-1', 2000, 'Test Coin 1', '9x5uWsChomR9y1TeA0ZxqNME5up4-PnD7k7uMF7J8S4=.png',

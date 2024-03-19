@@ -17,7 +17,7 @@ public class UpdateCoinImageCommandHandler {
     private String imageDir;
 
     public void handle(Command command) {
-        coinsRepository.validateUid(command.uid());
+        coinsRepository.validate(command.uid());
         var image = imageService.upload(command.uid(), command.image(), imageDir);
         coinsRepository.updateImageName(command.uid(), image.name());
     }

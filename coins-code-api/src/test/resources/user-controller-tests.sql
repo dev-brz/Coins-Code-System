@@ -1,13 +1,3 @@
-DELETE
-FROM AUTHORITIES;
-DELETE
-FROM coins;
-DELETE
-FROM user_account;
-DELETE
-FROM users;
-
-
 INSERT INTO user_account(id, username, first_name, last_name, email, phone_number, number_of_sends, number_of_receives,
                          active, send_limits, image_name)
 VALUES (1000, 'testexist', 'John', 'Doe', 'john.doe@example.com', '1234567890', 0, 0, 1, 100,
