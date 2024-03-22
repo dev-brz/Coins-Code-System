@@ -1,0 +1,27 @@
+<!-- TODO - validation fix [#65] -->
+<div class="form-container">
+  <form class="form" [formGroup]="form">
+    <mat-form-field>
+      <mat-label i18n>First name</mat-label>
+      <input matInput formControlName="firstName" placeholder="First name" type="text" i18n-placeholder />
+      <mat-error>{{ getErrorMessage(form, 'firstName') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label i18n>Last name</mat-label>
+      <input matInput formControlName="lastName" placeholder="Last name" type="text" i18n-placeholder />
+      <mat-error>{{ getErrorMessage(form, 'lastName') }}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label i18n>E-mail</mat-label>
+      <input matInput formControlName="email" placeholder="example@email.com" type="email" i18n-placeholder />
+      <mat-error>{{ getErrorMessage(form, 'email') }}</mat-error>
+      <mat-icon matSuffix>mail</mat-icon>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label i18n>Phone number</mat-label>
+      <input matInput formControlName="phoneNumber" placeholder="+48123456789" type="tel" />
+      <mat-error>{{ getErrorMessage(form, 'phoneNumber') }}</mat-error>
+      <mat-icon matSuffix>phone</mat-icon>
+    </mat-form-field>
+  </form>
+</div>

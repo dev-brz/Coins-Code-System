@@ -1,4 +1,4 @@
-<div class="auth-container">
+<div class="form-container">
   <div class="login-content">
     <div class="login-header">
       <h1 i18n>Log In</h1>
@@ -7,7 +7,7 @@
         <a mat-button color="primary" [routerLink]="registerRoute" i18n>Register</a>
       </span>
     </div>
-    <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="login()">
       <mat-form-field>
         <mat-label i18n>Username</mat-label>
         <input matInput formControlName="username" placeholder="Username" i18n-placeholder />

@@ -5,13 +5,13 @@ import { tapResponse } from '@ngrx/operators';
 import { StateSignal, patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { EMPTY, Observable, UnaryFunction, finalize, iif, map, of, pipe, switchMap, tap } from 'rxjs';
+import { DEFAULT_PROFILE_IMAGE_PATH } from '../../shared/configs/assets.config';
 import { LOGIN_ROUTE } from '../../shared/configs/routes.config';
 import { CURRENT_USER_KEY } from '../../shared/configs/storage.config';
 import { LoginForm } from '../../shared/models/user.model';
-import { SaveUserRequestBody } from '../models/http/user.model';
+import { SaveUserRequestBody, UpdateUserRequestBody } from '../models/http/user.model';
 import { User } from '../models/user.model';
 import { UsersService } from '../services/users.service';
-import { DEFAULT_PROFILE_IMAGE_PATH } from '../../shared/configs/assets.config';
 
 export interface UserState {
   currentUser: User;
@@ -37,6 +37,7 @@ const initialUserState: UserState = {
   isLoaded: false
 };
 
+// TODO - fix [#64]
 export const UserStore = signalStore(
   { providedIn: 'root' },
   withDevtools('user'),
@@ -69,6 +70,27 @@ export const UserStore = signalStore(
           router.navigateByUrl(`/${LOGIN_ROUTE}`);
         })
       )
+    ),
+    update: rxMethod<UpdateUserRequestBody>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap(update => usersService.update(update).pipe(map(() => update))),
+        tap(update => patchState(store, { currentUser: { ...store.currentUser(), ...update }, isLoading: false }))
+      )
+    ),
+    uploadProfileImage: rxMethod<File>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap(image => usersService.updateUserProfileImage(image).pipe(map(() => URL.createObjectURL(image)))),
+        tap(imageUrl => patchState(store, { currentUser: { ...store.currentUser(), imageUrl }, isLoading: false }))
+      )
+    ),
+    removeProfileImage: rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap(() => usersService.deleteUserProfileImage().pipe(map(() => DEFAULT_PROFILE_IMAGE_PATH))),
+        tap(imageUrl => patchState(store, { currentUser: { ...store.currentUser(), imageUrl }, isLoading: false }))
+      )
     )
   }))
 );
@@ -82,6 +104,7 @@ function loadCurrent$(
     tap(() => patchState(store, { isLoading: true })),
     tap(form => localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(form))),
     switchMap(form => mapToUser$(form.username, usersService)),
+    // TODO - fix [#64]
     tapResponse({
       next: user => patchState(store, { currentUser: user }),
       error: () => {

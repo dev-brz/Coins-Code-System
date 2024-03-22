@@ -1,3 +1,5 @@
+import { DEFAULT_PROFILE_IMAGE_PATH } from '../../shared/configs/assets.config';
+
 export interface UserSettings {
   username: string;
   firstName: string;
@@ -16,4 +18,10 @@ export interface UserBase extends UserSettings {
 
 export interface User extends UserBase {
   imageUrl: string;
+}
+
+export abstract class UserLogic {
+  static hasImage(user: User): boolean {
+    return user.imageUrl != DEFAULT_PROFILE_IMAGE_PATH;
+  }
 }

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActivatedRoute } from '@angular/router';
-import { User } from '../../../user/models/user.model';
+import { signalStore, withState } from '@ngrx/signals';
 import { HomeViewComponent } from './home-view.component';
+import { UserStore } from '../../../user/store/user.store';
+import { RouterTestingModule } from '@angular/router/testing';
+
+const UserStoreMock = signalStore(withState({ currentUser: { username: 'TestUsername' } }));
 
 describe('HomeComponent', () => {
   let component: HomeViewComponent;
   let fixture: ComponentFixture<HomeViewComponent>;
 
   beforeEach(async () => {
-    const userMock = { username: 'Username' } as User;
-    const activatedRouteMock = { parent: { snapshot: { data: { user: { userMock } } } } };
-
     await TestBed.configureTestingModule({
-      imports: [HomeViewComponent],
-      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }]
+      imports: [HomeViewComponent, RouterTestingModule],
+      providers: [{ provide: UserStore, useClass: UserStoreMock }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeViewComponent);

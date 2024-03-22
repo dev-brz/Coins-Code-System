@@ -1,9 +1,18 @@
-import { _passwordRepeat } from './password-repeat.validator';
+import {
+  _PasswordRepeatErrorStateMatcher,
+  _getPasswordRepeatErrorMessage,
+  _passwordRepeat
+} from './password-repeat.validator';
 import { _usernameTaken } from './username-taken.validator';
 
 export const CustomValidators = {
   usernameTaken: _usernameTaken,
   passwordRepeat: _passwordRepeat
+};
+
+export const ValidatorUtils = {
+  PasswordRepeatErrorStateMatcher: _PasswordRepeatErrorStateMatcher,
+  getPasswordRepeatErrorMessage: _getPasswordRepeatErrorMessage
 };
 
 export const ValidatorPatterns = {

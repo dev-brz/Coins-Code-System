@@ -15,8 +15,14 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(form: LoginForm): Observable<void> {
-    return this.http.post<void>(LOGIN_URL, form).pipe(tap(() => this.userStore.loadCurrent(form)));
+  login(form: LoginForm, loadUser = true): Observable<void> {
+    return this.http.post<void>(LOGIN_URL, form).pipe(
+      tap(() => {
+        if (loadUser) {
+          this.userStore.loadCurrent(form);
+        }
+      })
+    );
   }
 
   logout(): void {

@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -25,8 +27,6 @@ import java.util.Base64;
 @Slf4j
 @Service
 class ImageServiceImpl implements ImageService {
-
-
     @Override
     public UserImage upload(String username, InputStreamSource image, String imageDir) {
         assert image != null && StringUtils.isNotBlank(username);
@@ -65,6 +65,15 @@ class ImageServiceImpl implements ImageService {
             return resource;
         } catch (MalformedURLException e) {
             throw new ProfileImageException("Could not load profile image", e);
+        }
+    }
+
+    @Override
+    public void remove(String imageName, String imageDir) {
+        try {
+            Files.delete(Path.of(imageDir, imageName));
+        } catch (IOException e) {
+            throw new ProfileImageException("Could not remove profile image", e);
         }
     }
 

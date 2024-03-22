@@ -11,12 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -67,5 +66,14 @@ class ImageServiceImplTest {
     void testImageExt() {
         String actual = imageService.getImageExt("hello.txt.pdf");
         assertEquals(".pdf", actual);
+    }
+
+    @Test
+    void testRemoveImage() throws IOException {
+        Path file = Files.createTempFile("hash", ".png");
+
+        imageService.remove(file.getFileName().toString(), file.getParent().toString());
+
+        assertFalse(Files.exists(file));
     }
 }

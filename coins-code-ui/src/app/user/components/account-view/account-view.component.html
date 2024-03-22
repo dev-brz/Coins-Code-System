@@ -1,1 +1,79 @@
-<span>account view</span>
+<main class="account-view">
+  <header>
+    <h1 i18n>Account details</h1>
+  </header>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h2 i18n>Avatar</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="avatar-section">
+      <img
+        class="avatar-section-avatar"
+        [src]="currentUser().imageUrl"
+        width="160"
+        height="160"
+        alt="Profile image"
+        i18n-alt />
+      <div class="avatar-section-actions">
+        @if (currentUser().hasImage()) {
+          <button mat-raised-button color="primary" (click)="uploadImage()" i18n>Change image</button>
+          <button mat-raised-button color="primary" (click)="deleteImage()" i18n>Delete image</button>
+        } @else {
+          <button mat-raised-button color="primary" (click)="uploadImage()" i18n>Upload image</button>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h2 i18n>User details</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="details-section">
+      @if (isEditingUserDetails) {
+        <cc-update-user-form [currentUser]="currentUser()" #updateForm></cc-update-user-form>
+        <div class="details-section-actions">
+          <button mat-raised-button color="primary" [hidden]="updateForm.disabled" (click)="toggleUserDetailsEdition()">
+            <span i18n>Cancel</span>
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!updateForm.valid || updateForm.disabled"
+            (click)="updateUserDetails(updateForm)">
+            <span i18n>Save</span>
+          </button>
+        </div>
+      } @else {
+        <ul>
+          <li>
+            <b><span i18n>First name</span>:</b> {{ currentUser().firstName }}
+          </li>
+          <li>
+            <b><span i18n>Last name</span>:</b> {{ currentUser().lastName }}
+          </li>
+          <li>
+            <b><span i18n>E-mail</span>:</b> {{ currentUser().email }}
+          </li>
+          <li>
+            <b><span i18n>Phone number</span>:</b> {{ currentUser().phoneNumber }}
+          </li>
+        </ul>
+        <div class="details-section-actions">
+          <button mat-raised-button color="primary" (click)="toggleUserDetailsEdition()">
+            <ng-container i18n>Edit details</ng-container>
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h2 i18n>Actions</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="actions-section">
+      <button mat-raised-button color="primary" (click)="changePassword()" i18n>Change password</button>
+      <button mat-raised-button color="warn" (click)="deleteAccount()" i18n>Delete account</button>
+    </mat-card-content>
+  </mat-card>
+</main>

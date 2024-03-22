@@ -1,8 +1,18 @@
 import { HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
-import { USERS_PROFILE_IMAGE_URL, USERS_URL, USERS_USER_URL } from '../../shared/configs/api.config';
-import { GetUserResponseBody, SaveUserRequestBody } from '../models/http/user.model';
+import {
+  USERS_PASSWORD_URL,
+  USERS_PROFILE_IMAGE_URL,
+  USERS_URL,
+  USERS_USER_URL
+} from '../../shared/configs/api.config';
+import {
+  GetUserResponseBody,
+  SaveUserRequestBody,
+  UpdatePasswordRequestBody,
+  UpdateUserRequestBody
+} from '../models/http/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
@@ -25,6 +35,19 @@ export class UsersService {
     return this.http.post<void>(USERS_URL, user);
   }
 
+  delete(username: string): Observable<void> {
+    const url = USERS_USER_URL.replace('?1', username);
+    return this.http.delete<void>(url);
+  }
+
+  update(body: UpdateUserRequestBody): Observable<void> {
+    return this.http.patch<void>(USERS_URL, body);
+  }
+
+  updatePassword(update: UpdatePasswordRequestBody): Observable<void> {
+    return this.http.patch<void>(USERS_PASSWORD_URL, update);
+  }
+
   updateUserProfileImage(profileImage: File | unknown): Observable<void> {
     if (profileImage instanceof File) {
       const formData = new FormData();
@@ -32,6 +55,10 @@ export class UsersService {
       return this.http.post<void>(USERS_PROFILE_IMAGE_URL, formData);
     }
     return of();
+  }
+
+  deleteUserProfileImage(): Observable<void> {
+    return this.http.delete<void>(USERS_PROFILE_IMAGE_URL);
   }
 
   getProfileImageUrl(imageName: string): Observable<string> {

@@ -10,23 +10,23 @@ import { UsersService } from '../../services/users.service';
 import { UserStore } from '../../store/user.store';
 import { RegisterViewComponent } from './register-view.component';
 
-const MockedStore = signalStore(withMethods(() => ({ saveNew: jasmine.createSpy() })));
+const UserStoreMock = signalStore(withMethods(() => ({ saveNew: jasmine.createSpy() })));
 
 describe('RegisterViewComponent', () => {
   let component: RegisterViewComponent;
   let fixture: ComponentFixture<RegisterViewComponent>;
-  let userStoreMock: InstanceType<typeof MockedStore>;
+  let userStoreMock: InstanceType<typeof UserStoreMock>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RegisterViewComponent, NoopAnimationsModule, RouterTestingModule],
       providers: [
         { provide: UsersService, useValue: jasmine.createSpy() },
-        { provide: UserStore, useClass: MockedStore }
+        { provide: UserStore, useClass: UserStoreMock }
       ]
     }).compileComponents();
 
-    userStoreMock = TestBed.inject(UserStore) as unknown as InstanceType<typeof MockedStore>;
+    userStoreMock = TestBed.inject(UserStore) as unknown as InstanceType<typeof UserStoreMock>;
     fixture = TestBed.createComponent(RegisterViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

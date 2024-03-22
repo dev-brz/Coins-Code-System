@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
+import { DEFAULT_PROFILE_IMAGE_PATH } from '../../shared/configs/assets.config';
 import { LOGIN_ROUTE } from '../../shared/configs/routes.config';
 import { CURRENT_USER_KEY } from '../../shared/configs/storage.config';
 import { UsersService } from '../../user/services/users.service';
@@ -16,9 +17,11 @@ describe('UserStore', () => {
     routerMock = jasmine.createSpyObj<Router>(['navigateByUrl']);
     usersServiceMock = jasmine.createSpyObj<UsersService>({
       save: of(void 0),
-      updateUserProfileImage: of(void 0),
       findByUsername: EMPTY,
-      getProfileImageUrl: of('url')
+      getProfileImageUrl: of('url'),
+      update: of(void 0),
+      updateUserProfileImage: of(void 0),
+      deleteUserProfileImage: of(void 0)
     });
 
     TestBed.configureTestingModule({
@@ -57,5 +60,42 @@ describe('UserStore', () => {
     // THEN
     expect(localStorage.getItem(CURRENT_USER_KEY)).toBeFalsy();
     expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`/${LOGIN_ROUTE}`);
+  });
+
+  it('should properly patch state on update', () => {
+    // GIVEN
+    const initlaUser = userStore.currentUser();
+    const update = { username: 'username', email: 'random@mail.com' };
+
+    // WHEN
+    userStore.update(update);
+
+    // THEN
+    expect(userStore.currentUser().email).toEqual(update.email);
+    expect(userStore.currentUser().firstName).toEqual(initlaUser.firstName);
+  });
+
+  it('should properly update user image', () => {
+    // GIVEN
+    const initialUserImage = userStore.currentUser().imageUrl;
+
+    // WHEN
+    userStore.uploadProfileImage(new File([], ''));
+
+    // THEN
+    expect(usersServiceMock.updateUserProfileImage).toHaveBeenCalled();
+    expect(userStore.currentUser().imageUrl).not.toEqual(initialUserImage);
+  });
+
+  it('should properly remove user image', () => {
+    // GIVEN
+    userStore.uploadProfileImage(new File([], ''));
+
+    // WHEN
+    userStore.removeProfileImage();
+
+    // THEN
+    expect(usersServiceMock.deleteUserProfileImage).toHaveBeenCalled();
+    expect(userStore.currentUser().imageUrl).toEqual(DEFAULT_PROFILE_IMAGE_PATH);
   });
 });

@@ -1,2 +1,9 @@
 @import './users/auth';
 @import 'variables';
+
+mat-form-field[subscriptSizing='dynamic'] {
+  &.ng-untouched:not(.mat-form-field-invalid),
+  &.ng-touched.ng-valid:not(.mat-form-field-invalid) {
+    margin-bottom: 24px;
+  }
+}

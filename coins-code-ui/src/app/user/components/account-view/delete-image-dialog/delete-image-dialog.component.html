@@ -1,0 +1,9 @@
+<h3 matDialogTitle i18n>Profile image deletion</h3>
+<mat-dialog-content>
+  <p i18n>This action will permanently delete your current profile image</p>
+  <p i18n>However it is always possible to upload new profile image</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="account-dialog-actions">
+  <button mat-raised-button matDialogClose cdkFocusInitial i18n>Cancel</button>
+  <button mat-raised-button [matDialogClose]="true" color="primary" i18n>Confirm deletion</button>
+</mat-dialog-actions>

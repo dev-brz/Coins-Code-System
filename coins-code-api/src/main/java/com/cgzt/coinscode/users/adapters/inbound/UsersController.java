@@ -1,12 +1,7 @@
 package com.cgzt.coinscode.users.adapters.inbound;
 
 import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
-import com.cgzt.coinscode.users.domain.ports.inbound.commands.CreateUserCommandHandler;
-import com.cgzt.coinscode.users.domain.ports.inbound.commands.DeleteUserCommandHandler;
-import com.cgzt.coinscode.users.domain.ports.inbound.commands.UpdateUserCommandHandler;
-import com.cgzt.coinscode.users.domain.ports.inbound.commands.UpdateUserImageCommandHandler;
-import com.cgzt.coinscode.users.domain.ports.inbound.commands.UpdateUserPasswordCommandHandler;
-import com.cgzt.coinscode.users.domain.ports.inbound.commands.UserLoginCommandHandler;
+import com.cgzt.coinscode.users.domain.ports.inbound.commands.*;
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.ExistsUserQueryHandler;
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.GetUserQueryHandler;
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.GetUsersQueryHandler;
@@ -22,17 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -52,6 +37,7 @@ class UsersController {
     private final CreateUserCommandHandler createUserCommandHandler;
     private final UpdateUserCommandHandler updateUserCommandHandler;
     private final UpdateUserImageCommandHandler updateUserImageCommandHandler;
+    private final DeleteUserImageCommandHandler deleteUserImageCommandHandler;
     private final UpdateUserPasswordCommandHandler updateUserPasswordCommandHandler;
     private final DeleteUserCommandHandler deleteUserCommandHandler;
     private final GetUserQueryHandler getUserQueryHandler;
@@ -157,4 +143,13 @@ class UsersController {
         return imageService.load(imageName, imageDir);
     }
 
+
+    @DeleteMapping(IMAGE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete current user image", responses = {
+            @ApiResponse(responseCode = "204", description = "Image deleted successfully"),
+    })
+    void deleteUserImage() {
+        deleteUserImageCommandHandler.handle();
+    }
 }

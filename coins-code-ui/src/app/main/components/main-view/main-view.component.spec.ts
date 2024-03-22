@@ -5,11 +5,13 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { signalStore, withState } from '@ngrx/signals';
 import { AuthService } from '../../../shared/services/auth.service';
-import { User } from '../../../user/models/user.model';
+import { UserStore } from '../../../user/store/user.store';
 import { MainViewComponent } from './main-view.component';
+
+const UserStoreMock = signalStore(withState({ currentUser: { username: 'TestUsername' } }));
 
 describe('MainViewComponent', () => {
   let component: MainViewComponent;
@@ -18,15 +20,13 @@ describe('MainViewComponent', () => {
   let loader: HarnessLoader;
 
   beforeEach(async () => {
-    const userMock = { username: 'Username' } as User;
-    const activatedRouteMock = { snapshot: { data: { user: { userMock } } } };
     authServiceMock = jasmine.createSpyObj<AuthService>(['logout']);
 
     await TestBed.configureTestingModule({
       imports: [MainViewComponent, NoopAnimationsModule, RouterTestingModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
+        { provide: UserStore, useClass: UserStoreMock }
       ]
     }).compileComponents();
 

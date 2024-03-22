@@ -1,25 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { User } from '../../../user/models/user.model';
+import { RouterLink } from '@angular/router';
 import { ACCOUNT_ROUTE } from '../../../shared/configs/routes.config';
+import { UserStore } from '../../../user/store/user.store';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'cc-home-view',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, RouterLink],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, RouterLink],
   styleUrl: './home-view.component.scss',
   templateUrl: './home-view.component.html'
 })
-export class HomeViewComponent implements OnInit {
+export class HomeViewComponent {
   readonly userAccountRoute = `../${ACCOUNT_ROUTE}`;
 
-  user!: User;
-
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.user = this.route.parent?.snapshot.data['user'];
-  }
+  currentUser = inject(UserStore).currentUser;
 }

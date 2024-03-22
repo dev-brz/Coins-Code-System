@@ -10,12 +10,12 @@
     <a [routerLink]="historyViewRoute" routerLinkActive="active-route" i18n>History</a>
   }
   <div class="divider"></div>
-  <span>{{ user.firstName }}</span>
+  <span>{{ currentUser().firstName }}</span>
   <img
     class="avatar"
     role="button"
     [matMenuTriggerFor]="accountSettingsMenu"
-    [src]="user.imageUrl"
+    [src]="currentUser().imageUrl"
     width="120"
     height="120"
     alt="Profile image"

@@ -8,24 +8,24 @@ import { CURRENT_USER_KEY } from '../configs/storage.config';
 import { LoginForm } from '../models/user.model';
 import { AuthService } from './auth.service';
 
-const MockedStore = signalStore(
+const UserStoreMock = signalStore(
   withMethods(() => ({ loadCurrent: jasmine.createSpy(), disposeCurrent: jasmine.createSpy() }))
 );
 
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
-  let userStoreMock: InstanceType<typeof MockedStore>;
+  let userStoreMock: InstanceType<typeof UserStoreMock>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService, { provide: UserStore, useClass: MockedStore }]
+      providers: [AuthService, { provide: UserStore, useClass: UserStoreMock }]
     });
 
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
-    userStoreMock = TestBed.inject(UserStore) as unknown as InstanceType<typeof MockedStore>;
+    userStoreMock = TestBed.inject(UserStore) as unknown as InstanceType<typeof UserStoreMock>;
   });
 
   afterEach(() => {

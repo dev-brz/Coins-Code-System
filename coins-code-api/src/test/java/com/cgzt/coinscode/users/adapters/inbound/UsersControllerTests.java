@@ -22,21 +22,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
-import static com.cgzt.coinscode.users.adapters.inbound.UsersController.IMAGE;
-import static com.cgzt.coinscode.users.adapters.inbound.UsersController.LOGIN;
-import static com.cgzt.coinscode.users.adapters.inbound.UsersController.USERS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.cgzt.coinscode.users.adapters.inbound.UsersController.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -245,5 +238,27 @@ class UsersControllerTests {
 
 
         FileSystemUtils.deleteRecursively(profiles);
+    }
+
+    @TestWithUser(username = "testnoimage")
+    void deleteImage_shouldReturn204_whenUserHasNoImage() throws Exception {
+        mockMvc.perform(delete(USERS + IMAGE))
+                .andExpect(status().isNoContent());
+    }
+
+    @TestWithUser(username = "testexist")
+    void deleteImage_shouldDeleteImageFromDb_whenUserHasImage() throws Exception {
+        Path directory = Path.of(imageDir);
+        Path imagePath = directory.resolve(PROFILE_IMAGE_NAME);
+        Files.createDirectory(directory);
+        Files.createFile(imagePath);
+
+        mockMvc.perform(delete(USERS + IMAGE)).andExpect(status().isNoContent());
+        String imageName = userRepository.findByUsername("testexist").orElseThrow().getImageName();
+
+        assertFalse(Files.exists(imagePath));
+        assertNull(imageName);
+
+        FileSystemUtils.deleteRecursively(directory);
     }
 }

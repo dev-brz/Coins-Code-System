@@ -1,38 +1,39 @@
-<div class="auth-container">
+<!-- TODO - validation fix [#65] -->
+<div class="form-container">
   <main>
     <header>
       <h1 i18n>Register</h1>
     </header>
-    <aside class="auth-aside">
+    <aside class="container-aside">
       <span i18n>Already have an account?</span>
       <span><a [routerLink]="loginRoute" i18n>Login</a></span>
     </aside>
-    <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form class="form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
         <mat-label i18n>Username</mat-label>
         <input matInput formControlName="username" placeholder="Username" type="text" i18n-placeholder />
-        <mat-error>{{ getErrorMessage('username') }}</mat-error>
+        <mat-error>{{ getErrorMessage(registerForm, 'username') }}</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label i18n>First name</mat-label>
         <input matInput formControlName="firstName" placeholder="First name" type="text" i18n-placeholder />
-        <mat-error>{{ getErrorMessage('firstName') }}</mat-error>
+        <mat-error>{{ getErrorMessage(registerForm, 'firstName') }}</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label i18n>Last name</mat-label>
         <input matInput formControlName="lastName" placeholder="Last name" type="text" i18n-placeholder />
-        <mat-error>{{ getErrorMessage('lastName') }}</mat-error>
+        <mat-error>{{ getErrorMessage(registerForm, 'lastName') }}</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label i18n>E-mail</mat-label>
         <input matInput formControlName="email" placeholder="example@email.com" type="email" i18n-placeholder />
-        <mat-error>{{ getErrorMessage('email') }}</mat-error>
+        <mat-error>{{ getErrorMessage(registerForm, 'email') }}</mat-error>
         <mat-icon matSuffix>mail</mat-icon>
       </mat-form-field>
       <mat-form-field>
         <mat-label i18n>Phone number</mat-label>
         <input matInput formControlName="phoneNumber" placeholder="+48123456789" type="tel" />
-        <mat-error>{{ getErrorMessage('phoneNumber') }}</mat-error>
+        <mat-error>{{ getErrorMessage(registerForm, 'phoneNumber') }}</mat-error>
         <mat-icon matSuffix>phone</mat-icon>
       </mat-form-field>
       <mat-form-field>
@@ -43,7 +44,7 @@
           type="file"
           accept="image/*"
           i18n-placeholder />
-        <mat-error>{{ getErrorMessage('profileImage') }}</mat-error>
+        <mat-error>{{ getErrorMessage(registerForm, 'profileImage') }}</mat-error>
         <mat-hint align="end">
           @if (profileImageValueChange$ | async; as image) {
             <ng-container i18n>Current image size</ng-container>: {{ image.size | byteFormat }}
@@ -56,7 +57,7 @@
       <mat-form-field>
         <mat-label i18n>Password</mat-label>
         <input matInput formControlName="password" placeholder="Password" type="password" i18n-placeholder />
-        <mat-error>{{ getErrorMessage('password') }}</mat-error>
+        <mat-error>{{ getErrorMessage(registerForm, 'password') }}</mat-error>
         <mat-icon matSuffix>password</mat-icon>
       </mat-form-field>
       <mat-form-field>
@@ -68,7 +69,7 @@
           type="password"
           [errorStateMatcher]="repeatPasswordErrorStateMatcher"
           i18n-placeholder />
-        <mat-error>{{ getPasswordRepeatErrorMessage() }}</mat-error>
+        <mat-error>{{ getPasswordRepeatErrorMessage(registerForm, 'passwordRepeat') }}</mat-error>
         <mat-icon matSuffix>password</mat-icon>
       </mat-form-field>
       <button mat-fab extended color="primary" type="submit" [disabled]="!registerForm.valid" i18n>Register</button>

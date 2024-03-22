@@ -8,4 +8,6 @@ public interface ImageService {
     UserImage upload(String username, InputStreamSource image, String imageDir);
 
     Resource load(String imageName, String imageDir);
+
+    void remove(String imageName, String imageDir);
 }

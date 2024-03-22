@@ -1,0 +1,22 @@
+<h3 matDialogTitle i18n>Account deletion</h3>
+<mat-dialog-content>
+  <p i18n>This action will permanently delete your account</p>
+  <p i18n>Enter your password below and press deletion confirmation button</p>
+  <form class="account-dialog-form" [formGroup]="form">
+    <mat-form-field class="account-dialog-field">
+      <mat-label i18n>Confirm password</mat-label>
+      <input matInput type="password" formControlName="passwordConfirm" />
+      <mat-error>{{ getErrorMessage(form, 'passwordConfirm') }}</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="account-dialog-actions">
+  <button mat-raised-button matDialogClose cdkFocusInitial i18n>Cancel</button>
+  <button
+    mat-raised-button
+    [disabled]="!form.valid"
+    [matDialogClose]="form.controls.passwordConfirm.value"
+    color="warn">
+    <span i18n>Confirm deletion</span>
+  </button>
+</mat-dialog-actions>
