@@ -16,3 +16,5 @@ export interface UpdatePasswordRequestBody {
 export interface GetUserResponseBody extends UserBase {
   imageName: string;
 }
+
+export type UserUniqueField = 'username' | 'email' | 'phoneNumber';

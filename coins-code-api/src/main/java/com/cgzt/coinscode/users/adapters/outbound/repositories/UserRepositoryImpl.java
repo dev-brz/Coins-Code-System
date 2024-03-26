@@ -40,6 +40,16 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return jpaUserRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByPhoneNumber(String phoneNumber) {
+        return jpaUserRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    @Override
     @Transactional
     public void save(User user, char[] password) {
         if (jpaUserRepository.existsByUsernameOrEmailOrPhoneNumber(user.getUsername(), user.getEmail(), user.getPhoneNumber())) {
@@ -83,10 +93,12 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     private void validateBeforeUpdate(UserUpdate user) {
-        if (StringUtils.isNotBlank(user.email()) && jpaUserRepository.existsByEmail(user.email())) {
+        if (StringUtils.isNotBlank(user.email()) &&
+                jpaUserRepository.existsByEmailAndUsernameNot(user.email(), user.username())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided email is already taken");
         }
-        if (StringUtils.isNotBlank(user.phoneNumber()) && jpaUserRepository.existsByPhoneNumber(user.phoneNumber())) {
+        if (StringUtils.isNotBlank(user.phoneNumber()) &&
+                jpaUserRepository.existsByPhoneNumberAndUsernameNot(user.phoneNumber(), user.username())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided phone number is already taken");
         }
     }

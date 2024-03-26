@@ -13,6 +13,10 @@ public interface UserRepository {
 
     boolean existsByUsername(String username);
 
+    boolean existsByEmail(String email);
+
+    boolean existsByPhoneNumber(String phoneNumber);
+
     void save(User user, char[] password);
 
     void update(UserUpdate user);

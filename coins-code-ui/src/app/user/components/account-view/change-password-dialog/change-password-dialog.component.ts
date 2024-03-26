@@ -6,7 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { getErrorMessage } from '../../../../shared/utils/get-error-messages';
 import { UpdatePasswordRequestBody } from '../../../models/http/user.model';
-import { CustomValidators, ValidatorUtils } from '../../../validators';
+import { CustomValidators, ValidatorUtils } from '../../../../shared/validators';
 
 type PasswordChange = UpdatePasswordRequestBody;
 

@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { User } from '../../../models/user.model';
 import { UpdateUserFormComponent } from './update-user-form.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('UpdateUserFormComponent', () => {
   let component: UpdateUserFormComponent;
@@ -13,7 +14,7 @@ describe('UpdateUserFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UpdateUserFormComponent, NoopAnimationsModule]
+      imports: [UpdateUserFormComponent, NoopAnimationsModule, HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UpdateUserFormComponent);

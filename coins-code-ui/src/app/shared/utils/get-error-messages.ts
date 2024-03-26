@@ -13,6 +13,12 @@ export function getErrorMessage(form: FormGroup, formControlName: string): strin
     if (errors['usernameTaken']) {
       return $localize`Username ${errors['usernameTaken']['username']} is taken`;
     }
+    if (errors['emailTaken']) {
+      return $localize`Email ${errors['emailTaken']['email']} is taken`;
+    }
+    if (errors['phoneNumberTaken']) {
+      return $localize`Phone number ${errors['phoneNumberTaken']['phoneNumber']} is taken`;
+    }
     if (errors['email']) {
       return $localize`Field must be a valid e-mail address`;
     }

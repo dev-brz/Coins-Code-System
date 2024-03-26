@@ -5,7 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { getErrorMessage } from '../../../../shared/utils/get-error-messages';
 import { User } from '../../../models/user.model';
-import { ValidatorPatterns } from '../../../validators';
+import { UsersService } from '../../../services/users.service';
+import { CustomValidators, ValidatorPatterns } from '../../../../shared/validators';
 
 interface UpdateForm {
   firstName: string;
@@ -28,15 +29,21 @@ export class UpdateUserFormComponent implements OnInit {
     firstName: this.fb.control('', [Validators.required]),
     lastName: this.fb.control('', [Validators.required]),
     email: this.fb.control('', [Validators.required, Validators.email]),
-    phoneNumber: this.fb.control('', [Validators.pattern(ValidatorPatterns.phoneNumber)])
+    phoneNumber: this.fb.control('', [Validators.required, Validators.pattern(ValidatorPatterns.phoneNumber)])
   });
 
   readonly getErrorMessage = getErrorMessage;
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private usersService: UsersService
+  ) {}
 
   ngOnInit(): void {
     this.form.patchValue(this.currentUser());
+    const { email, phoneNumber } = this.form.controls;
+    email.addAsyncValidators(CustomValidators.emailTaken(this.usersService, [email.value]));
+    phoneNumber.addAsyncValidators(CustomValidators.phoneNumberTaken(this.usersService, [phoneNumber.value]));
   }
 
   get valid(): boolean {

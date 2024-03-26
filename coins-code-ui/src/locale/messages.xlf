@@ -132,25 +132,39 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="7797135470451957742" datatype="html">
+        <source>Email <x id="PH" equiv-text="errors[&apos;emailTaken&apos;][&apos;email&apos;]"/> is taken</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6010130510279326260" datatype="html">
+        <source>Phone number <x id="PH" equiv-text="errors[&apos;phoneNumberTaken&apos;][&apos;phoneNumber&apos;]"/> is taken</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="3798990823053086967" datatype="html">
         <source>Field must be a valid e-mail address</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4681718590652318762" datatype="html">
         <source>Field must match the valid pattern</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5432127923813972498" datatype="html">
         <source>File is too large</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">29</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.ts</context>
@@ -161,7 +175,7 @@
         <source>Passwords must be equal</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5356600339948309735" datatype="html">
@@ -344,35 +358,35 @@
         <source>Changing password failed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.ts</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5108418000757845610" datatype="html">
         <source>Password changed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.ts</context>
-          <context context-type="linenumber">97</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="340721362726841609" datatype="html">
         <source>Deleting account failed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.ts</context>
-          <context context-type="linenumber">113</context>
+          <context context-type="linenumber">114</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2189507244978938064" datatype="html">
         <source>ERROR</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">121</context>
         </context-group>
       </trans-unit>
       <trans-unit id="596635599679128324" datatype="html">
         <source>SUCCESS</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.ts</context>
-          <context context-type="linenumber">124</context>
+          <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6466881126195647639" datatype="html">

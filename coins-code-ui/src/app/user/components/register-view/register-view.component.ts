@@ -15,7 +15,7 @@ import { LOGIN_ROUTE } from '../../../shared/configs/routes.config';
 import { getErrorMessage } from '../../../shared/utils/get-error-messages';
 import { UsersService } from '../../services/users.service';
 import { UserStore } from '../../store/user.store';
-import { CustomValidators, ValidatorPatterns, ValidatorUtils } from '../../validators';
+import { CustomValidators, ValidatorPatterns, ValidatorUtils } from '../../../shared/validators';
 import { FileService } from '../../../shared/services/file.service';
 
 @Component({
@@ -56,8 +56,16 @@ export class RegisterViewComponent implements OnInit {
       ),
       firstName: this.fb.control('', [Validators.required]),
       lastName: this.fb.control('', [Validators.required]),
-      email: this.fb.control('', [Validators.required, Validators.email]),
-      phoneNumber: this.fb.control('', [Validators.pattern(ValidatorPatterns.phoneNumber)]),
+      email: this.fb.control(
+        '',
+        [Validators.required, Validators.email],
+        [CustomValidators.emailTaken(this.usersService)]
+      ),
+      phoneNumber: this.fb.control(
+        '',
+        [Validators.required, Validators.pattern(ValidatorPatterns.phoneNumber)],
+        [CustomValidators.phoneNumberTaken(this.usersService)]
+      ),
       profileImage: new FormControl(new FileInput(null), {
         nonNullable: false,
         validators: [FileValidator.maxContentSize(this.MAX_IMAGE_SIZE_BYTES)]

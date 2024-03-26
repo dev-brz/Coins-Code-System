@@ -17,7 +17,11 @@ interface SpringJpaUserAccountRepository extends JpaRepository<UserAccount, Long
 
     boolean existsByPhoneNumber(String phoneNumber);
 
+    boolean existsByPhoneNumberAndUsernameNot(String phoneNumber, String username);
+
     boolean existsByEmail(String email);
+
+    boolean existsByEmailAndUsernameNot(String email, String username);
 
     boolean existsByUsername(String username);
 

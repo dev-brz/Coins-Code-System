@@ -1,6 +1,6 @@
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { getErrorMessage } from '../../shared/utils/get-error-messages';
+import { getErrorMessage } from '../utils/get-error-messages';
 
 export function _passwordRepeat(
   passwordFieldName = 'password',

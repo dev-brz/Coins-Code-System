@@ -108,17 +108,19 @@ class UsersController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "Check if a user exists", description = "Check if a user exists by username",
+    @Operation(summary = "Check if a user exists", description = "Check if a user exists by either username, email or telephone number",
             responses = {
                     @ApiResponse(responseCode = "200", description = "User exists"),
                     @ApiResponse(responseCode = "404", description = "User not found")
             })
-    @RequestMapping(value = USERNAME, method = RequestMethod.HEAD)
-    void isUserExisting(@PathVariable String username) {
-        ExistsUserQueryHandler.Result result = existsUserQueryHandler
-                .handle(new ExistsUserQueryHandler.Query(username));
+    @RequestMapping(method = RequestMethod.HEAD)
+    void isUserExisting(@RequestParam(required = false) String username,
+                        @RequestParam(required = false) String email,
+                        @RequestParam(required = false) String phoneNumber) {
+        boolean userExists = existsUserQueryHandler
+                .handle(new ExistsUserQueryHandler.Query(username, email, phoneNumber));
 
-        if (!result.userExists()) {
+        if (!userExists) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }

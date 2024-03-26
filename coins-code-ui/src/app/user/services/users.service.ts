@@ -11,16 +11,17 @@ import {
   GetUserResponseBody,
   SaveUserRequestBody,
   UpdatePasswordRequestBody,
-  UpdateUserRequestBody
+  UpdateUserRequestBody,
+  UserUniqueField
 } from '../models/http/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
   constructor(private http: HttpClient) {}
 
-  existsByUsername(username: string): Observable<boolean> {
-    const url = USERS_USER_URL.replace('?1', username);
-    return this.http.head(url, { observe: 'response' }).pipe(
+  existsBy(field: UserUniqueField, value: string): Observable<boolean> {
+    const params = new HttpParams({ fromObject: { [field]: value } });
+    return this.http.head(USERS_URL, { observe: 'response', params }).pipe(
       map(() => true),
       catchError((err: HttpErrorResponse) => of(err.status !== HttpStatusCode.NotFound))
     );
