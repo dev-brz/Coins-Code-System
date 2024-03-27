@@ -8,6 +8,7 @@ import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EMPTY, catchError, filter, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
+import { ErrorService, takeError } from '../../../shared/services/error.service';
 import { FileService } from '../../../shared/services/file.service';
 import { UserLogic } from '../../models/user.model';
 import { UsersService } from '../../services/users.service';
@@ -35,6 +36,10 @@ import { UpdateUserFormComponent } from './update-user-form/update-user-form.com
 })
 export class AccountViewComponent {
   readonly userStore = inject(UserStore);
+
+  updateErrorSubscription = inject(ErrorService)
+    .errors$.pipe(takeUntilDestroyed(this.destroyRef), takeError('USER-UPDATE'))
+    .subscribe(() => (this.isEditingUserDetails = false));
 
   currentUser = computed(() => {
     this.isEditingUserDetails = false;
