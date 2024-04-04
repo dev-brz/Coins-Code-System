@@ -6,6 +6,7 @@ import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.GetTransacti
 import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.model.GetTransactionResult;
 import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.model.GetTransactionsResult;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,9 +31,9 @@ class TransactionsController {
     @Operation(summary = "Get all transactions")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the transactions"),
-            @ApiResponse(responseCode = "404", description = "Transactions not found", content = {}),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = {}),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = {})
+            @ApiResponse(responseCode = "404", description = "Transactions not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     @PreAuthorize("hasRole('EMPLOYEE') or #username == authentication.name")
     GetTransactionsResult getAllTransactions(@RequestParam(required = false) String username, @RequestParam(required = false) String coinUid) {
@@ -43,8 +44,8 @@ class TransactionsController {
     @Operation(summary = "Get a transaction by its number")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the transaction"),
-            @ApiResponse(responseCode = "404", description = "Transaction not found", content = {}),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = {})
+            @ApiResponse(responseCode = "404", description = "Transaction not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     GetTransactionResult getTransactionByCode(@PathVariable String number) {
         return getTransactionQueryHandler.getTransactionByCode(number);

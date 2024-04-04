@@ -11,12 +11,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -51,6 +53,7 @@ class UsersController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful operation"),
                     @ApiResponse(responseCode = "401", description = "Unauthorized")})
+    @SecurityRequirements
     @PostMapping(LOGIN)
     void login(@RequestBody UserLoginCommandHandler.Command command) {
         userLoginCommandHandler.handle(command);
@@ -61,6 +64,7 @@ class UsersController {
                     @ApiResponse(responseCode = "201", description = "User created successfully"),
                     @ApiResponse(responseCode = "400", description = "Username, email or phone number is already taken")
             })
+    @SecurityRequirements
     @PostMapping
     void register(@Valid @RequestBody CreateUserCommandHandler.Command command) {
         createUserCommandHandler.handle(command);
@@ -92,7 +96,7 @@ class UsersController {
     @Operation(summary = "Get all users", description = "Get a list of all users",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(not = @Schema())),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             })
     GetUsersResult getUsers() {
         return getUsersQueryHandler.handle();
@@ -101,7 +105,7 @@ class UsersController {
     @Operation(summary = "Get a user", description = "Get a user by username",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content(not = @Schema()))})
+                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
     @GetMapping(USERNAME)
     GetUserResult getUser(@PathVariable String username) {
         return getUserQueryHandler.handle(new GetUserQueryHandler.Query(username))
@@ -113,6 +117,7 @@ class UsersController {
                     @ApiResponse(responseCode = "200", description = "User exists"),
                     @ApiResponse(responseCode = "404", description = "User not found")
             })
+    @SecurityRequirements
     @RequestMapping(method = RequestMethod.HEAD)
     void isUserExisting(@RequestParam(required = false) String username,
                         @RequestParam(required = false) String email,
@@ -125,7 +130,7 @@ class UsersController {
         }
     }
 
-    @PostMapping(IMAGE)
+    @PostMapping(value = IMAGE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Upload user image", description = "Upload an image for a user",
             responses = {@ApiResponse(responseCode = "200", description = "Image uploaded successfully"),
                     @ApiResponse(responseCode = "404", description = "User not found")
@@ -139,7 +144,7 @@ class UsersController {
     @Operation(summary = "Get user image", description = "Get the image of a user by image name",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "400", description = "Image does not exist", content = @Content(not = @Schema()))
+                    @ApiResponse(responseCode = "400", description = "Image does not exist", content = @Content)
             })
     Resource getUserImage(@RequestParam String imageName) {
         return imageService.load(imageName, imageDir);

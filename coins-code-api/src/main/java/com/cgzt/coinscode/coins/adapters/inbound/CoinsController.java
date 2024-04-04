@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,8 +64,8 @@ class CoinsController {
             """)
     @Operation(summary = "Get all coins", description = "Get all coins for a specific user or all users", tags = {"Coins"})
     @ApiResponse(responseCode = "200", description = "Successful operation")
-    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(not = @Schema()))
-    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(not = @Schema()))
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     public GetCoinsResult getCoins(@RequestParam(required = false) final String username,
                                    @RequestParam(required = false) final String uid,
                                    @RequestParam(required = false) final String name) {
@@ -74,8 +75,8 @@ class CoinsController {
     @GetMapping(UID)
     @Operation(summary = "Get a coin", description = "Get a specific coin by its uid", tags = {"Coins"})
     @ApiResponse(responseCode = "200", description = "Successful operation")
-    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(not = @Schema()))
-    @ApiResponse(responseCode = "404", description = "Coin not found", content = @Content(not = @Schema()))
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Coin not found", content = @Content)
     public GetCoinResult getCoin(@PathVariable final String uid) {
         return getCoinQueryHandler.handle(uid);
     }
@@ -121,7 +122,7 @@ class CoinsController {
         }
     }
 
-    @PostMapping(UID_IMAGE)
+    @PostMapping(value = UID_IMAGE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Update a coin's image", description = "Update the image of a coin by its uid", tags = {"Coins"})
     @ApiResponse(responseCode = "200", description = "Image updated")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -133,8 +134,8 @@ class CoinsController {
     @GetMapping(NAME_IMAGE)
     @Operation(summary = "Get a coin's image", description = "Get the image of a coin by its name", tags = {"Coins"})
     @ApiResponse(responseCode = "200", description = "Image fetched")
-    @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @ApiResponse(responseCode = "400", description = "Coin not found by uid testUid")
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    @ApiResponse(responseCode = "400", description = "Coin not found by uid testUid", content = @Content)
     public Resource getCoinImage(@PathVariable final String name) {
         return imageService.load(name, imageDir);
     }

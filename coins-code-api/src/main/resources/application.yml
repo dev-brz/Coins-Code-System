@@ -22,6 +22,9 @@ spring:
 frontEnd:
   url: http://localhost:4200
 
+springdoc:
+  use-fqn: true
+
 swagger:
   permittedMatchers: >
     /v3/api-docs/**,
