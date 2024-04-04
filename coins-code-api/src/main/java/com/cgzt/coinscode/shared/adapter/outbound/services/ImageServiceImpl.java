@@ -29,7 +29,8 @@ import java.util.Base64;
 class ImageServiceImpl implements ImageService {
     @Override
     public UserImage upload(String username, InputStreamSource image, String imageDir) {
-        assert image != null && StringUtils.isNotBlank(username);
+        assert image != null : "Image must not be null";
+        assert StringUtils.isNotBlank(username) : "Username must not be blank";
 
         try {
             var hash = hashOf(username);
