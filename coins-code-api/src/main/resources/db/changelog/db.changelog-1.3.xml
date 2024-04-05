@@ -14,20 +14,20 @@
             </column>
 
             <column name="source_id" type="bigint">
-                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_user_account_source"
+                <constraints nullable="false" foreignKeyName="fk_transactions_user_account_source"
                              references="user_account(id)"/>
             </column>
             <column name="dest_id" type="bigint">
-                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_user_account_dest"
+                <constraints nullable="false" foreignKeyName="fk_transactions_user_account_dest"
                              references="user_account(id)"/>
             </column>
 
             <column name="source_coin_id" type="bigint">
-                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_coins_source"
+                <constraints nullable="false" foreignKeyName="fk_transactions_coins_source"
                              references="coins(id)"/>
             </column>
             <column name="dest_coin_id" type="bigint">
-                <constraints unique="true" nullable="false" foreignKeyName="fk_transactions_coins_dest"
+                <constraints nullable="false" foreignKeyName="fk_transactions_coins_dest"
                              references="coins(id)"/>
             </column>
 

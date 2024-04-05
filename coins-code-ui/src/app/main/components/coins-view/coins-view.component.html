@@ -1,1 +1,26 @@
-<p>coins-view works!</p>
+<header>
+  <mat-toolbar-row class="coins-header-row">
+    <h1 class="coins-title" i18n>Coins</h1>
+    <div class="coins-add">
+      @if (isDesktop$ | async) {
+        <button mat-button aria-label="Add new coin" i18n-aria-label (click)="openCreateDialog()">
+          <mat-icon>add</mat-icon>
+          <span i18n>New Coin</span>
+        </button>
+      } @else {
+        <a [routerLink]="CREATE" mat-button aria-label="Add new coin" i18n-aria-label>
+          <mat-icon>add</mat-icon>
+          <span i18n>New Coin</span>
+        </a>
+      }
+    </div>
+  </mat-toolbar-row>
+</header>
+
+<div class="coins-container" cdkDropList (cdkDropListDropped)="drop($event)">
+  @for (coin of coins(); track coin.uid) {
+    <div cdkDrag class="drag-box" [class.first]="$first">
+      <cc-coin [isNotFirst]="!$first" [coin]="coin"></cc-coin>
+    </div>
+  }
+</div>

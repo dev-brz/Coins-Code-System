@@ -49,8 +49,8 @@ public class TopUpCommandHandler {
     }
 
     public record Command(
-            @NotBlank String username,
             @NotBlank String coinUid,
+            @NotBlank String username,
             @DecimalMin(value = "0") BigDecimal amount,
             @NotNull String description) {
     }

@@ -1,6 +1,7 @@
 package com.cgzt.coinscode.coins.adapters.outbound.entities;
 
 import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class CoinEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(insertable = false)
     private String uid;
     @ManyToOne
     private UserAccount userAccount;

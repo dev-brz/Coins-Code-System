@@ -31,6 +31,9 @@ export function getErrorMessage(form: FormGroup, formControlName: string): strin
     if (errors['passwordRepeat']) {
       return $localize`Passwords must be equal`;
     }
+    if (errors['nameTaken']) {
+      return $localize`${errors['nameTaken']['name']} already exists`;
+    }
   }
   return null;
 }

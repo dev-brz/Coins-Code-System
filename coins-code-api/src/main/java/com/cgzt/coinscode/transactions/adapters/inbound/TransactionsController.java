@@ -13,7 +13,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 class TransactionsController {
     public static final String TRANSACTIONS = "/transactions";
     public static final String TRANSACTIONS_NUMBER = "/transactions/{number}";
-    public static final String TRANSACTIONS_TOPUP = "/transactions/topup";
+    public static final String TRANSACTIONS_TOPUP = "/transactions/top-up";
 
     private final GetTransactionsQueryHandler getTransactionsQueryHandler;
     private final GetTransactionQueryHandler getTransactionQueryHandler;

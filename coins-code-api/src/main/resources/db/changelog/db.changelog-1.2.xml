@@ -9,7 +9,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="uid" type="varchar(36)" defaultValueComputed="CAST(UUID() as CHAR)">
+            <column name="uid" type="varchar(36)" defaultValueComputed="(UUID())">
                 <constraints unique="true"/>
             </column>
             <column name="user_account_id" type="bigint">

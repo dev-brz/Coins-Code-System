@@ -1,0 +1,49 @@
+@import '../../../../styles/variables';
+
+.create-coin {
+  &-fields{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  &-appearance, &-top-up{
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+
+    cc-coin {
+      flex: .6;
+    }
+
+    form {
+      flex: .4;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+      gap: 1rem;
+      cc-coin {
+        flex: 1;
+      }
+      form {
+        flex: 1;
+      }
+    }
+  }
+}
+.mobile-actions{
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+.mat-step{
+  height: 100%;
+}
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 1rem;
+  width: 100%;
+}

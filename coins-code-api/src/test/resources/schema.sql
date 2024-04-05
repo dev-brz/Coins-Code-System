@@ -30,7 +30,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS user_account_username ON user_account (usernam
 
 CREATE TABLE IF NOT EXISTS coins (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    uid VARCHAR(255) DEFAULT CAST(UUID() as CHAR),
+    uid VARCHAR(36) NOT NULL  DEFAULT (UUID()),
     user_account_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
     image_name VARCHAR(255),

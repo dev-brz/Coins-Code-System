@@ -1,0 +1,108 @@
+<h1 mat-dialog-title i18n>Create Coin</h1>
+<mat-dialog-content>
+  <mat-stepper linear="true" #stepper>
+    <mat-step [stepControl]="basicCoinForm">
+      @if (isDesktop$ | async) {
+        <span *matStepLabel i18n>Coin Details</span>
+      }
+      <form [formGroup]="basicCoinForm">
+        <div class="create-coin-fields">
+          <mat-form-field class="name">
+            <mat-label i18n>Name</mat-label>
+            <input matInput placeholder="Name of the coin" formControlName="name" required i18n-placeholder />
+            <mat-error>{{ getErrorMessage(basicCoinForm, 'name') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label i18n>Description</mat-label>
+            <textarea
+              matInput
+              placeholder="Coin's Description"
+              formControlName="description"
+              required
+              rows="2"
+              maxlength="300"
+              i18n-placeholder></textarea>
+            <mat-hint align="end" class="counter">{{ basicCoinForm.get('description')?.value?.length }} / 300</mat-hint>
+            <mat-error>{{ getErrorMessage(basicCoinForm, 'description') }}</mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="imageForm">
+      @if (isDesktop$ | async) {
+        <span *matStepLabel i18n>Apearence</span>
+      }
+      <div class="create-coin-appearance">
+        <cc-coin [coin]="coin"></cc-coin>
+        <form [formGroup]="imageForm">
+          <mat-form-field>
+            <mat-label i18n>Coin image</mat-label>
+            <ngx-mat-file-input
+              formControlName="image"
+              placeholder="Coin image"
+              type="file"
+              accept="image/*"
+              i18n-placeholder />
+            <mat-error>{{ getErrorMessage(imageForm, 'image') }}</mat-error>
+            <mat-hint align="end">
+              @if (profileImageValueChange$ | async; as image) {
+                <ng-container i18n>Size</ng-container>: {{ image.size | byteFormat }}
+              } @else {
+                <ng-container i18n>Max size</ng-container>: {{ MAX_IMAGE_SIZE_BYTES | byteFormat }}
+              }
+            </mat-hint>
+            <mat-icon matSuffix>image</mat-icon>
+          </mat-form-field>
+        </form>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="topUpForm">
+      @if (isDesktop$ | async) {
+        <span *matStepLabel i18n>Top Up</span>
+      }
+      <div class="create-coin-top-up">
+        <cc-coin [coin]="coin"></cc-coin>
+        <form [formGroup]="topUpForm">
+          <mat-form-field class="name">
+            <mat-label i18n>Amount</mat-label>
+            <input matInput placeholder="Amount" formControlName="amount" required i18n-placeholder min="0" />
+            <mat-error>{{ getErrorMessage(topUpForm, 'amount') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label i18n>Description</mat-label>
+            <textarea
+              matInput
+              placeholder="TopUp description"
+              formControlName="description"
+              required
+              rows="2"
+              maxlength="300"
+              i18n-placeholder></textarea>
+            <mat-hint align="end" class="counter">{{ topUpForm.get('description')?.value?.length }} / 300</mat-hint>
+            <mat-error>{{ getErrorMessage(topUpForm, 'description') }}</mat-error>
+          </mat-form-field>
+        </form>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</mat-dialog-content>
+
+@if (isDesktop$ | async) {
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close i18n>Cancel</button>
+    @if (isCompleted) {
+      <button mat-button (click)="createCoin()" cdkFocusInitial i18n>Create</button>
+    } @else {
+      <button mat-button (click)="nextStep()" cdkFocusInitial i18n>Next</button>
+    }
+  </mat-dialog-actions>
+} @else {
+  <div class="mobile-actions">
+    <button mat-button routerLink=".." i18n>Cancel</button>
+    @if (isCompleted) {
+      <button mat-button (click)="createCoin()" i18n>Create</button>
+    } @else {
+      <button mat-button (click)="nextStep()" i18n>Next</button>
+    }
+  </div>
+}

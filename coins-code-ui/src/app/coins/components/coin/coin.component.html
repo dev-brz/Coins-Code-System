@@ -1,0 +1,24 @@
+<div class="coin-container" [class.not-first]="isNotFirst">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ coin.name }}</mat-card-title>
+      <mat-card-subtitle>{{ coin.amount || 0 | number: '1.2-2' }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div>
+        <img
+          class="avatar"
+          [src]="coin.imageUrl ?? '/assets/coin.png'"
+          width="100"
+          height="100"
+          alt="Coin Image"
+          i18n-alt />
+      </div>
+      <p>
+        {{ coin.description }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+  <div class="coin-placeholder" [class.not-first]="isNotFirst" *cdkDragPlaceholder></div>
+</div>

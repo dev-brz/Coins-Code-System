@@ -1,10 +1,6 @@
 package com.cgzt.coinscode.coins.adapters.inbound;
 
-import com.cgzt.coinscode.coins.domain.ports.inbound.commands.CreateCoinCommandHandler;
-import com.cgzt.coinscode.coins.domain.ports.inbound.commands.DeleteCoinCommandHandler;
-import com.cgzt.coinscode.coins.domain.ports.inbound.commands.ExistsCoinQueryHandler;
-import com.cgzt.coinscode.coins.domain.ports.inbound.commands.UpdateCoinCommandHandler;
-import com.cgzt.coinscode.coins.domain.ports.inbound.commands.UpdateCoinImageCommandHandler;
+import com.cgzt.coinscode.coins.domain.ports.inbound.commands.*;
 import com.cgzt.coinscode.coins.domain.ports.inbound.queries.GetCoinQueryHandler;
 import com.cgzt.coinscode.coins.domain.ports.inbound.queries.GetCoinsQueryHandler;
 import com.cgzt.coinscode.coins.domain.ports.inbound.queries.model.GetCoinResult;
@@ -22,18 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 

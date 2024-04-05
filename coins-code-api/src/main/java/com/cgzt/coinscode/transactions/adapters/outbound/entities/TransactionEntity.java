@@ -11,8 +11,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +42,7 @@ public class TransactionEntity {
     @Column(name = "t_type")
     @Enumerated(EnumType.STRING)
     private TransactionType type;
+    @Column(insertable = false)
     private LocalDateTime createdAt;
     private String description;
     private BigDecimal amount;

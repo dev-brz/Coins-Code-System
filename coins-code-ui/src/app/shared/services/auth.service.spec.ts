@@ -95,7 +95,7 @@ describe('AuthService', () => {
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(mockUser));
 
     // WHEN
-    service.interceptRequsest(mockReq, mockNext);
+    service.interceptRequest(mockReq, mockNext);
 
     // THEN
     expect(mockNext).toHaveBeenCalledOnceWith(expectedReq);
@@ -107,7 +107,7 @@ describe('AuthService', () => {
     const next = jasmine.createSpy('next');
 
     // WHEN
-    service.interceptRequsest(mockReq, next);
+    service.interceptRequest(mockReq, next);
 
     // THEN
     expect(next).toHaveBeenCalledOnceWith(mockReq);
