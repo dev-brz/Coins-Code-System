@@ -9,7 +9,6 @@ import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUserResult
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUsersResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -78,15 +78,29 @@ class UsersController {
     }
 
     @Operation(summary = "Update user information", description = "Update the information of a user",
-            responses = {@ApiResponse(responseCode = "200", description = "User updated successfully")})
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User updated successfully"),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+            })
     @PatchMapping
+    @PreAuthorize("""
+                    hasAnyRole('ADMIN','EMPLOYEE')
+                    or #command.username == authentication.name
+            """)
     void update(@Valid @RequestBody UpdateUserCommandHandler.Command command) {
         updateUserCommandHandler.handle(command);
     }
 
     @Operation(summary = "Delete a user", description = "Delete a user by username",
-            responses = {@ApiResponse(responseCode = "200", description = "User deleted successfully")})
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User deleted successfully"),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+            })
     @DeleteMapping(USERNAME)
+    @PreAuthorize("""
+                    hasAnyRole('ADMIN','EMPLOYEE')
+                    or #username == authentication.name
+            """)
     void delete(@PathVariable String username) {
         deleteUserCommandHandler.handle(new DeleteUserCommandHandler.Command(username));
     }
@@ -98,6 +112,7 @@ class UsersController {
                     @ApiResponse(responseCode = "200", description = "Successful operation"),
                     @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
             })
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     GetUsersResult getUsers() {
         return getUsersQueryHandler.handle();
     }
@@ -105,8 +120,14 @@ class UsersController {
     @Operation(summary = "Get a user", description = "Get a user by username",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
+                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+            })
     @GetMapping(USERNAME)
+    @PreAuthorize("""
+                    hasAnyRole('ADMIN','EMPLOYEE')
+                    or #username == authentication.name
+            """)
     GetUserResult getUser(@PathVariable String username) {
         return getUserQueryHandler.handle(new GetUserQueryHandler.Query(username))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

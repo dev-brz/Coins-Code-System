@@ -114,6 +114,31 @@ class UsersControllerTests {
                 .andExpect(status().isOk());
     }
 
+    @TestWithUser(username = "username")
+    void update_shouldReturn403_whenUserTriesToUpdateOtherUser() throws Exception {
+        var command = new UpdateUserCommandHandler.Command("anotherUsername", "", "", "", "");
+        String requestBody = objectMapper.writeValueAsString(command);
+
+        mockMvc.perform(patch(USERS).content(requestBody).contentType(APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @TestWithUser(username = "nonexistent")
+    void update_shouldReturn404_whenProvidedUserDoesNotExist() throws Exception {
+        String user = objectMapper.writeValueAsString(
+                new UpdateUserCommandHandler.Command(
+                        "nonexistent",
+                        "test",
+                        "test",
+                        "test",
+                        "test"));
+
+        mockMvc.perform(patch(USERS)
+                        .content(user)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
     @TestWithUser(username = "testexist")
     void update_shouldBeSuccessful_whenProvidedBodyIsValid() throws Exception {
         var updates = new UpdateUserCommandHandler.Command(
@@ -140,20 +165,12 @@ class UsersControllerTests {
         assertEquals("1234567890", updated.getPhoneNumber());
     }
 
-    @TestWithUser(username = "testexist")
-    void update_shouldReturn404_whenProvidedUserDoesNotExist() throws Exception {
-        String user = objectMapper.writeValueAsString(
-                new UpdateUserCommandHandler.Command(
-                        "nonexistent",
-                        "test",
-                        "test",
-                        "test",
-                        "test"));
+    @TestWithUser(username = "username")
+    void delete_shouldReturn403_whenUserTriesToDeleteOtherUser() throws Exception {
+        String anotherUsername = "anotherUsername";
 
-        mockMvc.perform(patch(USERS)
-                        .content(user)
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(delete(USERS + USERNAME, anotherUsername).contentType(APPLICATION_JSON))
+                .andExpect(status().isForbidden());
     }
 
     @TestWithUser(username = "testdelete")
@@ -166,7 +183,12 @@ class UsersControllerTests {
         assertFalse(userRepository.existsByUsername(username));
     }
 
-    @TestWithUser(username = "testexist")
+    @TestWithUser(username = "userWithoutProperRole")
+    void getUsers_shouldReturn403_whenUserLacksProperRole() throws Exception {
+        mockMvc.perform(get(USERS)).andExpect(status().isForbidden());
+    }
+
+    @TestWithUser(username = "testexist", roles = "ADMIN")
     void getUsers_shouldBeSuccessful() throws Exception {
         var results = mockMvc.perform(get(USERS)).andExpect(status().isOk()).andReturn();
 
@@ -174,6 +196,14 @@ class UsersControllerTests {
         GetUsersResult users = objectMapper.readValue(body, GetUsersResult.class);
 
         assertFalse(users.users().isEmpty());
+    }
+
+    @TestWithUser(username = "userWithoutProperRole")
+    void getUser_shouldReturn403_whenUserTriesToGetNotSelf() throws Exception {
+        String anotherUsername = "anotherUsername";
+
+        mockMvc.perform(get("%s/%s".formatted(USERS, anotherUsername)))
+                .andExpect(status().isForbidden());
     }
 
     @TestWithUser(username = "testexist")
@@ -192,14 +222,16 @@ class UsersControllerTests {
     @Test
     void isUserExisting_shouldReturnOk_whenUserExists() throws Exception {
         var username = "testexist";
-        mockMvc.perform(head("%s/%s".formatted(USERS, username)))
+
+        mockMvc.perform(head(USERS).queryParam("username", username))
                 .andExpect(status().isOk());
     }
 
     @Test
     void isUserExisting_shouldReturn404_whenUserDoesNotExist() throws Exception {
         var username = "testnonexist";
-        mockMvc.perform(head("%s/%s".formatted(USERS, username)))
+
+        mockMvc.perform(head(USERS).queryParam("username", username))
                 .andExpect(status().isNotFound());
     }
 

@@ -70,11 +70,17 @@ class CoinsControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @TestWithUser(username = "testexist_coin")
+    @TestWithUser(username = "testexist_coin", roles = "ADMIN")
     void testGetCoin() throws Exception {
         mockMvc.perform(get("/coins/{uid}", "testexist-coin-1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.uid").value("testexist-coin-1"));
+    }
+
+    @TestWithUser(username = "another_user")
+    void testGetCoin_Forbidden() throws Exception {
+        mockMvc.perform(get("/coins/{uid}", "testexist-coin-1"))
+                .andExpect(status().isForbidden());
     }
 
     @TestWithUser(username = "testexist_coin")
@@ -168,12 +174,29 @@ class CoinsControllerTest {
     }
 
     @TestWithUser(username = "testexist_coin")
+    void testCreateCoin_Forbidden() throws Exception {
+        String requestBody = """
+                {
+                    "name": "Test Coin 1",
+                    "username": "another_user",
+                    "description": "coinDescription"
+                }
+                """;
+
+        mockMvc.perform(post("/coins")
+
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isForbidden());
+    }
+
+    @TestWithUser(username = "testexist_coin")
     void testUpdateCoinNonExisting() throws Exception {
         String requestBody = """
                 {
                     "uid": "123",
                     "name": "updatedCoinName",
-                    "username": "testUser",
+                    "username": "testexist_coin",
                     "description": ""
                 }
                 """;
@@ -222,9 +245,34 @@ class CoinsControllerTest {
     }
 
     @TestWithUser(username = "testexist_coin")
+    void testUpdateCoin_ExistingCoin_Forbidden() throws Exception {
+        String requestBody = """
+                {
+                    "uid": "testexist-coin-1",
+                    "name": "Test Coin 1",
+                    "username": "anotherUser",
+                    "description": "coinDescription one"
+                }
+                """;
+
+        mockMvc.perform(patch("/coins")
+
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @TestWithUser(username = "testexist_coin", roles = "ADMIN")
     void testDeleteCoin() throws Exception {
         mockMvc.perform(delete("/coins/{uid}", "testdelete-coin-1"))
                 .andExpect(status().isOk());
+    }
+
+    @TestWithUser(username = "another_user")
+    void testDeleteCoin_Forbidden() throws Exception {
+        mockMvc.perform(delete("/coins/{uid}", "testdelete-coin-1"))
+                .andExpect(status().isForbidden());
     }
 
     @TestWithUser(username = "testexist_coin")

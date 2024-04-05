@@ -8,7 +8,6 @@ import com.cgzt.coinscode.coins.domain.ports.inbound.queries.model.GetCoinsResul
 import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,6 +62,11 @@ class CoinsController {
     @ApiResponse(responseCode = "200", description = "Successful operation")
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     @ApiResponse(responseCode = "404", description = "Coin not found", content = @Content)
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+    @PostAuthorize(/*@formatter:off*/"""
+        hasAnyRole('ADMIN', 'EMPLOYEE')
+        or returnObject.username == authentication.name
+    """/*@formatter:on*/)
     public GetCoinResult getCoin(@PathVariable final String uid) {
         return getCoinQueryHandler.handle(uid);
     }
@@ -72,6 +77,11 @@ class CoinsController {
     @ApiResponse(responseCode = "201", description = "Coin created")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "400", description = "Invalid input")
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+    @PreAuthorize("""
+            hasAnyRole('ADMIN','EMPLOYEE') \s
+            or #command.username == authentication.name
+            """)
     public void createCoin(@Valid @RequestBody final CreateCoinCommandHandler.Command command) {
         createCoinCommandHandler.handle(command);
     }
@@ -81,6 +91,11 @@ class CoinsController {
     @ApiResponse(responseCode = "200", description = "Coin updated")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "400", description = "Invalid input")
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+    @PreAuthorize("""
+                hasAnyRole('ADMIN','EMPLOYEE') \s
+                or #command.username == authentication.name
+            """)
     public void updateCoin(@Valid @RequestBody final UpdateCoinCommandHandler.Command command) {
         updateCoinCommandHandler.handle(command);
     }
@@ -90,6 +105,11 @@ class CoinsController {
     @ApiResponse(responseCode = "200", description = "Coin deleted")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "404", description = "Coin not found")
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+    @PreAuthorize(/*@formatter:off*/"""
+        hasAnyRole('ADMIN', 'EMPLOYEE')
+        or @getCoinQueryHandler.handle(#uid).username == authentication.name
+    """/*@formatter:on*/)
     public void deleteCoin(@PathVariable final String uid) {
         deleteCoinCommandHandler.handle(uid);
     }

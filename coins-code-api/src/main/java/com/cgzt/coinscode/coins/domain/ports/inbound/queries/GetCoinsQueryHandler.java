@@ -3,7 +3,6 @@ package com.cgzt.coinscode.coins.domain.ports.inbound.queries;
 import com.cgzt.coinscode.coins.domain.ports.inbound.queries.mappers.GetCoinsResultMapper;
 import com.cgzt.coinscode.coins.domain.ports.inbound.queries.model.GetCoinsResult;
 import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.CurrentUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetCoinsQueryHandler {
     private final CoinsRepository coinsRepository;
-    private final CurrentUserRepository currentUserRepository;
     private final GetCoinsResultMapper mapper;
 
     public GetCoinsResult handle(Query query) {

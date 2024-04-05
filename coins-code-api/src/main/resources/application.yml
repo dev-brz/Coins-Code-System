@@ -44,13 +44,8 @@ security:
 
 
 user:
-  employees:
-    roles: ADMIN,EMPLOYEE
-  client:
-    roles: USER,SENDER,RECEIVER
   default:
     password: ${CD_USER_DEFAULT_PASSWORD}
-
   profile:
     image-url: "http://localhost:${server.port}/users/image?name="
     dir: "${user.home}/coin-code/images/user-profiles"
