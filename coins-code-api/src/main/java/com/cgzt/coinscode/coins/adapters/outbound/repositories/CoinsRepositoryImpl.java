@@ -3,19 +3,19 @@ package com.cgzt.coinscode.coins.adapters.outbound.repositories;
 import com.cgzt.coinscode.coins.adapters.outbound.entities.CoinEntity;
 import com.cgzt.coinscode.coins.adapters.outbound.mappers.CoinsMapper;
 import com.cgzt.coinscode.coins.domain.models.Coin;
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Service
+@Repository
 @RequiredArgsConstructor
 class CoinsRepositoryImpl implements CoinsRepository {
     private final CoinsJpaRepository coinsJpaRepository;
@@ -138,7 +138,7 @@ class CoinsRepositoryImpl implements CoinsRepository {
 
     private CoinEntity populateCoinEntity(Coin coin, Long id) {
         var coinEntity = mapper.map(coin);
-        var userAccount = new UserAccount();
+        var userAccount = new UserAccountEntity();
 
         userAccount.setId(id);
         coinEntity.setUserAccount(userAccount);

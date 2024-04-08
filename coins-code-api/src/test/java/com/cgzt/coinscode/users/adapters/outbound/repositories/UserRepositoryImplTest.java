@@ -1,14 +1,15 @@
 package com.cgzt.coinscode.users.adapters.outbound.repositories;
 
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
 import com.cgzt.coinscode.users.adapters.outbound.mappers.UserMapper;
 import com.cgzt.coinscode.users.domain.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,42 +17,38 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class UserRepositoryImplTest {
     @Mock
     SpringJpaUserAccountRepository jpaUserAccountRepository;
-
     @Mock
     SpringSecurityUserRepository securityUserRepository;
-
     @Mock
     UserMapper mapper;
-
     @InjectMocks
     UserRepositoryImpl repository;
 
     User user;
-    UserAccount userAccount;
+    UserAccountEntity userAccount;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        user = User.builder()
+                .username("test")
+                .email("test@test.com")
+                .firstName("Test")
+                .lastName("Test")
+                .phoneNumber("1234567890")
+                .imageName("n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=.png")
+                .build();
 
-        user = new User();
-        user.setUsername("test");
-        user.setEmail("test@test.com");
-        user.setFirstName("Test");
-        user.setLastName("Test");
-        user.setPhoneNumber("1234567890");
-        user.setImageName("n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=.png");
-
-        userAccount = new UserAccount();
+        userAccount = new UserAccountEntity();
         userAccount.setUsername("test");
         userAccount.setEmail("test@test.com");
         userAccount.setFirstName("Test");
         userAccount.setLastName("Test");
         userAccount.setPhoneNumber("1234567890");
         userAccount.setImageName("n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=.png");
-
     }
 
     @Test
@@ -80,7 +77,7 @@ class UserRepositoryImplTest {
 
     @Test
     void findAll() {
-        List<UserAccount> daoList = List.of(userAccount);
+        List<UserAccountEntity> daoList = List.of(userAccount);
         List<User> dtoList = List.of(user);
         when(jpaUserAccountRepository.findAll()).thenReturn(daoList);
         when(mapper.toUsers(daoList)).thenReturn(dtoList);

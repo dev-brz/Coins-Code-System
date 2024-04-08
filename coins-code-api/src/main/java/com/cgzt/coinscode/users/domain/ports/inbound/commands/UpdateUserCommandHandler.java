@@ -1,7 +1,7 @@
 package com.cgzt.coinscode.users.domain.ports.inbound.commands;
 
 import com.cgzt.coinscode.users.domain.ports.inbound.commands.mappers.UserCommandMapper;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

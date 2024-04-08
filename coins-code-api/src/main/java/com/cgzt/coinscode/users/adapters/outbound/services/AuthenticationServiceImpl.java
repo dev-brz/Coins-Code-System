@@ -1,6 +1,6 @@
 package com.cgzt.coinscode.users.adapters.outbound.services;
 
-import com.cgzt.coinscode.users.domain.ports.outbound.service.AuthenticationService;
+import com.cgzt.coinscode.users.domain.ports.outbound.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;

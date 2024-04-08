@@ -3,17 +3,8 @@ package com.cgzt.coinscode.transactions.adapters.outbound.entities;
 import com.cgzt.coinscode.coins.adapters.outbound.entities.CoinEntity;
 import com.cgzt.coinscode.transactions.domain.models.TransactionStatus;
 import com.cgzt.coinscode.transactions.domain.models.TransactionType;
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,9 +21,9 @@ public class TransactionEntity {
     private Long id;
     private String number;
     @ManyToOne
-    private UserAccount source;
+    private UserAccountEntity source;
     @ManyToOne
-    private UserAccount dest;
+    private UserAccountEntity dest;
     @OneToOne
     private CoinEntity sourceCoin;
     @OneToOne

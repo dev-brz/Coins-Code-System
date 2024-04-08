@@ -1,22 +1,22 @@
 package com.cgzt.coinscode.transactions.adapters.outbound.repositories;
 
 import com.cgzt.coinscode.coins.adapters.outbound.entities.CoinEntity;
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
 import com.cgzt.coinscode.transactions.adapters.outbound.entities.TransactionEntity;
 import com.cgzt.coinscode.transactions.adapters.outbound.mappers.TransactionsMapper;
 import com.cgzt.coinscode.transactions.domain.models.Transaction;
-import com.cgzt.coinscode.transactions.domain.ports.outbound.repository.TransactionsRepository;
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.transactions.domain.ports.outbound.repositories.TransactionsRepository;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@Repository
 @RequiredArgsConstructor
-@Service
 class TransactionsRepositoryImpl implements TransactionsRepository {
     private final TransactionsJpaRepository transactionsJpaRepository;
     private final UserRepository userRepository;
@@ -61,7 +61,7 @@ class TransactionsRepositoryImpl implements TransactionsRepository {
         coin.setId(coinsRepository.findIdByUid(coin.getUid()));
     }
 
-    private void populateUserId(UserAccount user) {
+    private void populateUserId(UserAccountEntity user) {
         userRepository.findIdByUsername(user.getUsername())
                 .ifPresent(user::setId);
     }

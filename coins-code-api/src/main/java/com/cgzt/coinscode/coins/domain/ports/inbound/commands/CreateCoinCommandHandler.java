@@ -1,7 +1,7 @@
 package com.cgzt.coinscode.coins.domain.ports.inbound.commands;
 
 import com.cgzt.coinscode.coins.domain.models.Coin;
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

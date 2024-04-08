@@ -1,32 +1,31 @@
-create table IF NOT EXISTS users(
-	username varchar_ignorecase(50) not null primary key,
-	password varchar_ignorecase(500) not null,
-	enabled boolean not null
+CREATE TABLE IF NOT EXISTS users(
+	username VARCHAR_IGNORECASE(50) NOT NULL PRIMARY KEY,
+	password VARCHAR_IGNORECASE(500) NOT NULL,
+	enabled BOOLEAN NOT NULL
 );
 
-create table IF NOT EXISTS authorities (
-	username varchar_ignorecase(50) not null,
-	authority varchar_ignorecase(50) not null,
-	constraint fk_authorities_users foreign key(username) references users(username)
+CREATE TABLE IF NOT EXISTS authorities(
+	username VARCHAR_IGNORECASE(50) NOT NULL,
+	authority VARCHAR_IGNORECASE(50) NOT NULL,
+	CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username)
 );
-create unique index IF NOT EXISTS ix_auth_username on authorities (username, authority);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_auth_username ON authorities(username, authority);
 
-CREATE TABLE IF NOT EXISTS user_account (
+CREATE TABLE IF NOT EXISTS user_account(
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    username varchar(255) NOT NULL UNIQUE,
-    first_name varchar(255),
-    last_name varchar(255),
-    email varchar(255) NOT NULL UNIQUE,
-    phone_number varchar(255) NOT NULL UNIQUE,
-    image_name varchar(255),
-    number_of_sends int,
-    number_of_receives int,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone_number VARCHAR(255) NOT NULL UNIQUE,
+    image_name VARCHAR(255),
+    number_of_sends INT,
+    number_of_receives INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     active boolean DEFAULT TRUE,
-    send_limits int
+    send_limits INT
 );
-
-CREATE UNIQUE INDEX IF NOT EXISTS user_account_username ON user_account (username);
+CREATE UNIQUE INDEX IF NOT EXISTS user_account_username ON user_account(username);
 
 CREATE TABLE IF NOT EXISTS coins (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -39,7 +38,7 @@ CREATE TABLE IF NOT EXISTS coins (
     FOREIGN KEY (user_account_id) REFERENCES user_account(id)
 );
 
- CREATE TABLE IF NOT EXISTS transactions (
+CREATE TABLE IF NOT EXISTS transactions (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     number VARCHAR(30) NOT NULL UNIQUE,
     source_id BIGINT NOT NULL,
@@ -55,4 +54,4 @@ CREATE TABLE IF NOT EXISTS coins (
     FOREIGN KEY (dest_id) REFERENCES user_account(id),
     FOREIGN KEY (source_coin_id) REFERENCES coins(id),
     FOREIGN KEY (dest_coin_id) REFERENCES coins(id)
- );
+);

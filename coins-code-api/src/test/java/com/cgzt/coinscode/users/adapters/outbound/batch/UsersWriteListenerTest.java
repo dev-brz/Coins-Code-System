@@ -1,12 +1,14 @@
 package com.cgzt.coinscode.users.adapters.outbound.batch;
 
 import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
 import com.cgzt.coinscode.users.domain.models.UserImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,22 +17,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class UsersWriteListenerTest {
     @Mock
     JdbcTemplate template;
     @Mock
     ImageService imageService;
-
+    @InjectMocks
     UsersWriteListener usersWriteListener;
 
-    UserAccount user;
+    UserAccountEntity user;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        usersWriteListener = new UsersWriteListener(imageService, null, template);
-
-        user = new UserAccount();
+        user = new UserAccountEntity();
         user.setUsername("test");
         user.setEmail("test@test.com");
         user.setFirstName("Test");

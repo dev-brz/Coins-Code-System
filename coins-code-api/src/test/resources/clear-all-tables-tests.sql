@@ -1,5 +1,0 @@
-DELETE FROM transactions;
-DELETE FROM coins;
-DELETE FROM AUTHORITIES;
-DELETE FROM user_account;
-DELETE FROM users;

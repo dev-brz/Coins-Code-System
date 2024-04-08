@@ -2,8 +2,8 @@ package com.cgzt.coinscode.users.domain.ports.inbound.commands;
 
 import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
 import com.cgzt.coinscode.users.domain.models.User;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.CurrentUserRepository;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.CurrentUserRepository;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;

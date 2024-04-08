@@ -4,7 +4,7 @@ import com.cgzt.coinscode.coins.adapters.outbound.entities.CoinEntity;
 import com.cgzt.coinscode.transactions.adapters.outbound.entities.TransactionEntity;
 import com.cgzt.coinscode.transactions.domain.models.Transaction;
 import com.cgzt.coinscode.transactions.domain.models.TransactionTarget;
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -28,7 +28,7 @@ public interface TransactionsMapper {
 
     List<Transaction> map(List<TransactionEntity> transactions);
 
-    UserAccount mapAccount(TransactionTarget transactionTarget);
+    UserAccountEntity mapAccount(TransactionTarget transactionTarget);
 
     default CoinEntity mapCoin(TransactionTarget target) {
         if (target == null) {
@@ -43,7 +43,7 @@ public interface TransactionsMapper {
         return coinEntity;
     }
 
-    default TransactionTarget mapTarget(UserAccount userAccount, CoinEntity coinEntity) {
+    default TransactionTarget mapTarget(UserAccountEntity userAccount, CoinEntity coinEntity) {
         if (userAccount != null && coinEntity != null) {
             return TransactionTarget.builder()
                     .username(userAccount.getUsername())

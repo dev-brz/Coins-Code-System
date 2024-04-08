@@ -1,8 +1,8 @@
 package com.cgzt.coinscode.coins.domain.ports.inbound.queries;
 
 import com.cgzt.coinscode.coins.domain.ports.inbound.queries.mappers.GetCoinsResultMapper;
-import com.cgzt.coinscode.coins.domain.ports.inbound.queries.model.GetCoinsResult;
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
+import com.cgzt.coinscode.coins.domain.ports.inbound.queries.models.GetCoinsResult;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

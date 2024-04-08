@@ -1,15 +1,8 @@
 package com.cgzt.coinscode.coins.adapters.outbound.entities;
 
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -18,7 +11,6 @@ import java.math.BigDecimal;
 @Table(name = "coins")
 @Setter
 @Getter
-@NoArgsConstructor
 public class CoinEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +18,7 @@ public class CoinEntity {
     @Column(insertable = false)
     private String uid;
     @ManyToOne
-    private UserAccount userAccount;
+    private UserAccountEntity userAccount;
     private String name;
     private String imageName;
     private String description;

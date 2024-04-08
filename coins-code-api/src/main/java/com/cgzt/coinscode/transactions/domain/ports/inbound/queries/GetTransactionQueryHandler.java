@@ -1,13 +1,13 @@
 package com.cgzt.coinscode.transactions.domain.ports.inbound.queries;
 
 import com.cgzt.coinscode.transactions.domain.ports.inbound.commands.mappers.GetTransactionResultMapper;
-import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.model.GetTransactionResult;
-import com.cgzt.coinscode.transactions.domain.ports.outbound.repository.TransactionsRepository;
+import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.models.GetTransactionResult;
+import com.cgzt.coinscode.transactions.domain.ports.outbound.repositories.TransactionsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class GetTransactionQueryHandler {
     private final TransactionsRepository transactionsRepository;
     private final GetTransactionResultMapper mapper;

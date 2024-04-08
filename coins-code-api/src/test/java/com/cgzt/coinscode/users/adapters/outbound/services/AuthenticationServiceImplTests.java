@@ -1,10 +1,12 @@
 package com.cgzt.coinscode.users.adapters.outbound.services;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,17 +18,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 class AuthenticationServiceImplTests {
-    UserDetailsService userDetailsService = Mockito.mock(UserDetailsService.class);
-    PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
+    @Mock
+    UserDetailsService userDetailsService;
+    @Mock
+    PasswordEncoder passwordEncoder;
+    @InjectMocks
     AuthenticationServiceImpl authenticationService;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         UserDetails anyUserDetails = User.withUsername("any").password("any").build();
         when(userDetailsService.loadUserByUsername(anyString())).thenReturn(anyUserDetails);
-        authenticationService = new AuthenticationServiceImpl(userDetailsService, passwordEncoder);
     }
 
     @Test

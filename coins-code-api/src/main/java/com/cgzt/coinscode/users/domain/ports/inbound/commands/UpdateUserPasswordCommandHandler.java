@@ -1,8 +1,8 @@
 package com.cgzt.coinscode.users.domain.ports.inbound.commands;
 
 import com.cgzt.coinscode.users.domain.models.User;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.CurrentUserRepository;
-import com.cgzt.coinscode.users.domain.ports.outbound.service.AuthenticationService;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.CurrentUserRepository;
+import com.cgzt.coinscode.users.domain.ports.outbound.services.AuthenticationService;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

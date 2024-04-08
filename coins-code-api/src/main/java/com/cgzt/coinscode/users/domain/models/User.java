@@ -1,10 +1,12 @@
 package com.cgzt.coinscode.users.domain.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class User {
     private String username;
     private String firstName;

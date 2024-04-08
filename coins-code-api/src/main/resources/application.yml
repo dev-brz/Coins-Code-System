@@ -42,7 +42,6 @@ security:
     /error,
     /users/login
 
-
 user:
   default:
     password: ${CD_USER_DEFAULT_PASSWORD}

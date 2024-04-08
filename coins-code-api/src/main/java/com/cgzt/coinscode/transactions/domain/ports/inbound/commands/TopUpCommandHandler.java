@@ -1,11 +1,11 @@
 package com.cgzt.coinscode.transactions.domain.ports.inbound.commands;
 
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
 import com.cgzt.coinscode.transactions.domain.models.Transaction;
 import com.cgzt.coinscode.transactions.domain.models.TransactionStatus;
 import com.cgzt.coinscode.transactions.domain.models.TransactionTarget;
 import com.cgzt.coinscode.transactions.domain.models.TransactionType;
-import com.cgzt.coinscode.transactions.domain.ports.outbound.repository.TransactionsRepository;
+import com.cgzt.coinscode.transactions.domain.ports.outbound.repositories.TransactionsRepository;
 import com.cgzt.coinscode.transactions.domain.ports.outbound.strategies.TransactionNumberGeneratorStrategy;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class TopUpCommandHandler {
     private final CoinsRepository coinsRepository;
     private final TransactionsRepository transactionsRepository;

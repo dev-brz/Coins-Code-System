@@ -1,8 +1,8 @@
 package com.cgzt.coinscode.users.adapters.outbound.repositories;
 
 import com.cgzt.coinscode.users.domain.models.User;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.CurrentUserRepository;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.CurrentUserRepository;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

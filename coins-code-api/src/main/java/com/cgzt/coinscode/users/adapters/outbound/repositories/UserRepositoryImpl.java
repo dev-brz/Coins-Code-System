@@ -1,10 +1,10 @@
 package com.cgzt.coinscode.users.adapters.outbound.repositories;
 
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
 import com.cgzt.coinscode.users.adapters.outbound.mappers.UserMapper;
 import com.cgzt.coinscode.users.domain.models.User;
-import com.cgzt.coinscode.users.domain.ports.inbound.commands.model.UserUpdate;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.domain.ports.inbound.commands.models.UserUpdate;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -55,7 +55,7 @@ class UserRepositoryImpl implements UserRepository {
         if (jpaUserRepository.existsByUsernameOrEmailOrPhoneNumber(user.getUsername(), user.getEmail(), user.getPhoneNumber())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username, email or phone number is already taken");
         }
-        UserAccount userAccount = userMapper.toUserAccount(user);
+        UserAccountEntity userAccount = userMapper.toUserAccount(user);
 
         securityUserRepository.createUserAccount(user.getUsername(), password);
         jpaUserRepository.save(userAccount);
@@ -63,7 +63,7 @@ class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(UserUpdate userUpdate) {
-        UserAccount currentUser = jpaUserRepository.findByUsername(userUpdate.username())
+        UserAccountEntity currentUser = jpaUserRepository.findByUsername(userUpdate.username())
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
 
         validateBeforeUpdate(userUpdate);

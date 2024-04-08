@@ -1,14 +1,14 @@
 package com.cgzt.coinscode.coins.domain.ports.inbound.commands;
 
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
 import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UpdateCoinImageCommandHandler {
     private final ImageService imageService;
     private final CoinsRepository coinsRepository;

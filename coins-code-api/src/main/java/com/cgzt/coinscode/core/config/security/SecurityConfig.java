@@ -15,15 +15,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
+@EnableMethodSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig {
-    private final CorsConfigurationSource corsConfigurationSource;
-    private final UserDetailsManager userDetailsManager;
-
     @Bean
     SecurityFilterChain filterChain(@Value("${security.permittedMatchers}") final String[] permittedMatchers,
                                     @Value("${swagger.permittedMatchers}") final String[] swaggerEndpoints,
+                                    final CorsConfigurationSource corsConfigurationSource,
+                                    final UserDetailsManager userDetailsManager,
                                     final AuthenticationEntryPoint entryPoint,
                                     final HttpSecurity http) throws Exception {
         return http

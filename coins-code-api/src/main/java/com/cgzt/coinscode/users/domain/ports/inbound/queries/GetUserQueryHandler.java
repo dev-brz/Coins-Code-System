@@ -1,8 +1,8 @@
 package com.cgzt.coinscode.users.domain.ports.inbound.queries;
 
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.mappers.UserQueryMapper;
-import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUserResult;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.domain.ports.inbound.queries.models.GetUserResult;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

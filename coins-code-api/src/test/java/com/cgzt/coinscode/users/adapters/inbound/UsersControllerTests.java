@@ -1,13 +1,13 @@
 package com.cgzt.coinscode.users.adapters.inbound;
 
-import com.cgzt.coinscode.annotations.TestWithUser;
-import com.cgzt.coinscode.users.domain.models.User;
+import com.cgzt.coinscode.core.annotations.TestWithUser;
+import com.cgzt.coinscode.core.utils.TestUtils;
 import com.cgzt.coinscode.users.domain.ports.inbound.commands.CreateUserCommandHandler;
 import com.cgzt.coinscode.users.domain.ports.inbound.commands.UpdateUserCommandHandler;
 import com.cgzt.coinscode.users.domain.ports.inbound.commands.UserLoginCommandHandler;
-import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUserResult;
-import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUsersResult;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.domain.ports.inbound.queries.models.GetUserResult;
+import com.cgzt.coinscode.users.domain.ports.inbound.queries.models.GetUsersResult;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +33,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Sql(value =
-        {
-                "/clear-all-tables-tests.sql",
-                "/user-controller-tests.sql",
-        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@AutoConfigureMockMvc
+@Sql(value = {
+        "/sqls/clear-all-tables-tests.sql",
+        "/sqls/user-controller-tests.sql",
+}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class UsersControllerTests {
-    static final String PROFILE_IMAGE_NAME = "9x5uWsChomR9y1TeA0ZxqNME5up4-PnD7k7uMF7J8S4=.png";
-    static String USERS_LOGIN_URL = USERS + LOGIN;
+    String PROFILE_IMAGE_NAME = "9x5uWsChomR9y1TeA0ZxqNME5up4-PnD7k7uMF7J8S4=.png";
 
-    @Value("${user.profile.dir}")
-    String imageDir;
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -53,65 +49,97 @@ class UsersControllerTests {
     @Autowired
     UserRepository userRepository;
 
+    @Value("${user.profile.dir}")
+    String imageDir;
+
     @Test
     void login_shouldReturn400_whenNoRequestBodyIsPresent() throws Exception {
-        mockMvc.perform(post(USERS_LOGIN_URL)).andExpect(status().isBadRequest());
+        mockMvc.perform(post(USERS + LOGIN))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     void login_shouldReturn401_whenUserDoesNotExist() throws Exception {
-        String requestBody = objectMapper.writeValueAsString(new UserLoginCommandHandler.Command("testnotexist", new char[]{}));
+        var command = new UserLoginCommandHandler.Command("testnotexist", "".toCharArray());
+        var requestBody = objectMapper.writeValueAsString(command);
 
-        mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(post(USERS + LOGIN)
+                        .content(requestBody).contentType(APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void login_shouldReturn401_whenProvidedCredentialsAreInvalid() throws Exception {
-        String requestBody = objectMapper.writeValueAsString(
-                new UserLoginCommandHandler.Command("testexist", "bad".toCharArray()));
+        var command = new UserLoginCommandHandler.Command("testexist", "bad".toCharArray());
+        var requestBody = objectMapper.writeValueAsString(command);
 
-        mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(post(USERS + LOGIN)
+                        .content(requestBody).contentType(APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void login_shouldReturn2xx_whenProvidedCredentialsAreValid() throws Exception {
-        String requestBody = objectMapper.writeValueAsString(
-                new UserLoginCommandHandler.Command("testexist", "resu".toCharArray()));
+        var command = new UserLoginCommandHandler.Command("testexist", "resu".toCharArray());
+        var requestBody = objectMapper.writeValueAsString(command);
 
-        mockMvc.perform(post(USERS_LOGIN_URL).contentType(APPLICATION_JSON).content(requestBody))
+        mockMvc.perform(post(USERS + LOGIN)
+                        .content(requestBody).contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void register_shouldReturn400_whenUsernameIsTaken() throws Exception {
-        String user = objectMapper.writeValueAsString(
-                new CreateUserCommandHandler.Command(
-                        "testexist",
-                        "test",
-                        "test",
-                        "test",
-                        "test",
-                        "password".toCharArray()));
+        var command = new CreateUserCommandHandler.Command(
+                "testexist",
+                "test",
+                "test",
+                "test",
+                "test",
+                "password".toCharArray());
+        var requestBody = objectMapper.writeValueAsString(command);
 
-        mockMvc.perform(post(USERS).content(user).contentType(APPLICATION_JSON))
+        mockMvc.perform(post(USERS)
+                        .content(requestBody).contentType(APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void register_shouldReturn2xx_whenProvidedBodyIsValid() throws Exception {
-        String user = objectMapper.writeValueAsString(
-                new CreateUserCommandHandler.Command(
-                        "test",
-                        "test",
-                        "test",
-                        "test",
-                        "test",
-                        "password".toCharArray()));
+        var command = new CreateUserCommandHandler.Command(
+                "test",
+                "test",
+                "test",
+                "test",
+                "test",
+                "password".toCharArray());
+        var requestBody = objectMapper.writeValueAsString(command);
 
-        mockMvc.perform(post(USERS).content(user).contentType(APPLICATION_JSON))
+        mockMvc.perform(post(USERS)
+                        .content(requestBody).contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @TestWithUser(username = "testexist")
+    void update_shouldBeSuccessful_whenProvidedBodyIsValid() throws Exception {
+        var command = new UpdateUserCommandHandler.Command(
+                "testexist",
+                "test",
+                "test",
+                null,
+                null);
+        var requestBody = objectMapper.writeValueAsString(command);
+
+        mockMvc.perform(patch(USERS)
+                        .content(requestBody).contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        var updatedUser = userRepository.findByUsername(command.username()).orElseThrow();
+
+        assertEquals(command.firstName(), updatedUser.getFirstName());
+        assertEquals(command.lastName(), updatedUser.getLastName());
+        assertEquals("john.doe@example.com", updatedUser.getEmail());
+        assertEquals("1234567890", updatedUser.getPhoneNumber());
     }
 
     @TestWithUser(username = "username")
@@ -125,44 +153,17 @@ class UsersControllerTests {
 
     @TestWithUser(username = "nonexistent")
     void update_shouldReturn404_whenProvidedUserDoesNotExist() throws Exception {
-        String user = objectMapper.writeValueAsString(
-                new UpdateUserCommandHandler.Command(
-                        "nonexistent",
-                        "test",
-                        "test",
-                        "test",
-                        "test"));
+        var command = new UpdateUserCommandHandler.Command(
+                "nonexistent",
+                "test",
+                "test",
+                "test",
+                "test");
+        var requestBody = objectMapper.writeValueAsString(command);
 
         mockMvc.perform(patch(USERS)
-                        .content(user)
-                        .contentType(APPLICATION_JSON))
+                        .content(requestBody).contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-    }
-
-    @TestWithUser(username = "testexist")
-    void update_shouldBeSuccessful_whenProvidedBodyIsValid() throws Exception {
-        var updates = new UpdateUserCommandHandler.Command(
-                "testexist",
-                "test",
-                "test",
-                null,
-                null);
-
-        var user = objectMapper.writeValueAsString(updates);
-
-        mockMvc.perform(patch(USERS)
-                        .contentType(APPLICATION_JSON)
-                        .content(user))
-                .andExpect(status().isOk());
-
-        User updated = userRepository
-                .findByUsername(updates.username())
-                .orElseThrow();
-
-        assertEquals(updates.firstName(), updated.getFirstName());
-        assertEquals(updates.lastName(), updated.getLastName());
-        assertEquals("john.doe@example.com", updated.getEmail());
-        assertEquals("1234567890", updated.getPhoneNumber());
     }
 
     @TestWithUser(username = "username")
@@ -177,7 +178,7 @@ class UsersControllerTests {
     void delete_shouldBeSuccessful_whenUserExisted() throws Exception {
         var username = "testdelete";
 
-        mockMvc.perform(delete("%s/%s".formatted(USERS, username)))
+        mockMvc.perform(delete(USERS + USERNAME, username))
                 .andExpect(status().isOk());
 
         assertFalse(userRepository.existsByUsername(username));
@@ -190,10 +191,12 @@ class UsersControllerTests {
 
     @TestWithUser(username = "testexist", roles = "ADMIN")
     void getUsers_shouldBeSuccessful() throws Exception {
-        var results = mockMvc.perform(get(USERS)).andExpect(status().isOk()).andReturn();
+        var responseBody = mockMvc.perform(get(USERS))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
 
-        var body = results.getResponse().getContentAsString();
-        GetUsersResult users = objectMapper.readValue(body, GetUsersResult.class);
+        var users = objectMapper.readValue(responseBody, GetUsersResult.class);
 
         assertFalse(users.users().isEmpty());
     }
@@ -202,7 +205,7 @@ class UsersControllerTests {
     void getUser_shouldReturn403_whenUserTriesToGetNotSelf() throws Exception {
         String anotherUsername = "anotherUsername";
 
-        mockMvc.perform(get("%s/%s".formatted(USERS, anotherUsername)))
+        mockMvc.perform(get(USERS + USERNAME, anotherUsername))
                 .andExpect(status().isForbidden());
     }
 
@@ -210,10 +213,12 @@ class UsersControllerTests {
     void getUser_shouldBeSuccessful() throws Exception {
         var username = "testexist";
 
-        var results = mockMvc.perform(get("%s/%s".formatted(USERS, username))).andExpect(status().isOk()).andReturn();
+        var responseBody = mockMvc.perform(get(USERS + USERNAME, username))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
 
-        var body = results.getResponse().getContentAsString();
-        GetUserResult user = objectMapper.readValue(body, GetUserResult.class);
+        var user = objectMapper.readValue(responseBody, GetUserResult.class);
 
         assertEquals(username, user.username());
         assertEquals(PROFILE_IMAGE_NAME, user.imageName());
@@ -237,9 +242,13 @@ class UsersControllerTests {
 
     @TestWithUser(username = "testexist")
     void uploadImage_shouldSaveImageProperly() throws Exception {
-        var image = new MockMultipartFile("image", "profile.png", "image/png", new ClassPathResource("profile.png").getInputStream());
+        var image = new MockMultipartFile(
+                "image",
+                "profile.png",
+                "image/png",
+                new ClassPathResource("images/profile.png").getInputStream());
 
-        mockMvc.perform(multipart(USERS + "/image")
+        mockMvc.perform(multipart(USERS + IMAGE)
                         .file(image))
                 .andExpect(status().isOk());
 
@@ -249,15 +258,14 @@ class UsersControllerTests {
         assertNotNull(images);
         assertEquals(1, images.length);
 
-        //CLEAN IMAGE
-        FileSystemUtils.deleteRecursively(userProfilesDir);
+        TestUtils.cleanDirectory(userProfilesDir);
     }
 
     @TestWithUser(username = "testexist")
     void getImage_shouldReturnProperImage_whenUserAndImageExist() throws Exception {
         var imageName = userRepository.findByUsername("testexist")
                 .orElseThrow().getImageName();
-        var image = new ClassPathResource("profile.png");
+        var image = new ClassPathResource("images/profile.png");
         var profiles = new File(imageDir);
         var profile = new File(imageDir + "/" + PROFILE_IMAGE_NAME);
 
@@ -268,8 +276,7 @@ class UsersControllerTests {
                         .queryParam("imageName", imageName))
                 .andExpect(status().isOk());
 
-
-        FileSystemUtils.deleteRecursively(profiles);
+        TestUtils.cleanDirectory(profiles);
     }
 
     @TestWithUser(username = "testnoimage")
@@ -280,17 +287,19 @@ class UsersControllerTests {
 
     @TestWithUser(username = "testexist")
     void deleteImage_shouldDeleteImageFromDb_whenUserHasImage() throws Exception {
-        Path directory = Path.of(imageDir);
-        Path imagePath = directory.resolve(PROFILE_IMAGE_NAME);
+        var directory = Path.of(imageDir);
+        var imagePath = directory.resolve(PROFILE_IMAGE_NAME);
         Files.createDirectory(directory);
         Files.createFile(imagePath);
 
-        mockMvc.perform(delete(USERS + IMAGE)).andExpect(status().isNoContent());
-        String imageName = userRepository.findByUsername("testexist").orElseThrow().getImageName();
+        mockMvc.perform(delete(USERS + IMAGE))
+                .andExpect(status().isNoContent());
+
+        var imageName = userRepository.findByUsername("testexist").orElseThrow().getImageName();
 
         assertFalse(Files.exists(imagePath));
         assertNull(imageName);
 
-        FileSystemUtils.deleteRecursively(directory);
+        TestUtils.cleanDirectory(directory);
     }
 }

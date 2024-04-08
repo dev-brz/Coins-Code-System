@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface TransactionsJpaRepository extends JpaRepository<TransactionEntity, Long> {
+interface TransactionsJpaRepository extends JpaRepository<TransactionEntity, Long> {
     Optional<TransactionEntity> findByNumber(String number);
 
     @Query("SELECT t FROM TransactionEntity t WHERE t.source.username = :username OR t.dest.username = :username")

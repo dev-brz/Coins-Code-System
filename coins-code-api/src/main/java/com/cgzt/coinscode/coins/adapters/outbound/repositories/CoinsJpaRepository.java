@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 interface CoinsJpaRepository extends JpaRepository<CoinEntity, Long> {
-
     Optional<CoinEntity> findByUid(String uid);
 
     @Transactional

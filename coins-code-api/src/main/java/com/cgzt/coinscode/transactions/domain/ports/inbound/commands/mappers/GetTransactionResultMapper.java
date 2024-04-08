@@ -1,7 +1,7 @@
 package com.cgzt.coinscode.transactions.domain.ports.inbound.commands.mappers;
 
 import com.cgzt.coinscode.transactions.domain.models.Transaction;
-import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.model.GetTransactionResult;
+import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.models.GetTransactionResult;
 import org.mapstruct.Mapper;
 
 import java.util.List;

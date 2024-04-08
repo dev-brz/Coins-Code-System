@@ -5,8 +5,8 @@ import com.cgzt.coinscode.users.domain.ports.inbound.commands.*;
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.ExistsUserQueryHandler;
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.GetUserQueryHandler;
 import com.cgzt.coinscode.users.domain.ports.inbound.queries.GetUsersQueryHandler;
-import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUserResult;
-import com.cgzt.coinscode.users.domain.ports.inbound.queries.model.GetUsersResult;
+import com.cgzt.coinscode.users.domain.ports.inbound.queries.models.GetUserResult;
+import com.cgzt.coinscode.users.domain.ports.inbound.queries.models.GetUsersResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,16 +25,17 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static com.cgzt.coinscode.users.adapters.inbound.UsersController.USERS;
 
-@Tag(name = "Users", description = "The Users API")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(USERS)
+@RequiredArgsConstructor
+@Tag(name = "Users Controller", description = "Users API")
 class UsersController {
     public static final String USERS = "/users";
     public static final String LOGIN = "/login";
     public static final String USERNAME = "/{username}";
     public static final String PASSWORD = "/password";
     public static final String IMAGE = "/image";
+
     private final UserLoginCommandHandler userLoginCommandHandler;
     private final CreateUserCommandHandler createUserCommandHandler;
     private final UpdateUserCommandHandler updateUserCommandHandler;
@@ -46,103 +47,90 @@ class UsersController {
     private final GetUsersQueryHandler getUsersQueryHandler;
     private final ExistsUserQueryHandler existsUserQueryHandler;
     private final ImageService imageService;
-    @Value("${user.profile.dir}")
-    protected String imageDir;
 
-    @Operation(summary = "Login a user", description = "Login a user by username and password",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized")})
-    @SecurityRequirements
+    @Value("${user.profile.dir}")
+    private String imageDir;
+
     @PostMapping(LOGIN)
-    void login(@RequestBody UserLoginCommandHandler.Command command) {
+    @SecurityRequirements
+    @Operation(summary = "Login a user", description = "Login a user by username and password")
+    @ApiResponse(responseCode = "200", description = "Successful operation")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    void login(@RequestBody final UserLoginCommandHandler.Command command) {
         userLoginCommandHandler.handle(command);
     }
 
-    @Operation(summary = "Register a new user", description = "Create a new user with the provided information",
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "User created successfully"),
-                    @ApiResponse(responseCode = "400", description = "Username, email or phone number is already taken")
-            })
-    @SecurityRequirements
     @PostMapping
-    void register(@Valid @RequestBody CreateUserCommandHandler.Command command) {
+    @SecurityRequirements
+    @Operation(summary = "Register a new user", description = "Create a new user with the provided information")
+    @ApiResponse(responseCode = "201", description = "User created successfully")
+    @ApiResponse(responseCode = "400", description = "Username, email or phone number is already taken")
+    void register(@Valid @RequestBody final CreateUserCommandHandler.Command command) {
         createUserCommandHandler.handle(command);
     }
 
-    @Operation(summary = "Update user password", description = "Update the password of a user",
-            responses = {@ApiResponse(responseCode = "200", description = "Password updated successfully")})
     @PatchMapping(PASSWORD)
-    void updatePassword(@Valid @RequestBody UpdateUserPasswordCommandHandler.Command command) {
+    @Operation(summary = "Update user password", description = "Update the password of a user")
+    @ApiResponse(responseCode = "200", description = "Password updated successfully")
+    void updatePassword(@Valid @RequestBody final UpdateUserPasswordCommandHandler.Command command) {
         updateUserPasswordCommandHandler.handle(command);
     }
 
-    @Operation(summary = "Update user information", description = "Update the information of a user",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "User updated successfully"),
-                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
-            })
     @PatchMapping
-    @PreAuthorize("""
-                    hasAnyRole('ADMIN','EMPLOYEE')
-                    or #command.username == authentication.name
-            """)
-    void update(@Valid @RequestBody UpdateUserCommandHandler.Command command) {
+    @PreAuthorize(/*@formatter:off*/"""
+        hasAnyRole('ADMIN','EMPLOYEE')
+        or #command.username == authentication.name
+    """/*@formatter:on*/)
+    @Operation(summary = "Update user information", description = "Update the information of a user")
+    @ApiResponse(responseCode = "200", description = "User updated successfully")
+    @ApiResponse(responseCode = "403", description = "Forbidden")
+    void update(@Valid @RequestBody final UpdateUserCommandHandler.Command command) {
         updateUserCommandHandler.handle(command);
     }
 
-    @Operation(summary = "Delete a user", description = "Delete a user by username",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "User deleted successfully"),
-                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
-            })
     @DeleteMapping(USERNAME)
-    @PreAuthorize("""
-                    hasAnyRole('ADMIN','EMPLOYEE')
-                    or #username == authentication.name
-            """)
-    void delete(@PathVariable String username) {
+    @PreAuthorize(/*@formatter:off*/"""
+        hasAnyRole('ADMIN','EMPLOYEE')
+        or #username == authentication.name
+    """/*@formatter:on*/)
+    @Operation(summary = "Delete a user", description = "Delete a user by username")
+    @ApiResponse(responseCode = "200", description = "User deleted successfully")
+    @ApiResponse(responseCode = "403", description = "Forbidden")
+    void delete(@PathVariable final String username) {
         deleteUserCommandHandler.handle(new DeleteUserCommandHandler.Command(username));
     }
 
-
     @GetMapping
-    @Operation(summary = "Get all users", description = "Get a list of all users",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
-            })
     @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
+    @Operation(summary = "Get all users", description = "Get a list of all users")
+    @ApiResponse(responseCode = "200", description = "Successful operation")
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     GetUsersResult getUsers() {
         return getUsersQueryHandler.handle();
     }
 
-    @Operation(summary = "Get a user", description = "Get a user by username",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
-                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
-            })
     @GetMapping(USERNAME)
-    @PreAuthorize("""
-                    hasAnyRole('ADMIN','EMPLOYEE')
-                    or #username == authentication.name
-            """)
-    GetUserResult getUser(@PathVariable String username) {
+    @PreAuthorize(/*@formatter:off*/"""
+        hasAnyRole('ADMIN','EMPLOYEE')
+        or #username == authentication.name
+    """/*@formatter:on*/)
+    @Operation(summary = "Get a user", description = "Get a user by username")
+    @ApiResponse(responseCode = "200", description = "Successful operation")
+    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+    @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    GetUserResult getUser(@PathVariable final String username) {
         return getUserQueryHandler.handle(new GetUserQueryHandler.Query(username))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "Check if a user exists", description = "Check if a user exists by either username, email or telephone number",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "User exists"),
-                    @ApiResponse(responseCode = "404", description = "User not found")
-            })
-    @SecurityRequirements
     @RequestMapping(method = RequestMethod.HEAD)
-    void isUserExisting(@RequestParam(required = false) String username,
-                        @RequestParam(required = false) String email,
-                        @RequestParam(required = false) String phoneNumber) {
+    @SecurityRequirements
+    @Operation(summary = "Check if a user exists", description = "Check if a user exists by either username, email or telephone number")
+    @ApiResponse(responseCode = "200", description = "User exists")
+    @ApiResponse(responseCode = "404", description = "User not found")
+    void isUserExisting(@RequestParam(required = false) final String username,
+                        @RequestParam(required = false) final String email,
+                        @RequestParam(required = false) final String phoneNumber) {
         boolean userExists = existsUserQueryHandler
                 .handle(new ExistsUserQueryHandler.Query(username, email, phoneNumber));
 
@@ -152,31 +140,27 @@ class UsersController {
     }
 
     @PostMapping(value = IMAGE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Upload user image", description = "Upload an image for a user",
-            responses = {@ApiResponse(responseCode = "200", description = "Image uploaded successfully"),
-                    @ApiResponse(responseCode = "404", description = "User not found")
-            })
-    void uploadUserImage(@RequestParam MultipartFile image) {
+    @Operation(summary = "Upload user image", description = "Upload an image for a user")
+    @ApiResponse(responseCode = "200", description = "Image uploaded successfully")
+    @ApiResponse(responseCode = "404", description = "User not found")
+    void uploadUserImage(@RequestParam final MultipartFile image) {
         updateUserImageCommandHandler.handle(new UpdateUserImageCommandHandler.Command(image));
     }
 
     @GetMapping(IMAGE)
     @ResponseBody
-    @Operation(summary = "Get user image", description = "Get the image of a user by image name",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Successful operation"),
-                    @ApiResponse(responseCode = "400", description = "Image does not exist", content = @Content)
-            })
-    Resource getUserImage(@RequestParam String imageName) {
+    @Operation(summary = "Get user image", description = "Get the image of a user by image name")
+    @ApiResponse(responseCode = "200", description = "Successful operation")
+    @ApiResponse(responseCode = "400", description = "Image does not exist", content = @Content)
+    Resource getUserImage(@RequestParam final String imageName) {
         return imageService.load(imageName, imageDir);
     }
 
 
     @DeleteMapping(IMAGE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Delete current user image", responses = {
-            @ApiResponse(responseCode = "204", description = "Image deleted successfully"),
-    })
+    @Operation(summary = "Delete current user image")
+    @ApiResponse(responseCode = "204", description = "Image deleted successfully")
     void deleteUserImage() {
         deleteUserImageCommandHandler.handle();
     }

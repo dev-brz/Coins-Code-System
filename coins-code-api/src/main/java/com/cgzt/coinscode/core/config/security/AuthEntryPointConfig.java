@@ -8,7 +8,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 @Configuration
 public class AuthEntryPointConfig {
     @Bean
-    AuthenticationEntryPoint entryPoint(){
+    AuthenticationEntryPoint entryPoint() {
         return (request, response, authException) -> response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
     }
 }

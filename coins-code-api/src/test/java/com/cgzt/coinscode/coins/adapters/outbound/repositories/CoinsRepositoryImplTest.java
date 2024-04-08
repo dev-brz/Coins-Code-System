@@ -3,14 +3,16 @@ package com.cgzt.coinscode.coins.adapters.outbound.repositories;
 import com.cgzt.coinscode.coins.adapters.outbound.entities.CoinEntity;
 import com.cgzt.coinscode.coins.adapters.outbound.mappers.CoinsMapper;
 import com.cgzt.coinscode.coins.domain.models.Coin;
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,10 +22,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CoinsRepositoryImplTest {
     Coin coin;
     @Spy
@@ -39,8 +41,6 @@ class CoinsRepositoryImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         coin = Coin.builder()
                 .uid("testUid")
                 .username("testUser")
@@ -49,12 +49,10 @@ class CoinsRepositoryImplTest {
                 .description("testDescription")
                 .amount(new BigDecimal("0.0"))
                 .build();
-
     }
 
     @Test
     void testFindAllSuccess() {
-
         List<CoinEntity> coinEntities = new ArrayList<>();
         coinEntities.add(coinEntity);
         coinEntities.add(new CoinEntity());
@@ -111,9 +109,6 @@ class CoinsRepositoryImplTest {
 
     @Test
     void testSaveSuccess() {
-        var userAccount = new UserAccount();
-        userAccount.setId(1L);
-
         when(userRepository.findIdByUsername(coin.getUsername())).thenReturn(Optional.of(1L));
         when(coinsJpaRepository.save(coinEntity)).thenReturn(new CoinEntity());
         when(mapper.map(coin)).thenReturn(coinEntity);

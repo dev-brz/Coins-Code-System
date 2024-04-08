@@ -1,7 +1,9 @@
 package com.cgzt.coinscode.transactions.adapters.inbound;
 
-import com.cgzt.coinscode.annotations.TestWithUser;
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
+import com.cgzt.coinscode.core.annotations.TestWithUser;
+import com.cgzt.coinscode.transactions.domain.ports.inbound.commands.TopUpCommandHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,9 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 
-import static com.cgzt.coinscode.transactions.adapters.inbound.TransactionsController.TRANSACTIONS;
-import static com.cgzt.coinscode.transactions.adapters.inbound.TransactionsController.TRANSACTIONS_NUMBER;
-import static com.cgzt.coinscode.transactions.adapters.inbound.TransactionsController.TRANSACTIONS_TOPUP;
+import static com.cgzt.coinscode.transactions.adapters.inbound.TransactionsController.*;
 import static java.math.RoundingMode.HALF_UP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,18 +22,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Sql(value =
-        {
-                "/clear-all-tables-tests.sql",
-                "/transactions-controller-tests.sql",
-        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@AutoConfigureMockMvc
+@Sql(value = {
+        "/sqls/clear-all-tables-tests.sql",
+        "/sqls/transactions-controller-tests.sql",
+}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class TransactionsControllerTest {
-
     @Autowired
     MockMvc mockMvc;
-
+    @Autowired
+    ObjectMapper objectMapper;
     @Autowired
     CoinsRepository coinsRepository;
 
@@ -64,35 +63,31 @@ class TransactionsControllerTest {
                 .andExpect(status().isOk());
     }
 
-
     @TestWithUser(username = "test_transaction")
     void testGetTransactionByNumber() throws Exception {
-        mockMvc.perform(get(TRANSACTIONS_NUMBER, "TU-10000"))
+        mockMvc.perform(get(TRANSACTIONS + NUMBER, "TU-10000"))
                 .andExpect(status().isOk());
     }
 
     @TestWithUser(username = "test_transaction")
     void testGetTransactionByNumber_NotFound() throws Exception {
-        mockMvc.perform(get(TRANSACTIONS_NUMBER, "nonexistentCode"))
+        mockMvc.perform(get(TRANSACTIONS + NUMBER, "nonexistentCode"))
                 .andExpect(status().isNotFound());
     }
 
     @TestWithUser(username = "test_transaction")
     void testTopUp() throws Exception {
-        var requestBody = """
-                {
-                    "username": "test_transaction",
-                    "amount": 100,
-                    "description": "Test description",
-                    "coinUid": "test_transaction_coin"
-                }
-                """;
+        var command = new TopUpCommandHandler.Command(
+                "test_transaction_coin",
+                "test_transaction",
+                BigDecimal.valueOf(100),
+                "Test description");
+        var requestBody = objectMapper.writeValueAsString(command);
 
         var expected = BigDecimal.valueOf(200.00).setScale(2, HALF_UP);
 
-        mockMvc.perform(post(TRANSACTIONS_TOPUP)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+        mockMvc.perform(post(TRANSACTIONS + TOPUP)
+                        .content(requestBody).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         var actual = coinsRepository.findByUid("test_transaction_coin").getAmount();
@@ -102,33 +97,29 @@ class TransactionsControllerTest {
 
     @TestWithUser(username = "test_transaction")
     void testTopUp_InvalidRequest() throws Exception {
-        String requestBody = """
-                {
-                    "username": "test_transaction",
-                    "amount": -100
-                }
-                """;
+        var command = new TopUpCommandHandler.Command(
+                "test_transaction",
+                "test",
+                BigDecimal.valueOf(-100),
+                "test");
+        String requestBody = objectMapper.writeValueAsString(command);
 
-        mockMvc.perform(post(TRANSACTIONS_TOPUP)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+        mockMvc.perform(post(TRANSACTIONS + TOPUP)
+                        .content(requestBody).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @TestWithUser(username = "test_transaction")
     void testTopUp_NotFound() throws Exception {
-        String requestBody = """
-                {
-                    "coinUid": "nonexistentUid",
-                    "username": "test_transaction",
-                    "amount": 100,
-                    "description": "Test description"
-                }
-                """;
+        var command = new TopUpCommandHandler.Command(
+                "nonexistentUid",
+                "test_transaction",
+                BigDecimal.valueOf(100),
+                "Test description");
+        String requestBody = objectMapper.writeValueAsString(command);
 
-        mockMvc.perform(post(TRANSACTIONS_TOPUP)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+        mockMvc.perform(post(TRANSACTIONS + TOPUP)
+                        .content(requestBody).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 }

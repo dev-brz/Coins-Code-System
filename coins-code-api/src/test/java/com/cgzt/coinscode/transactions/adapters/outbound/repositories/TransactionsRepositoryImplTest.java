@@ -1,15 +1,15 @@
 package com.cgzt.coinscode.transactions.adapters.outbound.repositories;
 
 import com.cgzt.coinscode.coins.adapters.outbound.entities.CoinEntity;
-import com.cgzt.coinscode.coins.domain.ports.outbound.repository.CoinsRepository;
+import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
 import com.cgzt.coinscode.transactions.adapters.outbound.entities.TransactionEntity;
 import com.cgzt.coinscode.transactions.adapters.outbound.mappers.TransactionsMapper;
 import com.cgzt.coinscode.transactions.domain.models.Transaction;
 import com.cgzt.coinscode.transactions.domain.models.TransactionStatus;
 import com.cgzt.coinscode.transactions.domain.models.TransactionTarget;
 import com.cgzt.coinscode.transactions.domain.models.TransactionType;
-import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccount;
-import com.cgzt.coinscode.users.domain.ports.outbound.repository.UserRepository;
+import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +51,7 @@ class TransactionsRepositoryImplTest {
     @Test
     void save_Success() {
         var transactionEntity = new TransactionEntity();
-        var target = new UserAccount();
+        var target = new UserAccountEntity();
         var targetCoin = new CoinEntity();
 
         targetCoin.setUid("sourceCoinUid");

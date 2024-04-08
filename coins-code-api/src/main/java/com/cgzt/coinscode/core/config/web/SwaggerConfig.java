@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(security = @SecurityRequirement(name = "basicAuth"))
 @SecurityScheme(type = SecuritySchemeType.HTTP, scheme = "basic", name = "basicAuth")
-public class SwaggerConfig {
+class SwaggerConfig {
     static {
         SpringDocUtils.getConfig().replaceWithClass(char[].class, String.class);
     }

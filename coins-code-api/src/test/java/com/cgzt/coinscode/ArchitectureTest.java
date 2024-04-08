@@ -4,7 +4,6 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.library.GeneralCodingRules;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,12 +15,10 @@ class ArchitectureTest {
     JavaClasses javaClasses = new ClassFileImporter().importPackages("com.cgzt.coinscode");
 
     String[] blackListedPackages = new String[]{
-            //"..adapter..", // FIXME. Will fail. Resolve in [#73].
-            "..command..", "..domains..", "..entity..", "..inbounds..", "..mapper..",
-            //"..model..", // FIXME. Will fail. Resolve in [#73].
-            "..outbounds..", "..port..", "..query..",
-            // "..repository..", "..service..", // FIXME. Will fail. Resolve in [#73].
-            "..strategy.."};
+            "..adapter..", "..command..", "..domains..", "..entity..", "..inbounds..", "..mapper..",
+            "..model..", "..outbounds..", "..port..", "..query..", "..repository..", "..service..",
+            "..strategy.."
+    };
 
     @Test
     void domain_shouldNotDependOnAdapters() {
@@ -45,8 +42,6 @@ class ArchitectureTest {
     }
 
     @Test
-    @Disabled
-        // FIXME. Will fail. Resolve in [#73].
     void allPackagesExpectCore_shouldContainAdaptersAndDomainPackagesOnly() {
         ArchRule rule = classes()
                 .that().resideOutsideOfPackage("..core..")
