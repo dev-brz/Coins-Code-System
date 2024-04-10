@@ -5,6 +5,7 @@ import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsReposito
 import com.cgzt.coinscode.transactions.adapters.outbound.entities.TransactionEntity;
 import com.cgzt.coinscode.transactions.adapters.outbound.mappers.TransactionsMapper;
 import com.cgzt.coinscode.transactions.domain.models.Transaction;
+import com.cgzt.coinscode.transactions.domain.models.TransactionType;
 import com.cgzt.coinscode.transactions.domain.ports.outbound.repositories.TransactionsRepository;
 import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
 import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
@@ -29,6 +30,11 @@ class TransactionsRepositoryImpl implements TransactionsRepository {
 
         populate(transactionEntity);
 
+        if (transaction.getType() == TransactionType.TRANSFER) {
+            userRepository.incrementNumberOfSends(transaction.getSource().getUsername());
+            userRepository.incrementNumberOfReceives(transaction.getDest().getUsername());
+        }
+        
         transactionsJpaRepository.save(transactionEntity);
     }
 

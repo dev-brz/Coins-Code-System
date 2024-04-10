@@ -43,6 +43,8 @@ security:
     /users/login
 
 user:
+  limits:
+    reset-cron: "0 0 0 * * ?"
   default:
     password: ${CD_USER_DEFAULT_PASSWORD}
   profile:
@@ -54,6 +56,9 @@ coin:
     dir: "${user.home}/coin-code/images/coins"
 
 transaction:
+  code:
+    expiration-time: 600
+    clean-cron: "0 0 0 * * ?"
   number:
     prefix:
       top-up: "TU-"

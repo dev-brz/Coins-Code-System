@@ -21,11 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionsRepositoryImplTest {
@@ -69,6 +66,43 @@ class TransactionsRepositoryImplTest {
         when(userRepository.findIdByUsername(transaction.getSource().getUsername())).thenReturn(Optional.of(1L));
 
         transactionsRepository.save(transaction);
+
+        verify(transactionsJpaRepository).save(transactionEntity);
+        assertNotNull(transactionEntity.getSource().getId());
+        assertNotNull(transactionEntity.getDest().getId());
+        assertNotNull(transactionEntity.getSourceCoin().getId());
+        assertNotNull(transactionEntity.getDestCoin().getId());
+    }
+
+    @Test
+    void save_TransferSuccess() {
+        var transferTransaction = mock(Transaction.class);
+
+        var transactionEntity = new TransactionEntity();
+        var target = new UserAccountEntity();
+        var targetCoin = new CoinEntity();
+
+        targetCoin.setUid("sourceCoinUid");
+
+        target.setUsername("sourceUsername");
+
+        transactionEntity.setSource(target);
+        transactionEntity.setDest(target);
+
+        transactionEntity.setSourceCoin(targetCoin);
+        transactionEntity.setDestCoin(targetCoin);
+
+        when(transferTransaction.getType()).thenReturn(TransactionType.TRANSFER);
+        when(transferTransaction.getSource()).thenReturn(TransactionTarget.builder().username("sourceUsername").build());
+        when(transferTransaction.getDest()).thenReturn(TransactionTarget.builder().username("destUsername").build());
+
+        when(mapper.map(transferTransaction)).thenReturn(transactionEntity);
+        when(coinsRepository.findIdByUid("sourceCoinUid")).thenReturn(1L);
+        when(userRepository.findIdByUsername("sourceUsername")).thenReturn(Optional.of(1L));
+        doNothing().when(userRepository).incrementNumberOfSends("sourceUsername");
+        doNothing().when(userRepository).incrementNumberOfReceives("destUsername");
+
+        transactionsRepository.save(transferTransaction);
 
         verify(transactionsJpaRepository).save(transactionEntity);
         assertNotNull(transactionEntity.getSource().getId());

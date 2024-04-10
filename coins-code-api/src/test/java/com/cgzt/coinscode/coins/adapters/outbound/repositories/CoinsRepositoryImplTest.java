@@ -3,6 +3,8 @@ package com.cgzt.coinscode.coins.adapters.outbound.repositories;
 import com.cgzt.coinscode.coins.adapters.outbound.entities.CoinEntity;
 import com.cgzt.coinscode.coins.adapters.outbound.mappers.CoinsMapper;
 import com.cgzt.coinscode.coins.domain.models.Coin;
+import com.cgzt.coinscode.users.domain.models.User;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.CurrentUserRepository;
 import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -36,6 +37,8 @@ class CoinsRepositoryImplTest {
     UserRepository userRepository;
     @Mock
     CoinsMapper mapper;
+    @Mock
+    CurrentUserRepository currentUserRepository;
     @InjectMocks
     CoinsRepositoryImpl coinsRepositoryImpl;
 
@@ -178,5 +181,46 @@ class CoinsRepositoryImplTest {
         } catch (Exception e) {
             assertEquals("404 NOT_FOUND \"Coin not found by uid testUid\"", e.getMessage());
         }
+    }
+
+    @Test
+    void remove_withinLimits() {
+        var uid = "testUid";
+        var amount = new BigDecimal(1);
+        var currentUser = mock(User.class);
+
+        when(currentUser.getSendLimits()).thenReturn(new BigDecimal(100));
+        when(currentUser.getUsername()).thenReturn("mock");
+        when(coinEntity.getAmount()).thenReturn(BigDecimal.valueOf(200));
+        when(coinsJpaRepository.findByUid(uid)).thenReturn(Optional.of(coinEntity));
+        when(coinsJpaRepository.save(coinEntity)).thenReturn(new CoinEntity());
+        when(currentUserRepository.get()).thenReturn(currentUser);
+        when(coinsJpaRepository.findByUid(uid)).thenReturn(Optional.of(coinEntity));
+        when(coinsJpaRepository.save(coinEntity)).thenReturn(new CoinEntity());
+        doNothing().when(userRepository).removeSendLimits("mock", amount);
+        coinsRepositoryImpl.remove(uid, amount);
+
+        verify(coinEntity).setAmount(new BigDecimal(199));
+        verify(coinsJpaRepository).save(coinEntity);
+    }
+
+    @Test
+    void remove_withLessCoins() {
+        var uid = "testUid";
+        var amount = new BigDecimal(1);
+        var currentUser = mock(User.class);
+
+        when(currentUser.getSendLimits()).thenReturn(new BigDecimal(100));
+        when(currentUser.getUsername()).thenReturn("mock");
+        when(coinEntity.getAmount()).thenReturn(BigDecimal.valueOf(200));
+        when(coinsJpaRepository.findByUid(uid)).thenReturn(Optional.of(coinEntity));
+        when(coinsJpaRepository.save(coinEntity)).thenReturn(new CoinEntity());
+        when(currentUserRepository.get()).thenReturn(currentUser);
+        when(coinsJpaRepository.findByUid(uid)).thenReturn(Optional.of(coinEntity));
+        when(coinsJpaRepository.save(coinEntity)).thenReturn(new CoinEntity());
+        doNothing().when(userRepository).removeSendLimits("mock", amount);
+        coinsRepositoryImpl.remove(uid, amount);
+
+        assertThrows(RuntimeException.class, () -> coinsRepositoryImpl.remove(uid, new BigDecimal(201)));
     }
 }

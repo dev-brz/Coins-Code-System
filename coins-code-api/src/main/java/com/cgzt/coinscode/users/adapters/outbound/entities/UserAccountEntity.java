@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,5 +25,6 @@ public class UserAccountEntity {
     private int numberOfReceives;
     private LocalDateTime createdAt;
     private boolean active;
-    private int sendLimits;
+    private BigDecimal sendLimits;
+    private BigDecimal currentSendLimits;
 }

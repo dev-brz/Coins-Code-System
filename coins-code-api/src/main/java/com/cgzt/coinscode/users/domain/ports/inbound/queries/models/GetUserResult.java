@@ -1,6 +1,7 @@
 package com.cgzt.coinscode.users.domain.ports.inbound.queries.models;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record GetUserResult(
@@ -13,7 +14,8 @@ public record GetUserResult(
         int numberOfReceives,
         LocalDateTime createdAt,
         boolean active,
-        int sendLimits,
+        BigDecimal sendLimits,
+        BigDecimal currentSendLimits,
         String imageName
 ) {
 }

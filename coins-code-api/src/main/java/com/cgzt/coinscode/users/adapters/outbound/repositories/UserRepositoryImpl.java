@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,6 +91,32 @@ class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<Long> findIdByUsername(String username) {
         return jpaUserRepository.findIdByUsername(username);
+    }
+
+    @Override
+    public void resetLimits() {
+        jpaUserRepository.resetLimits();
+    }
+
+    @Override
+    public void removeSendLimits(String username, BigDecimal amount) {
+        jpaUserRepository.findByUsername(username)
+                .filter(userAccountEntity -> userAccountEntity.getCurrentSendLimits().compareTo(amount) >= 0)
+                .map(userAccountEntity -> {
+                    userAccountEntity.setCurrentSendLimits(userAccountEntity.getCurrentSendLimits().subtract(amount));
+                    return jpaUserRepository.save(userAccountEntity);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exceeded daily send limits"));
+    }
+
+    @Override
+    public void incrementNumberOfSends(String username) {
+        jpaUserRepository.incrementNumberOfSends(username);
+    }
+
+    @Override
+    public void incrementNumberOfReceives(String username) {
+        jpaUserRepository.incrementNumberOfReceives(username);
     }
 
     private void validateBeforeUpdate(UserUpdate user) {

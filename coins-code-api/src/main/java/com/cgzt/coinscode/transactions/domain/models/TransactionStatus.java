@@ -4,4 +4,5 @@ public enum TransactionStatus {
     REVERTED,
     PENDING,
     APPROVED,
+    COMPLETED,
 }

@@ -1,4 +1,4 @@
-package com.cgzt.coinscode.transactions.domain.ports.inbound.commands.mappers;
+package com.cgzt.coinscode.transactions.domain.ports.inbound.queries.mappers;
 
 import com.cgzt.coinscode.transactions.domain.models.Transaction;
 import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.models.GetTransactionResult;

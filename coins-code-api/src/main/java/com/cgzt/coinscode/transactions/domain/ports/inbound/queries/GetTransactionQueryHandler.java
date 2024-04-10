@@ -1,6 +1,6 @@
 package com.cgzt.coinscode.transactions.domain.ports.inbound.queries;
 
-import com.cgzt.coinscode.transactions.domain.ports.inbound.commands.mappers.GetTransactionResultMapper;
+import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.mappers.GetTransactionResultMapper;
 import com.cgzt.coinscode.transactions.domain.ports.inbound.queries.models.GetTransactionResult;
 import com.cgzt.coinscode.transactions.domain.ports.outbound.repositories.TransactionsRepository;
 import lombok.RequiredArgsConstructor;

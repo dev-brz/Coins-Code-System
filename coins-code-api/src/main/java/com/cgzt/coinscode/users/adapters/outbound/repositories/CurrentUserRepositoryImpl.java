@@ -4,12 +4,13 @@ import com.cgzt.coinscode.users.domain.models.User;
 import com.cgzt.coinscode.users.domain.ports.outbound.repositories.CurrentUserRepository;
 import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,9 +21,12 @@ class CurrentUserRepositoryImpl implements CurrentUserRepository {
 
     @Override
     public User get() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = ((UserDetails) auth.getPrincipal()).getUsername();
-        return userRepository.findByUsername(username).orElseThrow();
+        return userRepository.findByUsername(getUsername()).orElseThrow();
+    }
+
+    @Override
+    public Optional<Long> getId() {
+        return userRepository.findIdByUsername(getUsername());
     }
 
     @Override
@@ -31,5 +35,10 @@ class CurrentUserRepositoryImpl implements CurrentUserRepository {
                 passwordEncoder.encode(String.valueOf(oldPassword)),
                 passwordEncoder.encode(String.valueOf(newPassword))
         );
+    }
+
+    private String getUsername() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        return ((UserDetails) auth.getPrincipal()).getUsername();
     }
 }

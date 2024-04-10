@@ -28,9 +28,11 @@ public interface CoinsRepository {
 
     void validate(String uid);
 
-    void validate(String uid, String username);
-
+    boolean validate(String uid, String username);
+    
     void add(String uid, BigDecimal amount);
+
+    void remove(String uid, BigDecimal amount);
 
     Long findIdByUid(String uid);
 }

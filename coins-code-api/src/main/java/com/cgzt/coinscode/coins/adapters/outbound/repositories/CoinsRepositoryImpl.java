@@ -5,6 +5,7 @@ import com.cgzt.coinscode.coins.adapters.outbound.mappers.CoinsMapper;
 import com.cgzt.coinscode.coins.domain.models.Coin;
 import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsRepository;
 import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
+import com.cgzt.coinscode.users.domain.ports.outbound.repositories.CurrentUserRepository;
 import com.cgzt.coinscode.users.domain.ports.outbound.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -15,12 +16,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Repository
+@Repository("coinRepository")
 @RequiredArgsConstructor
 class CoinsRepositoryImpl implements CoinsRepository {
     private final CoinsJpaRepository coinsJpaRepository;
     private final UserRepository userRepository;
     private final CoinsMapper mapper;
+    private final CurrentUserRepository currentUserRepository;
 
     @Override
     public List<Coin> findAll() {
@@ -104,10 +106,11 @@ class CoinsRepositoryImpl implements CoinsRepository {
     }
 
     @Override
-    public void validate(String uid, String username) {
+    public boolean validate(String uid, String username) {
         if (!coinsJpaRepository.existsByUidAndUserAccountUsername(uid, username)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User %s does not have a coin with uid %s".formatted(username, uid));
         }
+        return true;
     }
 
     @Override
@@ -119,6 +122,19 @@ class CoinsRepositoryImpl implements CoinsRepository {
                 })
                 .map(coinsJpaRepository::save)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Coin not found by uid %s".formatted(uid)));
+    }
+
+    @Override
+    public void remove(String uid, BigDecimal amount) {
+        coinsJpaRepository.findByUid(uid)
+                .map(coinEntity -> {
+                    changeLimits(coinEntity.getAmount(), amount);
+                    coinEntity.setAmount(coinEntity.getAmount().subtract(amount));
+                    return coinEntity;
+                })
+                .map(coinsJpaRepository::save)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Coin not found by uid %s".formatted(uid)));
+
     }
 
     @Override
@@ -145,5 +161,15 @@ class CoinsRepositoryImpl implements CoinsRepository {
         coinEntity.setAmount(BigDecimal.ZERO);
 
         return coinEntity;
+    }
+
+    private void changeLimits(BigDecimal amount, BigDecimal amountToRemove) {
+        var user = currentUserRepository.get();
+
+        if (amount.compareTo(amountToRemove) < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough coins to remove");
+        }
+
+        userRepository.removeSendLimits(user.getUsername(), amount);
     }
 }

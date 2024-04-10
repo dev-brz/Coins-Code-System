@@ -10,7 +10,9 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,5 +123,28 @@ class UserRepositoryImplTest {
 
         verify(jpaUserAccountRepository).existsByUsername("test");
         verify(jpaUserAccountRepository).updateImageNameWhereUsername("new.jpg", "test");
+    }
+
+    @Test
+    void removeSendLimits_withInLimits() {
+        var limitsAccount = mock(UserAccountEntity.class);
+
+        when(limitsAccount.getCurrentSendLimits()).thenReturn(BigDecimal.valueOf(100));
+        when(jpaUserAccountRepository.findByUsername("test")).thenReturn(Optional.of(limitsAccount));
+        when(jpaUserAccountRepository.save(limitsAccount)).thenReturn(limitsAccount);
+
+        repository.removeSendLimits("test", BigDecimal.valueOf(90));
+
+        verify(limitsAccount).setCurrentSendLimits(BigDecimal.valueOf(10));
+    }
+
+    @Test
+    void removeSendLimits_outOfLimits() {
+        var limitsAccount = mock(UserAccountEntity.class);
+
+        when(limitsAccount.getCurrentSendLimits()).thenReturn(BigDecimal.valueOf(100));
+        when(jpaUserAccountRepository.findByUsername("test")).thenReturn(Optional.of(limitsAccount));
+
+        assertThrows(ResponseStatusException.class, () -> repository.removeSendLimits("test", BigDecimal.valueOf(110)));
     }
 }

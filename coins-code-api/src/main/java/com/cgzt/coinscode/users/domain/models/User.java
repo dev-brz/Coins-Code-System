@@ -3,6 +3,7 @@ package com.cgzt.coinscode.users.domain.models;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,6 +18,7 @@ public class User {
     private int numberOfReceives;
     private LocalDateTime createdAt;
     private boolean active;
-    private int sendLimits;
+    private BigDecimal sendLimits;
+    private BigDecimal currentSendLimits;
     private String imageName;
 }

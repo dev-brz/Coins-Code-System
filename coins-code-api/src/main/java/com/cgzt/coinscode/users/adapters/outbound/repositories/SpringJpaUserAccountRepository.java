@@ -34,4 +34,19 @@ interface SpringJpaUserAccountRepository extends JpaRepository<UserAccountEntity
 
     @Query("select u.id from UserAccountEntity u where u.username = :username")
     Optional<Long> findIdByUsername(String username);
+
+    @Modifying
+    @Transactional
+    @Query("update UserAccountEntity u set u.currentSendLimits = u.sendLimits where u.currentSendLimits < u.sendLimits")
+    void resetLimits();
+
+    @Modifying
+    @Transactional
+    @Query("update UserAccountEntity u set u.numberOfSends = u.numberOfSends + 1 where u.username = :username")
+    void incrementNumberOfSends(String username);
+
+    @Modifying
+    @Transactional
+    @Query("update UserAccountEntity u set u.numberOfReceives = u.numberOfReceives + 1 where u.username = :username")
+    void incrementNumberOfReceives(String username);
 }
