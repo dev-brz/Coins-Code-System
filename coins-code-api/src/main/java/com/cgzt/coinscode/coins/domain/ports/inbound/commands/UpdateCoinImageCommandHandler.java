@@ -4,8 +4,8 @@ import com.cgzt.coinscode.coins.domain.ports.outbound.repositories.CoinsReposito
 import com.cgzt.coinscode.shared.domain.ports.outbound.services.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +22,6 @@ public class UpdateCoinImageCommandHandler {
         coinsRepository.updateImageName(command.uid(), image.name());
     }
 
-    public record Command(String uid, MultipartFile image) {
+    public record Command(String uid, InputStreamSource image) {
     }
 }

@@ -28,12 +28,12 @@ import java.util.Base64;
 @Slf4j
 class ImageServiceImpl implements ImageService {
     @Override
-    public UserImage upload(String username, InputStreamSource image, String imageDir) {
+    public UserImage upload(String name, InputStreamSource image, String imageDir) {
         assert image != null : "Image must not be null";
-        assert StringUtils.isNotBlank(username) : "Username must not be blank";
+        assert StringUtils.isNotBlank(name) : "Name must not be blank";
 
         try {
-            var hash = hashOf(username);
+            var hash = hashOf(name);
             var imageExt = getImageExt(image);
             var imagePath = getImagePath(hash, imageExt, imageDir);
             var dest = new File(imagePath);

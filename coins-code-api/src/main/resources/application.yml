@@ -4,6 +4,10 @@ server:
     include-stacktrace: never
 
 spring:
+  batch:
+    job:
+      name: multipleStepJob
+
   datasource:
     url: jdbc:h2:mem:coins_db
     username: sa

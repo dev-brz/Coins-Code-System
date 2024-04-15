@@ -1,22 +1,22 @@
 import { COINS_ROUTE, CREATE_COIN_ROUTE, MAIN_ROUTE } from '../../src/app/shared/configs/routes.config';
 import { CURRENT_USER_KEY } from '../../src/app/shared/configs/storage.config';
-import { COINS_URL, USERS_USER_URL } from '../../src/app/shared/configs/api.config';
+import { COINS_COIN_IMAGE_URL, COINS_URL, USERS_USER_URL } from '../../src/app/shared/configs/api.config';
 
-const body = {
+const res = {
   statusCode: 200,
   body: {
     coins: [
       {
         uid: '7fe9ec2a-efab-4bab-abfd-e8e8cd1e1adc',
         name: 'kirawade',
-        imageName: null,
+        imageName: 'imageName',
         description: 'kirimonsher',
         amount: 100.0
       },
       {
         uid: 'e270c694-fe4a-4336-b9e7-fd9537dbc992',
         name: 'Test',
-        imageName: null,
+        imageName: 'imageName',
         description: 'Point O',
         amount: 1000.0
       }
@@ -27,7 +27,8 @@ const body = {
 describe('Coins View', () => {
   beforeEach(() => {
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify({ username: 'username', password: 'password' }));
-    cy.intercept('GET', COINS_URL + '?username=username', body);
+    cy.intercept('GET', COINS_URL + '?username=username', res);
+    cy.intercept('GET', COINS_COIN_IMAGE_URL.replace('?1', 'imageName'), { statusCode: 200, body: 'image' });
     cy.intercept('GET', USERS_USER_URL.replace('?1', 'username'), {
       statusCode: 200,
       body: { username: 'username' }

@@ -3,9 +3,7 @@ package com.cgzt.coinscode.core.config.batch;
 import com.cgzt.coinscode.users.adapters.outbound.batch.UserAccountProcessor;
 import com.cgzt.coinscode.users.adapters.outbound.entities.UserAccountEntity;
 import org.springframework.batch.core.ItemWriteListener;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -46,13 +44,6 @@ class UsersBatchConfig {
                 .sql(INSERT_USER_ACCOUNT)
                 .dataSource(dataSource)
                 .beanMapped()
-                .build();
-    }
-
-    @Bean
-    Job importUserJob(final JobRepository jobRepository, final Step createUserAccountStep) {
-        return new JobBuilder("Import Sample Users", jobRepository)
-                .start(createUserAccountStep)
                 .build();
     }
 
