@@ -31,7 +31,7 @@ describe('ErrorService', () => {
     errorService.dispatchError(error);
   });
 
-  fit('takeError should behave correctly', () => {
+  it('takeError should behave correctly', () => {
     // GIVEN
     const scheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
     const values = { a: 'USER-SAVE', b: 'USER-UPDATE' } as const;

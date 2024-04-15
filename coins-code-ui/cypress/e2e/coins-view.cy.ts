@@ -1,6 +1,5 @@
+import { COINS_COIN_IMAGE_URL, COINS_URL } from '../../src/app/shared/configs/api.config';
 import { COINS_ROUTE, CREATE_COIN_ROUTE, MAIN_ROUTE } from '../../src/app/shared/configs/routes.config';
-import { CURRENT_USER_KEY } from '../../src/app/shared/configs/storage.config';
-import { COINS_COIN_IMAGE_URL, COINS_URL, USERS_USER_URL } from '../../src/app/shared/configs/api.config';
 
 const res = {
   statusCode: 200,
@@ -26,17 +25,13 @@ const res = {
 
 describe('Coins View', () => {
   beforeEach(() => {
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify({ username: 'username', password: 'password' }));
+    cy.login({ username: 'username' });
     cy.intercept('GET', COINS_URL + '?username=username', res);
     cy.intercept('GET', COINS_COIN_IMAGE_URL.replace('?1', 'imageName'), { statusCode: 200, body: 'image' });
-    cy.intercept('GET', USERS_USER_URL.replace('?1', 'username'), {
-      statusCode: 200,
-      body: { username: 'username' }
-    });
     cy.visit(`/${MAIN_ROUTE}/${COINS_ROUTE}`);
   });
 
-  afterEach(() => cy.clearAllLocalStorage());
+  afterEach(() => cy.logout());
 
   context('Desktop', () => {
     beforeEach(() => {

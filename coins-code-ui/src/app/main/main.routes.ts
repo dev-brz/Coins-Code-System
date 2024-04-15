@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import {
   ACCOUNT_ROUTE,
+  ARTICLES_ROUTE,
   COINS_ROUTE,
   CREATE_COIN_ROUTE,
   HISTORY_ROUTE,
@@ -35,7 +36,6 @@ export const routes: Routes = [
       }
     ]
   },
-
   {
     path: HISTORY_ROUTE,
     component: HistoryViewComponent
@@ -43,5 +43,9 @@ export const routes: Routes = [
   {
     path: ACCOUNT_ROUTE,
     component: AccountViewComponent
+  },
+  {
+    path: ARTICLES_ROUTE,
+    loadChildren: () => import('./../articles/articles.routes').then(r => r.routes)
   }
 ];

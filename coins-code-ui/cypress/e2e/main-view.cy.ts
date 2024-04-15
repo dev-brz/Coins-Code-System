@@ -1,4 +1,3 @@
-import { USERS_USER_URL } from '../../src/app/shared/configs/api.config';
 import {
   ACCOUNT_ROUTE,
   COINS_ROUTE,
@@ -6,17 +5,14 @@ import {
   HOME_ROUTE,
   MAIN_ROUTE
 } from '../../src/app/shared/configs/routes.config';
-import { CURRENT_USER_KEY } from '../../src/app/shared/configs/storage.config';
 
 describe('Main View', () => {
   beforeEach(() => {
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify({ username: 'username', password: 'password' }));
-    cy.intercept('GET', USERS_USER_URL.replace('?1', '*'), { statusCode: 200, body: { username: 'John' } });
-
+    cy.login();
     cy.visit(`/${MAIN_ROUTE}`);
   });
 
-  afterEach(() => cy.clearAllLocalStorage());
+  afterEach(() => cy.logout());
 
   it('Should open main view', () => {
     cy.url().should('contain', `/${MAIN_ROUTE}`);

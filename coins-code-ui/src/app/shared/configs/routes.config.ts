@@ -7,3 +7,5 @@ export const COINS_ROUTE = 'coins';
 export const CREATE_COIN_ROUTE = 'create';
 export const HISTORY_ROUTE = 'history';
 export const ACCOUNT_ROUTE = 'account';
+
+export const ARTICLES_ROUTE = 'articles';

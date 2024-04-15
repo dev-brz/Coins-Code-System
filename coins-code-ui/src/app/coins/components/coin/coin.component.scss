@@ -1,3 +1,5 @@
+@import '../../../../styles/mixins';
+
 mat-card {
   border-radius: 1rem;
   overflow: hidden;
@@ -7,44 +9,40 @@ mat-card {
   cursor: pointer;
 
   //To Do #80
-  mat-card-header{
-    mat-chip-option{
-     position: absolute;
+  mat-card-header {
+    mat-chip-option {
+      position: absolute;
       right: 1rem;
     }
   }
 
-  &-subtitle{
+  &-subtitle {
     font-size: x-large;
     font-weight: bolder;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
-  &-content{
+  &-content {
     display: flex;
     gap: 1rem;
-    padding-top: .5rem;
+    padding-top: 0.5rem;
 
-    p{
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
+    p {
+      @include max-lines(4);
       line-height: 1.5rem;
       max-height: 6rem;
     }
   }
 }
 
-.coin-container{
-  img{
+.coin-container {
+  img {
     border-radius: 50%;
     width: 100px;
     height: 100px;
   }
 
-  &.not-first{
-    mat-card{
+  &.not-first {
+    mat-card {
       border-radius: 1rem;
       height: 80px;
     }
@@ -60,9 +58,7 @@ mat-card {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   border-radius: 1rem;
 
-  &.not-first{
+  &.not-first {
     height: 80px;
   }
 }
-
-

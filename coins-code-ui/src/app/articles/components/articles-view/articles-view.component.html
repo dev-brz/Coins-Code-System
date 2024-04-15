@@ -1,0 +1,46 @@
+<main class="articles-view">
+  <header class="header">
+    <h1 i18n>Articles</h1>
+  </header>
+  <section>
+    <div class="articles" [@articlesState]="articlesState" (@articlesState.done)="onArticleStateAnimationDone($event)">
+      @for (article of articles$ | async; track article.id) {
+        <article>
+          <mat-card>
+            <img mat-card-image [src]="article.image.src" [alt]="article.image.alt" />
+            <mat-card-header>
+              <mat-card-title>
+                <p>{{ article.title }}</p>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <time [dateTime]="article.createdDate">{{ article.createdDate | date }}</time>
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ article.content }}</p>
+            </mat-card-content>
+            <mat-card-actions align="end">
+              <!-- todo - remove disabled as a part of [#89] adding articles -->
+              <button disabled mat-button i18n>READ MORE</button>
+            </mat-card-actions>
+          </mat-card>
+        </article>
+      }
+    </div>
+    @if (showPaginator) {
+      <mat-paginator
+        class="paginator"
+        @paginatorState
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20]"
+        aria-label="Select page"
+        i18n-aria-label />
+    }
+  </section>
+  @if (articlesState === 'loading') {
+    <div @loadingIndicatorState class="loading-indicator">
+      <mat-spinner />
+    </div>
+  }
+</main>

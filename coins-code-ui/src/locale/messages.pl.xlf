@@ -27,7 +27,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">22</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.html</context>
@@ -67,7 +67,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5446130952787522978" datatype="html">
@@ -91,7 +91,7 @@
         <target>Strona główna</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">9</context>
+          <context context-type="linenumber">8</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
@@ -107,7 +107,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3797778920049399855" datatype="html">
@@ -115,7 +115,7 @@
         <target>Wyloguj się</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4247400351982331798" datatype="html">
@@ -123,7 +123,7 @@
         <target>Ustawienia konta</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3031273163193260384" datatype="html">
@@ -912,6 +912,90 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/utils/get-error-messages.ts</context>
           <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8939587804990976924" datatype="html">
+        <source>Items per page</source>
+        <target state="new">Elementów na stronie</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/configs/mat-paginator.config.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5881876145178332550" datatype="html">
+        <source>of</source>
+        <target state="new">z</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/configs/mat-paginator.config.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3629960544875360046" datatype="html">
+        <source>Previous page</source>
+        <target state="new">Poprzednia strona</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/configs/mat-paginator.config.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3337301694210287595" datatype="html">
+        <source>Next page</source>
+        <target state="new">Następna strona</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/configs/mat-paginator.config.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8642445555713453888" datatype="html">
+        <source>First page</source>
+        <target state="new">Pierwsza strona</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/configs/mat-paginator.config.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6784758141439994527" datatype="html">
+        <source>Last page</source>
+        <target state="new">Ostatnia strona</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/configs/mat-paginator.config.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5539833462297888878" datatype="html">
+        <source>Articles</source>
+        <target state="new">Artykuły</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/articles/components/articles-view/articles-view.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1510990955304244503" datatype="html">
+        <source>READ MORE</source>
+        <target state="new">CZYTAJ WIĘCEJ</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/articles/components/articles-view/articles-view.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1512866475468373520" datatype="html">
+        <source>Select page</source>
+        <target state="new">Wybierz stronę</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/articles/components/articles-view/articles-view.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8323148305696288952" datatype="html">
+        <source>default article image</source>
+        <target state="new">domyślny obrazek artykułu</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/articles/services/articles.service.ts</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
     </body>

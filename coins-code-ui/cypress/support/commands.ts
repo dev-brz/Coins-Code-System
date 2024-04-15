@@ -41,3 +41,15 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+import { USERS_USER_URL } from '../../src/app/shared/configs/api.config';
+import { CURRENT_USER_KEY } from '../../src/app/shared/configs/storage.config';
+
+Cypress.Commands.add('login', (user = { username: 'TestUser' }) => {
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify({ username: 'username', password: 'password' }));
+  cy.intercept('GET', USERS_USER_URL.replace('?1', '*'), { statusCode: 200, body: user });
+});
+
+Cypress.Commands.add('logout', () => {
+  cy.clearLocalStorage(CURRENT_USER_KEY);
+});
