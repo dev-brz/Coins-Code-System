@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 class UsersBatchConfig {
+    static final String STEP_NAME = "Create User Account Step";
     private static final String INSERT_USER_ACCOUNT = """
             INSERT INTO user_account(username, first_name, last_name, email, phone_number, number_of_sends, number_of_receives,created_at, active, send_limits, image_name)\s
             VALUES(:username,:firstName,:lastName,:email,:phoneNumber,:numberOfSends,:numberOfReceives,:createdAt,:active,:sendLimits,:imageName)
@@ -55,7 +56,7 @@ class UsersBatchConfig {
                                final ItemProcessor<UserAccountProcessor.CSVUserAccount, UserAccountEntity> userAccountProcessor,
                                final ItemWriteListener<UserAccountEntity> listener) {
 
-        return new StepBuilder("Create User Account Step", jobRepository)
+        return new StepBuilder(STEP_NAME, jobRepository)
                 .<UserAccountProcessor.CSVUserAccount, UserAccountEntity>chunk(3, txManager)
                 .reader(reader)
                 .writer(writer)

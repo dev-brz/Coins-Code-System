@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### CUSTOM ###
+src/main/resources/data/images/articles/**
+
 ### STS ###
 .apt_generated
 .classpath

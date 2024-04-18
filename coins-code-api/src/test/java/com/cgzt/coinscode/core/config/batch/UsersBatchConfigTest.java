@@ -14,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.io.File;
 import java.util.ArrayList;
 
+import static com.cgzt.coinscode.core.config.batch.UsersBatchConfig.STEP_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -32,16 +33,14 @@ class UsersBatchConfigTest {
     String imageDir;
 
     @Test
-    void testJob(@Autowired Job job) throws Exception {
+    void testStep(@Autowired Job job) {
         var file = new File(imageDir);
 
-        this.jobLauncherTestUtils.setJob(job);
-
-        var jobExecution = jobLauncherTestUtils.launchJob();
-
+        jobLauncherTestUtils.setJob(job);
+        var jobExecution = jobLauncherTestUtils.launchStep(STEP_NAME);
 
         var stepExecutions = jobExecution.getStepExecutions();
-        var stepExecution = new ArrayList<>(stepExecutions.stream().toList()).get(0);
+        var stepExecution = new ArrayList<>(stepExecutions.stream().toList()).getFirst();
         var users_count = jdbcTemplate.queryForObject("select count(*) from users", Integer.class);
         var users_account_count = jdbcTemplate.queryForObject("select count(*) from user_account", Integer.class);
 

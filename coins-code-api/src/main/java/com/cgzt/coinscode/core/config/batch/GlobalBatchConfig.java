@@ -12,10 +12,12 @@ class GlobalBatchConfig {
     @Bean
     Job multipleStepJob(final JobRepository jobRepository,
                         final Step createUserAccountStep,
-                        final Step createCoinsStep) {
+                        final Step createCoinsStep,
+                        final Step addSampleArticlesStep) {
         return new JobBuilder("multipleStepJob", jobRepository)
                 .start(createUserAccountStep)
                 .next(createCoinsStep)
+                .next(addSampleArticlesStep)
                 .build();
     }
 }
