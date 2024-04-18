@@ -79,3 +79,22 @@ ALTER TABLE user_account
 
 ALTER TABLE user_account
     ADD COLUMN IF NOT EXISTS current_send_limits DECIMAL(19, 4) DEFAULT 100.00;
+
+CREATE TABLE IF NOT EXISTS article_images
+(
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    content     BLOB(2M) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS articles
+(
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    uid         VARCHAR(36)  NOT NULL,
+    version     INT NOT NULL,
+    title       VARCHAR(128) NOT NULL,
+    description VARCHAR(128),
+    content     VARCHAR(128) NOT NULL,
+    created_at  TIMESTAMP,
+    image_id    BIGINT,
+    CONSTRAINT fk_articles_article_images FOREIGN KEY (image_id) REFERENCES article_images(id)
+);

@@ -10,3 +10,7 @@ DELETE
 FROM user_account;
 DELETE
 FROM users;
+DELETE
+FROM articles;
+DELETE
+FROM article_images;
