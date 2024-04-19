@@ -24,7 +24,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">16</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/user/components/account-view/account-view.component.html</context>
@@ -62,7 +62,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5446130952787522978" datatype="html">
@@ -87,7 +87,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="186236568870281953" datatype="html">
@@ -98,21 +98,21 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3797778920049399855" datatype="html">
         <source>Logout</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4247400351982331798" datatype="html">
         <source>Account settings</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3031273163193260384" datatype="html">
@@ -862,6 +862,10 @@
           <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
           <context context-type="linenumber">11</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/main-view/main-view.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="5881876145178332550" datatype="html">
         <source>of</source>
@@ -877,13 +881,6 @@
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="8323148305696288952" datatype="html">
-        <source>default article image</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/articles/services/articles.service.ts</context>
-          <context context-type="linenumber">21</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="8642445555713453888" datatype="html">
         <source>First page</source>
         <context-group purpose="location">
@@ -895,6 +892,13 @@
         <source>Items per page</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/configs/mat-paginator.config.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7153102511638281750" datatype="html">
+        <source>article image</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/articles/components/articles-view/articles-view.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>

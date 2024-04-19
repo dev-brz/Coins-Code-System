@@ -18,8 +18,12 @@
       flex-direction: column;
     }
 
-    mat-card > img {
-      aspect-ratio: 1.6;
+    mat-card {
+      height: 100%;
+
+      & > img {
+        aspect-ratio: 1.6;
+      }
     }
 
     mat-card-header {
@@ -36,8 +40,12 @@
       }
     }
 
-    mat-card-content > p {
-      @include max-lines(4);
+    mat-card-content {
+      height: 100%;
+
+      & > p {
+        @include max-lines(4);
+      }
     }
   }
 

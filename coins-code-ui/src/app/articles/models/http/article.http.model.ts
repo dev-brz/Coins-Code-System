@@ -1,20 +1,7 @@
-import { ArticlesQuery } from '../article.model';
-
-export type FindArticlesQuery = ArticlesQuery;
-
-export interface FindArticlesResponse {
-  articles: FoundArticle[];
-  currentPage: number;
-  totalItems: number;
-}
-
-export interface FoundArticle {
+export interface ArticleOverviewResult {
   id: number;
   title: string;
-  content: string;
-  createdDate: string;
-  image?: {
-    src: string;
-    alt: string;
-  };
+  description: string;
+  createdAt: string;
+  image: string;
 }

@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Subject, firstValueFrom, of, tap } from 'rxjs';
-import { Article } from '../../models/article.model';
+import { prepareSampleArticlesPage } from '../../../shared/utils/test-sample-utils';
 import { ArticlesService } from '../../services/articles.service';
 import { ArticlesViewComponent } from './articles-view.component';
 
@@ -43,7 +43,7 @@ describe('ArticlesViewComponent', () => {
 
   it('should render articles on page load', () => {
     // GIVEN
-    articlesServiceMock.find.and.returnValue(of({ articles: prepareSampleArticles(3), page: 0, totalItems: 3 }));
+    articlesServiceMock.find.and.returnValue(of(prepareSampleArticlesPage({ total: 3 })));
 
     // WHEN
     queryParamsSubject.next({});
@@ -70,18 +70,4 @@ describe('ArticlesViewComponent', () => {
     // THEN
     expect(articlesServiceMock.find).toHaveBeenCalledWith({ page: pageIndex });
   }));
-
-  function prepareSampleArticles(total: number = 3): Article[] {
-    return Array(total)
-      .fill(0)
-      .map(
-        (_, i): Article => ({
-          id: i,
-          title: 'title',
-          content: 'content',
-          createdDate: new Date().toISOString(),
-          image: { src: '', alt: '' }
-        })
-      );
-  }
 });

@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Optional, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { DEFAULT_ARTICLE_IMAGE_PATH } from '../../shared/configs/assets.config';
-import { ArticlesPage, ArticlesQuery } from '../models/article.model';
-import { FindArticlesResponse } from '../models/http/article.http.model';
+import { Page, PageQuery } from '../../shared/models/page.model';
+import { ArticleOverview } from '../models/article.model';
+import { ArticleOverviewResult } from '../models/http/article.http.model';
 import { ArticlesHttpService } from './http/articles.http.service';
 
 @Injectable({ providedIn: 'root' })
@@ -12,17 +13,16 @@ export class ArticlesService {
     this.articlesApi = articlesApi ?? new ArticlesHttpService(inject(HttpClient));
   }
 
-  find(query: ArticlesQuery): Observable<ArticlesPage> {
-    return this.articlesApi.find(query).pipe(map(this.toArticlesPage));
+  find(query: PageQuery): Observable<Page<ArticleOverview>> {
+    return this.articlesApi.find(query).pipe(map(page => this.toArticlesPage(page)));
   }
 
-  private toArticlesPage(response: FindArticlesResponse): ArticlesPage {
-    const articles = response.articles.map(responseArticle => {
-      const image = responseArticle.image ?? { src: DEFAULT_ARTICLE_IMAGE_PATH, alt: $localize`default article image` };
+  private toArticlesPage(page: Page<ArticleOverviewResult>): Page<ArticleOverview> {
+    return { ...page, content: page.content.map(article => this.toArticle(article)) };
+  }
 
-      return { ...responseArticle, image };
-    });
-
-    return { articles, page: response.currentPage, totalItems: response.totalItems };
+  private toArticle(article: ArticleOverviewResult): ArticleOverview {
+    const imageSrc = article.image ? `data:image/*;base64,${article.image}` : DEFAULT_ARTICLE_IMAGE_PATH;
+    return { ...article, imageSrc };
   }
 }

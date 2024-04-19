@@ -38,15 +38,16 @@ export class ArticlesViewComponent {
   articlesState: ArticlesState = 'loading';
   showPaginator = false;
   pageSize = 0;
-  totalItems = 0;
+  totalElements = 0;
   paginator = viewChild(MatPaginator);
   articles$ = this.route.queryParams.pipe(
     tap(() => (this.articlesState = 'loading')),
     takeUntilDestroyed(),
     switchMap(params => this.articlesService.find(params)),
-    tap(({ articles }) => (this.pageSize = articles.length)),
-    tap(({ totalItems }) => (this.totalItems = totalItems)),
-    map(({ articles }) => articles),
+    tap(({ size }) => (this.pageSize = size)),
+    tap(({ totalElements }) => (this.totalElements = totalElements)),
+    tap(() => scrollTo({ top: 0, behavior: 'smooth' })),
+    map(({ content }) => content),
     tap({
       next: () => (this.articlesState = 'loaded'),
       error: () => (this.articlesState = 'error')
@@ -73,7 +74,7 @@ export class ArticlesViewComponent {
     }
   }
 
-  onPageChange({ pageSize, pageIndex: page }: PageEvent): void {
-    this.router.navigate([], { relativeTo: this.route, queryParams: { pageSize, page } });
+  onPageChange({ pageSize: size, pageIndex: page }: PageEvent): void {
+    this.router.navigate([], { relativeTo: this.route, queryParams: { size, page } });
   }
 }

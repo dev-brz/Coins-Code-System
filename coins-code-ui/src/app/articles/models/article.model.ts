@@ -1,21 +1,7 @@
-export interface Article {
+export interface ArticleOverview {
   id: number;
   title: string;
-  content: string;
-  createdDate: string;
-  image: {
-    src: string;
-    alt: string;
-  };
+  description: string;
+  createdAt: string;
+  imageSrc: string;
 }
-
-export interface ArticlesPage {
-  articles: Article[];
-  page: number;
-  totalItems: number;
-}
-
-export type ArticlesQuery = Partial<{
-  page: number;
-  pageSize: number;
-}>;
