@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FileInput } from 'ngx-custom-material-file-input';
 import { CoinService } from '../../services/coin.service';
 import { CreateCoinViewComponent } from './create-coin-view.component';
-import { FileInput } from 'ngx-custom-material-file-input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
 
 describe('CreateCoinViewComponent', () => {
   let component: CreateCoinViewComponent;
@@ -16,7 +17,11 @@ describe('CreateCoinViewComponent', () => {
 
   beforeEach(async () => {
     dialogRefSpyObj = jasmine.createSpyObj('MatDialogRef', ['close']);
-    coinServiceSpyObj = jasmine.createSpyObj('CoinService', ['createCoinAndTopUp'], { selectedIndex: 0 });
+    coinServiceSpyObj = jasmine.createSpyObj(
+      'CoinService',
+      { createCoinAndTopUp: null, exists: of(false) },
+      { selectedIndex: 0 }
+    );
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, BrowserAnimationsModule, CreateCoinViewComponent],
       providers: [

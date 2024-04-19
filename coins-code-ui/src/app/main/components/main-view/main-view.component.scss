@@ -3,6 +3,10 @@
   gap: 0.8rem;
 
   .menu-opener {
+    &:focus-visible {
+      outline: white solid 0.2rem;
+    }
+
     all: unset;
     display: inherit;
     cursor: pointer;
@@ -21,6 +25,11 @@
   }
 
   & > a {
+    &:focus-visible {
+      outline: white solid 0.2rem;
+      outline-offset: 0.2rem;
+    }
+
     all: unset;
     cursor: pointer;
   }
@@ -30,11 +39,22 @@
   }
 
   .avatar {
-    border-radius: 50%;
-    object-fit: cover;
+    all: unset;
     height: 80%;
-    width: unset;
-    cursor: pointer;
+    aspect-ratio: 1;
+    border-radius: 50%;
+
+    &:focus-visible {
+      outline: white solid 0.2rem;
+    }
+
+    & > img {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      object-fit: cover;
+      cursor: pointer;
+    }
   }
 
   .active-route {

@@ -6,6 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { signalStore, withMethods } from '@ngrx/signals';
 import { FileInput } from 'ngx-custom-material-file-input';
+import { of } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 import { UserStore } from '../../store/user.store';
 import { RegisterViewComponent } from './register-view.component';
@@ -18,10 +19,12 @@ describe('RegisterViewComponent', () => {
   let userStoreMock: InstanceType<typeof UserStoreMock>;
 
   beforeEach(async () => {
+    const userServiceMock = jasmine.createSpyObj<UsersService>({ existsBy: of(false) });
+
     await TestBed.configureTestingModule({
       imports: [RegisterViewComponent, NoopAnimationsModule, RouterTestingModule],
       providers: [
-        { provide: UsersService, useValue: jasmine.createSpy() },
+        { provide: UsersService, useValue: userServiceMock },
         { provide: UserStore, useClass: UserStoreMock }
       ]
     }).compileComponents();

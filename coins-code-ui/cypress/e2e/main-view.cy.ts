@@ -25,7 +25,7 @@ describe('Main View', () => {
     cy.url().should('contain', `/${COINS_ROUTE}`);
     cy.get('a[ng-reflect-router-link="history"]').click();
     cy.url().should('contain', `/${HISTORY_ROUTE}`);
-    cy.get('img.avatar').click();
+    cy.get('button.avatar').click();
     cy.get('a[ng-reflect-router-link="account"]').click();
     cy.url().should('contain', `/${ACCOUNT_ROUTE}`);
   });

@@ -12,15 +12,9 @@
   }
   <div class="divider"></div>
   <span>{{ currentUser().firstName }}</span>
-  <img
-    class="avatar"
-    role="button"
-    [matMenuTriggerFor]="accountSettingsMenu"
-    [src]="currentUser().imageUrl"
-    width="120"
-    height="120"
-    alt="Profile image"
-    i18n-alt />
+  <button class="avatar" [matMenuTriggerFor]="accountSettingsMenu">
+    <img [src]="currentUser().imageUrl" width="120" height="120" alt="Profile image" i18n-alt />
+  </button>
 </mat-toolbar>
 <router-outlet></router-outlet>
 
