@@ -2,17 +2,17 @@ import { PartialStateUpdater, patchState, signalStore, type, withHooks, withMeth
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { inject } from '@angular/core';
-import { switchMap, tap } from 'rxjs';
-import { CoinCreationForm, CoinTopUpForm } from '../models/coin.model';
+import { forkJoin, map, Observable, switchMap, tap } from 'rxjs';
+import { Coin, CoinCreationForm, CoinTopUpForm } from '../models/coin.model';
 import { UserStore } from '../../user/store/user.store';
 import { tapResponse } from '@ngrx/operators';
 import { CoinHttpService } from '../services/http/coin.http.service';
 import { addEntity, removeAllEntities, setAllEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
-import { CoinBase } from '../models/http/coin.model';
 import { notify, withNotifications } from '../../shared/store/notification.store';
 import { COIN_CREATED_MESSAGE, COIN_CREATION_FAILED_MESSAGE } from '../../shared/configs/notification.config';
 import { NamedEntityState } from '@ngrx/signals/entities/src/models';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { CoinBase } from '../models/http/coin.model';
 
 type BoleanObject = { [key: string]: boolean };
 
@@ -48,17 +48,13 @@ const initialCoinState: CoinState = {
   ...initialFormStatus
 };
 
-function setAllCoins(coins: CoinBase[]): PartialStateUpdater<NamedEntityState<CoinBase, 'coins'>> {
-  return setAllEntities(coins, { idKey: 'uid', collection: 'coins' });
-}
-
 export const CoinStore = signalStore(
   { providedIn: 'root' },
   withDevtools('coins'),
   withState(initialCoinState),
   withNotifications,
   withEntities({
-    entity: type<CoinBase>(),
+    entity: type<Coin>(),
     collection: 'coins'
   }),
   withMethods((store, coinHttpService = inject(CoinHttpService), userStore = inject(UserStore)) => ({
@@ -78,6 +74,7 @@ export const CoinStore = signalStore(
       stream$.pipe(
         tap(() => patchState(store, isLoading())),
         switchMap(() => coinHttpService.getCoins(userStore.currentUser.username())),
+        switchMap(coins => forkJoin(coins.map(coin => getCoin(coinHttpService, coin)))),
         tapResponse({
           next: coins => patchState(store, setAllCoins(coins), doneLoading()),
           error: () => patchState(store, doneLoading())
@@ -97,11 +94,13 @@ export const CoinStore = signalStore(
         switchMap(() =>
           coinHttpService.getCoinByUsernameAndName(store.coinForm().coin.username, store.coinForm().coin.name)
         ),
+        switchMap(coin => getCoin(coinHttpService, coin)),
         tap(coin => patchState(store, addEntity(coin, { idKey: 'uid', collection: 'coins' }))),
         tap(coin => patchState(store, { coinForm: { ...store.coinForm(), coinUid: coin.uid } })),
         switchMap(() => coinHttpService.updateCoinImage(store.coinForm().coinUid, store.coinForm().image)),
         switchMap(() => coinHttpService.topUpCoin(setTopupUid(store.coinForm().coinUid, store.coinForm.topUp()))),
         switchMap(() => coinHttpService.getCoinByUid(store.coinForm().coinUid)),
+        switchMap(coin => getCoin(coinHttpService, coin)),
         tap(coin => patchState(store, updateEntity({ id: coin.uid, changes: coin }, { collection: 'coins' }))),
         tapResponse({
           next: () => {
@@ -154,4 +153,12 @@ function setTopupUid(uid: string = '', topUp: CoinTopUpForm): CoinTopUpForm {
     ...topUp,
     coinUid: uid
   };
+}
+
+function setAllCoins(coins: Coin[]): PartialStateUpdater<NamedEntityState<Coin, 'coins'>> {
+  return setAllEntities(coins, { idKey: 'uid', collection: 'coins' });
+}
+
+function getCoin(coinHttpService: CoinHttpService, coin: CoinBase): Observable<Coin> {
+  return coinHttpService.getCoinImage(coin.imageName).pipe(map(imageUrl => ({ ...coin, imageUrl }) as Coin));
 }

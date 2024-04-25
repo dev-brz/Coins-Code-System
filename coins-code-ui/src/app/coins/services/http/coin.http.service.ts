@@ -67,4 +67,9 @@ export class CoinHttpService {
       catchError((err: HttpErrorResponse) => of(err.status !== HttpStatusCode.NotFound))
     );
   }
+
+  getCoinImage(name: string = ''): Observable<string> {
+    const url = COINS_COIN_IMAGE_URL.replace('?1', name);
+    return this.http.get(url, { responseType: 'blob' }).pipe(map(URL.createObjectURL));
+  }
 }
