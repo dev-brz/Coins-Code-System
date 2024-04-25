@@ -13,13 +13,14 @@ describe('CoinStore', () => {
   let coinHttpService: jasmine.SpyObj<CoinHttpService>;
   const userStore = signalStore(withState({ currentUser: { username: 'user1' } }));
   const coins: CoinBase[] = [
-    { uid: '1', name: 'Coin 1' },
-    { uid: '2', name: 'Coin 2' }
+    { uid: '1', name: 'Coin 1', imageName: 'image1' },
+    { uid: '2', name: 'Coin 2', imageName: 'image2' }
   ];
 
   beforeEach(() => {
     coinHttpService = jasmine.createSpyObj('CoinHttpService', [
       'getCoins',
+      'getCoinImage',
       'createCoin',
       'getCoinByUsernameAndName',
       'updateCoinImage',
@@ -49,11 +50,14 @@ describe('CoinStore', () => {
   });
 
   it('should load coins', () => {
+    const coinHttpServiceGetCoinImageSpy = (coinHttpService.getCoinImage as jasmine.Spy).and.returnValue(of('image'));
+    const coinHttpServiceGetCoinsSpy = (coinHttpService.getCoins as jasmine.Spy).and.returnValue(of(coins));
+
     coinStore.rxLoadCoins();
 
-    expect(coinHttpService.getCoins).toHaveBeenCalledWith('user1');
-    expect(coinStore.coinsEntities()).toEqual(coins);
+    expect(coinHttpServiceGetCoinsSpy).toHaveBeenCalledWith('user1');
     expect(coinStore.isLoading()).toBeFalse();
+    expect(coinHttpServiceGetCoinImageSpy).toHaveBeenCalled();
   });
 
   it('should create a coin with side effects', () => {
@@ -81,6 +85,7 @@ describe('CoinStore', () => {
     (coinHttpService.updateCoinImage as jasmine.Spy).and.returnValue(of(void 0));
     (coinHttpService.topUpCoin as jasmine.Spy).and.returnValue(of(void 0));
     (coinHttpService.getCoinByUid as jasmine.Spy).and.returnValue(of(createdCoin));
+    (coinHttpService.getCoinImage as jasmine.Spy).and.returnValue(of('image'));
 
     coinStore.createCoin(coinForm);
 

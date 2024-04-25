@@ -55,7 +55,7 @@ describe('Coins View', () => {
     });
 
     it('Should have routing working', () => {
-      cy.get('a[ng-reflect-router-link="create"]').click();
+      cy.get('button[ng-reflect-router-link="create"]').click();
       cy.url().should('contain', `/${CREATE_COIN_ROUTE}`);
     });
   });

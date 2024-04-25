@@ -62,7 +62,7 @@ describe('CoinsViewComponent', () => {
     component.isDesktop$ = of(false);
     component.openCreateDialog = jasmine.createSpy();
     fixture.detectChanges();
-    fixture.nativeElement.querySelector('a').click();
+    fixture.nativeElement.querySelector('button').click();
     expect(component.openCreateDialog).toHaveBeenCalledTimes(0);
   });
 

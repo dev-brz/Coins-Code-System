@@ -138,7 +138,11 @@ class CoinsController {
         updateCoinImageCommandHandler.handle(new UpdateCoinImageCommandHandler.Command(uid, image));
     }
 
-    @GetMapping(NAME_IMAGE)
+    @GetMapping(value = NAME_IMAGE, produces = {
+            MediaType.IMAGE_JPEG_VALUE,
+            MediaType.IMAGE_PNG_VALUE,
+            MediaType.IMAGE_GIF_VALUE
+    })
     @Operation(summary = "Get a coin's image", description = "Get the image of a coin by its name")
     @ApiResponse(responseCode = "200", description = "Image fetched")
     @ApiResponse(responseCode = "400", description = "Coin not found by uid testUid", content = @Content)

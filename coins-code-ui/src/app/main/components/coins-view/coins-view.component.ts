@@ -1,7 +1,14 @@
 import { Component, inject, OnDestroy, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Coin } from '../../../coins/models/coin.model';
-import { MatAnchor, MatFabButton, MatIconAnchor, MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import {
+  MatAnchor,
+  MatButton,
+  MatFabButton,
+  MatIconAnchor,
+  MatIconButton,
+  MatMiniFabButton
+} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,7 +40,8 @@ import { CREATE_COIN_ROUTE } from '../../../shared/configs/routes.config';
     CdkDropList,
     CdkDrag,
     CdkDragPlaceholder,
-    MatChipListbox
+    MatChipListbox,
+    MatButton
   ],
   templateUrl: './coins-view.component.html',
   styleUrl: './coins-view.component.scss'
